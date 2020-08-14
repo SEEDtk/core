@@ -1,0 +1,22 @@
+Pcp	Pyrrolidone-carboxylate peptidase (EC 3.4.19.3)
+PxpA	5-oxoprolinase subunit A (EC 3.5.2.9)
+PxpB	5-oxoprolinase subunit B (EC 3.5.2.9)
+PxpC	5-oxoprolinase subunit C (EC 3.5.2.9)
+BCP	Biotin carboxyl carrier protein
+LamB	Lactam utilization protein LamB
+AH1	Allophanate hydrolase 2 subunit 1 (EC 3.5.1.54)
+AH2	Allophanate hydrolase 2 subunit 2 (EC 3.5.1.54)
+LysR	Transcriptional regulator PP2919, LysR family
+UCL	Urea carboxylase (EC 6.3.4.6)
+AtzF	Allophanate hydrolase (EC 3.5.1.54)
+//
+AUX	5	6	7	8	10	11
+All
+
+All
+//
+99287.1	active.0		687	685	686
+209261.1	active.0		2028	2030	2029
+439843.6	active.0		953	951	952
+83333.1	-1	rna.3,4	
+100226.1	-1		
