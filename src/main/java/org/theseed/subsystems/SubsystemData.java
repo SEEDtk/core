@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theseed.io.LineReader;
+import org.theseed.io.MarkerFile;
 
 /**
  * This object contains data about a subsystem.  This includes an array of role descriptors and an array of rows.
@@ -38,6 +39,10 @@ public class SubsystemData {
     private String id;
     /** list of missing genomes */
     private SortedSet<String> missingGenomes;
+    /** coreSEED directory for this subsystem */
+    private File coreDir;
+    /** subsystem error count */
+    private int errorCount;
     /** spreadsheet section marker */
     private static final String MARKER = "//";
 
@@ -47,9 +52,10 @@ public class SubsystemData {
      * @param coreDir	SEED data directory
      * @param id		ID of the subsystem
      */
-    private SubsystemData(String ssId) {
+    private SubsystemData(File coreDir, String ssId) {
         this.id = ssId;
         this.name = StringUtils.replaceChars(ssId, '_', ' ');
+        this.coreDir = coreDir;
         this.rows = new TreeSet<RowData>();
         this.missingGenomes = new TreeSet<String>();
     }
@@ -68,7 +74,7 @@ public class SubsystemData {
         if (! ssFile.exists()) {
             log.warn("Subsystem {} not found in {}.", ssId, coreDir);
         } else {
-            retVal = new SubsystemData(ssId);
+            retVal = new SubsystemData(coreDir, ssId);
             // Open the spreadsheet and start reading sections.
             try (LineReader ssStream = new LineReader(ssFile)) {
                 log.info("Reading spreadsheet file for {} subsystem \"{}\".",
@@ -101,6 +107,15 @@ public class SubsystemData {
         return retVal;
     }
 
+    /**
+     * @return the error-count file name for the specified subsystem
+     *
+     * @param coreDir	coreSEED data directory
+     * @param id		ID of the subsystem of interest
+     */
+    public static File errorCountFile(File coreDir, String id) {
+        return new File(coreDir, "Subsystems/" + id + "/ERRORCOUNT");
+    }
     /**
      * @return the array of columns
      */
@@ -176,15 +191,38 @@ public class SubsystemData {
                     row.getCell(i).setState(feature.getKey(), feature.getValue(), this.columns[i]);
             }
         }
-        // Now summarize the columns.
+        // Now summarize the columns and compute the error count.
         log.info("Summarizing columns in {}.", this.name);
+        this.errorCount = this.numGenomesMissing();
         for (ColumnData col : this.columns) {
             int idx = col.getColIdx();
             for (RowData row : this.rows)
                 col.countCell(row.getCell(idx));
+            this.errorCount += col.getCount(PegState.MISSING) + col.getCount(PegState.BAD_ROLE) +
+                    col.getCount(PegState.DISCONNECTED);
         }
+        // Save the error count.
+        File errorCountFile = SubsystemData.errorCountFile(this.coreDir, this.id);
+        MarkerFile.write(errorCountFile, this.errorCount);
     }
-    // TODO calculate health
-    // TODO hasErrors
+
+    /**
+     * @return the number of errors in this subsystem
+     */
+    public int getErrorCount() {
+        return this.errorCount;
+    }
+
+    /**
+     * @return the subsystem health rating (1.00 is perfect)
+     */
+    public double getHealth() {
+        double total = (this.getWidth() + 1) * this.size();
+        double retVal = 0.0;
+        if (total > 0)
+            retVal = (total - this.errorCount) / total;
+        return retVal;
+    }
+
 
 }

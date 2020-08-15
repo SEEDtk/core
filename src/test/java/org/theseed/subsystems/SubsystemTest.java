@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.SortedSet;
 
 import org.theseed.io.LineReader;
+import org.theseed.io.MarkerFile;
 
 /**
  * Test subsystem classes
@@ -82,6 +83,9 @@ public class SubsystemTest extends TestCase {
         assertThat(status30a.getFunction(), equalTo("improper function"));
         Map<String, String> funs = row2.getFunctions();
         assertThat(funs.size(), equalTo(4322));
+        assertThat(funs.get("fig|83333.1.peg.4135"), equalTo("Programmed cell death toxin PemK"));
+        assertThat(funs.get("fig|83333.1.peg.4427"), equalTo("Purine nucleoside phosphoramidase HinT"));
+        assertThat(funs.get("fig|83333.1.peg.4428"), equalTo("Transcriptional regulator YjdC, AcrR family"));
         // Verify no deleted features are in the function map.
         Set<String> deleted = new HashSet<String>(1000);
         try (LineReader delFile = new LineReader(new File("src/test/resources/Organisms/83333.1/Features/peg", "deleted.features"))) {
@@ -189,19 +193,34 @@ public class SubsystemTest extends TestCase {
         assertThat(row.getCell(2).contains("fig|99287.1.peg.3177"), isTrue());
         assertThat(row.getCell(1).contains("fig|99287.1.peg.3176"), isFalse());
         subsystem.validateRows(coreDir);
+        assertThat(MarkerFile.readInt(SubsystemData.errorCountFile(coreDir, subsystem.getId())), equalTo(11));
         ColumnData col = subsystem.getColumns()[0];
         assertThat(col.getAbbr(), equalTo("NimR"));
         assertThat(col.getFunction(), equalTo("Transcriptional regulator of NimT, AraC family"));
         assertThat(col.getCount(PegState.GOOD), equalTo(3));
+        assertThat(col.getCount(PegState.BAD_ROLE), equalTo(1));
         col = subsystem.getColumns()[1];
         assertThat(col.getAbbr(), equalTo("NimT"));
         assertThat(col.getFunction(), equalTo("2-nitroimidazole transporter NimT"));
         assertThat(col.getCount(PegState.DISCONNECTED), equalTo(1));
+        assertThat(col.getCount(PegState.MISSING), equalTo(1));
         col = subsystem.getColumns()[2];
         assertThat(col.getAbbr(), equalTo("YeaO"));
         assertThat(col.getFunction(), equalTo("Uncharacterized protein YeaO"));
         assertThat(col.getCount(PegState.MISSING), equalTo(1));
-
+        assertThat(col.getCount(PegState.BAD_ROLE), equalTo(2));
+        assertThat(col.getBadRoles().size(), equalTo(2));
+        assertThat(subsystem.getErrorCount(), equalTo(11));
+        assertThat(subsystem.getHealth(), lessThan(1.0));
+        subsystem = SubsystemData.load(coreDir, "5-oxoprolinase");
+        assertThat(subsystem.getName(), equalTo("5-oxoprolinase"));
+        assertThat(subsystem.getMissingGenomes(), contains("100226.1"));
+        assertThat(subsystem.size(), equalTo(4));
+        subsystem = SubsystemData.load(coreDir, "Phenylalanine_and_Tyrosine_synthesis");
+        subsystem.validateRows(coreDir);
+        assertThat(MarkerFile.readInt(SubsystemData.errorCountFile(coreDir, subsystem.getId())), equalTo(0));
+        assertThat(subsystem.getErrorCount(), equalTo(0));
+        assertThat(subsystem.getHealth(), equalTo(1.0));
     }
 
 }

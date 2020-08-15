@@ -1,0 +1,30 @@
+AroH1	Chorismate mutase I (EC 5.4.99.5)
+AroH11	Periplasmic chorismate mutase I (EC 5.4.99.5)
+AroH2	Chorismate mutase II (EC 5.4.99.5)
+AroH3	Chorismate mutase III (EC 5.4.99.5)
+AroJa	Biosynthetic Aromatic amino acid aminotransferase alpha (EC 2.6.1.57)
+AroJb	Biosynthetic Aromatic amino acid aminotransferase beta (EC 2.6.1.57)
+AroJbp	Periplasmic aromatic amino acid aminotransferase beta (EC 2.6.1.57)
+AroJc	Aromatic amino acid aminotransferase gamma (EC 2.6.1.57)
+TyrA1	Arogenate dehydrogenase (EC 1.3.1.43)
+TyrA2	Prephenate dehydrogenase (EC 1.3.1.12)
+TyrA3	Cyclohexadienyl dehydrogenase (EC 1.3.1.12)(EC 1.3.1.43)
+TyrA4	Prephenate and/or arogenate dehydrogenase (unknown specificity) (EC 1.3.1.12)(EC 1.3.1.43)
+TyrR	Transcriptional repressor protein TyrR
+PheA1	Arogenate dehydratase (EC 4.2.1.91)
+PheA2	Prephenate dehydratase (EC 4.2.1.51)
+PheA3	Cyclohexadienyl dehydratase (EC 4.2.1.51)(EC 4.2.1.91)
+PhhA	Phenylalanine-4-hydroxylase (EC 1.14.16.1)
+//
+*TyrA	9	10	11	12
+*AroJ	5	6	7	8
+*PheA	14	15	16
+*AroH	1	2	3	4
+All
+
+All
+//
+99287.1	1.11	2578,2576	1226			4086						2578		1628		2576
+83333.1	1.11	2567,2566				3964						2567		1311		2566
+439843.6	1.11	2889,2891	1433			4434						2891		1875	802	802,2889
+209261.1	1.11	2448,2450	1073			3868						2450		1485		2448
