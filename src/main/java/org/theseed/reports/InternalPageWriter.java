@@ -3,6 +3,8 @@
  */
 package org.theseed.reports;
 
+import java.util.stream.Stream;
+
 import j2html.tags.DomContent;
 
 /**
@@ -15,10 +17,9 @@ import j2html.tags.DomContent;
 public class InternalPageWriter extends PageWriter {
 
     @Override
-    public void writePage(String title, DomContent... content) {
+    public void writePage(String title, Stream<DomContent> content) {
         // We are internal to another page, so the title is ignored.
-        for (DomContent item : content)
-            System.out.println(item.render());
+        content.forEach(x -> System.out.println(x));
     }
 
 

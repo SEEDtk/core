@@ -3,8 +3,10 @@
  */
 package org.theseed.reports;
 
+import java.util.Arrays;
 import java.util.Collection;
-
+import java.util.List;
+import java.util.stream.Stream;
 
 import j2html.tags.ContainerTag;
 import j2html.tags.DomContent;
@@ -24,6 +26,7 @@ public abstract class PageWriter {
         // Insure the slash is in empty tags.
         Config.closeEmptyTags = true;
     }
+
     /**
      * This method writes the output.  The client passes in the body of the page, and the
      * subclass sends it to the standard output with the proper formatting.
@@ -31,7 +34,30 @@ public abstract class PageWriter {
      * @param title		title to use if this is a standalone web page
      * @param content	array of content items to put on the page
      */
-    public abstract void writePage(String title, DomContent... content);
+    public void writePage(String title, DomContent... content) {
+        this.writePage(title, Arrays.stream(content));
+    }
+
+    /**
+     * This method writes the output.  The client passes in the body of the page, and the
+     * subclass sends it to the standard output with the proper formatting.
+     *
+     * @param title		title to use if this is a standalone web page
+     * @param content	array of content items to put on the page
+     */
+    public void writePage(String title, List<DomContent> content) {
+        this.writePage(title, content.stream());
+    }
+
+    /**
+     * This method writes the output.  The client passes in the body of the page, and the
+     * subclass sends it to the standard output with the proper formatting.
+     *
+     * @param title		title to use if this is a standalone web page
+     * @param content	stream of content items to put on the page
+     */
+    protected abstract void writePage(String title, Stream<DomContent> stream);
+
 
     /**
      * This enum indicates the types of output.
