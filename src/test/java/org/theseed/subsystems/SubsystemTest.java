@@ -177,7 +177,9 @@ public class SubsystemTest extends TestCase {
         assertThat(subsystem.numGenomesMissing(), equalTo(0));
         assertThat(subsystem.getWidth(), equalTo(3));
         assertThat(subsystem.size(), equalTo(4));
+        assertThat(subsystem.isSuspectErrorCount(), isTrue());
         List<RowData> rows = new ArrayList<RowData>(subsystem.getRows());
+        rows.sort(null);
         RowData row = rows.get(0);
         assertThat(row.getGenomeId(), equalTo("83333.1"));
         assertThat(row.getVariant(), equalTo("inactive"));
@@ -192,8 +194,14 @@ public class SubsystemTest extends TestCase {
         assertThat(row.getCell(2).contains("fig|99287.1.peg.3176"), isTrue());
         assertThat(row.getCell(2).contains("fig|99287.1.peg.3177"), isTrue());
         assertThat(row.getCell(1).contains("fig|99287.1.peg.3176"), isFalse());
-        subsystem.validateRows(coreDir);
+        subsystem.validateRows();
+        assertThat(subsystem.isSuspectErrorCount(), isFalse());
         assertThat(MarkerFile.readInt(SubsystemData.errorCountFile(coreDir, subsystem.getId())), equalTo(11));
+        SubsystemData subsystem2 = SubsystemData.survey(coreDir, "2-nitroimidazole_resistance");
+        assertThat(subsystem2.getId(), equalTo(subsystem.getId()));
+        assertThat(subsystem2.getName(), equalTo(subsystem.getName()));
+        assertThat(subsystem2.getErrorCount(), equalTo(subsystem.getErrorCount()));
+        assertThat(subsystem2.isSuspectErrorCount(), isFalse());
         ColumnData col = subsystem.getColumns()[0];
         assertThat(col.getAbbr(), equalTo("NimR"));
         assertThat(col.getFunction(), equalTo("Transcriptional regulator of NimT, AraC family"));
@@ -217,7 +225,7 @@ public class SubsystemTest extends TestCase {
         assertThat(subsystem.getMissingGenomes(), contains("100226.1"));
         assertThat(subsystem.size(), equalTo(4));
         subsystem = SubsystemData.load(coreDir, "Phenylalanine_and_Tyrosine_synthesis");
-        subsystem.validateRows(coreDir);
+        subsystem.validateRows();
         assertThat(MarkerFile.readInt(SubsystemData.errorCountFile(coreDir, subsystem.getId())), equalTo(0));
         assertThat(subsystem.getErrorCount(), equalTo(0));
         assertThat(subsystem.getHealth(), equalTo(1.0));

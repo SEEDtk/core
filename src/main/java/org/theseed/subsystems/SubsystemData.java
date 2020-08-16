@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -20,6 +22,7 @@ import org.theseed.io.MarkerFile;
 
 /**
  * This object contains data about a subsystem.  This includes an array of role descriptors and an array of rows.
+ * The row array is implemented as a hashmap so that the last duplicate is the one kept.
  *
  * @author Bruce Parrello
  *
@@ -32,7 +35,7 @@ public class SubsystemData {
     /** list of columns */
     private ColumnData[] columns;
     /** loaded rows */
-    private SortedSet<RowData> rows;
+    private Map<String, RowData> rows;
     /** name of this subsystem */
     private String name;
     /** ID of this subsystem */
@@ -43,8 +46,15 @@ public class SubsystemData {
     private File coreDir;
     /** subsystem error count */
     private int errorCount;
+    /** TRUE if the subsystem's error count is unknown */
+    private boolean ambiguousCount;
     /** spreadsheet section marker */
     private static final String MARKER = "//";
+    /** number of milliseconds it takes for an error check to go stale (7 days of 24 hours of 3600 seconds
+     * of 1000 milliseconds) */
+    private static final long STALE_TIME = 7 * 24 * 3600 * 1000;
+    /** coreSEED subsystem page link format */
+    private static final String SUBSYSTEM_LINK = "https://core.theseed.org/FIG/seedviewer.cgi?page=Subsystems;subsystem=%s";
 
     /**
      * Create an empty subsystem.
@@ -56,8 +66,41 @@ public class SubsystemData {
         this.id = ssId;
         this.name = StringUtils.replaceChars(ssId, '_', ' ');
         this.coreDir = coreDir;
-        this.rows = new TreeSet<RowData>();
+        this.rows = new HashMap<String, RowData>();
         this.missingGenomes = new TreeSet<String>();
+    }
+
+    /**
+     * Get the name and health of a subsystem without loading it.
+     *
+     * @param coreDir	SEED data directory
+     * @param id		ID of the subsystem
+     */
+    public static SubsystemData survey(File coreDir, String ssId) {
+        SubsystemData retVal = null;
+        File ssFile = getSpreadsheet(coreDir, ssId);
+        if (! ssFile.exists()) {
+            log.warn("Subsystem {} not found in {}.", ssId, coreDir);
+        } else {
+            retVal = new SubsystemData(coreDir, ssId);
+            // Now check the error file.
+            File errorCountFile = SubsystemData.errorCountFile(coreDir, ssId);
+            if (! errorCountFile.exists()) {
+                // Here there it no error file.  The error count is 0 and ambiguous.
+                retVal.errorCount = 0;
+                retVal.ambiguousCount = true;
+            } else {
+                // Read the error count.
+                retVal.errorCount = MarkerFile.readInt(errorCountFile);
+                // It is ambiguous if it is older than the last change to the spreadsheet or
+                // if it has not been checked in a week.  This is a very crude test, since
+                // the truth requires checking all the genomes, which is worse than reloading
+                // the subsystem.
+                retVal.ambiguousCount = (errorCountFile.lastModified() < ssFile.lastModified() ||
+                        errorCountFile.lastModified() < (System.currentTimeMillis() - STALE_TIME));
+            }
+        }
+        return retVal;
     }
 
     /**
@@ -70,7 +113,7 @@ public class SubsystemData {
      */
     public static SubsystemData load(File coreDir, String ssId) {
         SubsystemData retVal = null;
-        File ssFile = new File(coreDir, "Subsystems/" + ssId + "/spreadsheet");
+        File ssFile = getSpreadsheet(coreDir, ssId);
         if (! ssFile.exists()) {
             log.warn("Subsystem {} not found in {}.", ssId, coreDir);
         } else {
@@ -97,13 +140,29 @@ public class SubsystemData {
                             // Here the genome does not exist in the SEED.
                             retVal.missingGenomes.add(row.getGenomeId());
                         else
-                            retVal.rows.add(row);
+                            retVal.rows.put(row.getGenomeId(), row);
                     }
                 }
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
+            // Denote the error count is unknown.
+            retVal.errorCount = 0;
+            retVal.ambiguousCount = true;
         }
+        return retVal;
+    }
+
+    /**
+     * Return the name of a subsystem's spreadsheet file.
+     *
+     * @param coreDir	SEED data directory
+     * @param ssId		ID of the subsystem
+     *
+     * @return a file object for the spreadsheet, or NULL if the subsystem does not exist
+     */
+    private static File getSpreadsheet(File coreDir, String ssId) {
+        File retVal = new File(coreDir, "Subsystems/" + ssId + "/spreadsheet");
         return retVal;
     }
 
@@ -140,8 +199,8 @@ public class SubsystemData {
     /**
      * @return the set of rows, ordered by genome name
      */
-    public SortedSet<RowData> getRows() {
-        return this.rows;
+    public Collection<RowData> getRows() {
+        return this.rows.values();
     }
 
     /**
@@ -176,15 +235,14 @@ public class SubsystemData {
      * Run validation on all rows of this subsystem and tally the
      * results.
      *
-     * @param coreDir	SEED data directory
-     *
      * @throws IOException
      */
-    public void validateRows(File coreDir) throws IOException {
+    public void validateRows() throws IOException {
         log.info("Validating subsystem {}.", this.name);
+        Collection<RowData> allRows = this.getRows();
         // Loop through the rows, placing each feature.
-        for (RowData row : this.rows) {
-            log.info("Scanning {}.", row.toString());
+        for (RowData row : allRows) {
+            log.debug("Scanning {}.", row.toString());
             Map<String, String> funMap = row.getFunctions();
             for (Map.Entry<String, String> feature : funMap.entrySet()) {
                 for (int i = 0; i < this.getWidth(); i++)
@@ -196,12 +254,13 @@ public class SubsystemData {
         this.errorCount = this.numGenomesMissing();
         for (ColumnData col : this.columns) {
             int idx = col.getColIdx();
-            for (RowData row : this.rows)
+            for (RowData row : allRows)
                 col.countCell(row.getCell(idx));
             this.errorCount += col.getCount(PegState.MISSING) + col.getCount(PegState.BAD_ROLE) +
                     col.getCount(PegState.DISCONNECTED);
         }
-        // Save the error count.
+        // Denote that error count is known and save it.
+        this.ambiguousCount = false;
         File errorCountFile = SubsystemData.errorCountFile(this.coreDir, this.id);
         MarkerFile.write(errorCountFile, this.errorCount);
     }
@@ -214,6 +273,13 @@ public class SubsystemData {
     }
 
     /**
+     * @return TRUE if the error count is suspect, else FALSE
+     */
+    public boolean isSuspectErrorCount() {
+        return this.ambiguousCount;
+    }
+
+    /**
      * @return the subsystem health rating (1.00 is perfect)
      */
     public double getHealth() {
@@ -222,6 +288,13 @@ public class SubsystemData {
         if (total > 0)
             retVal = (total - this.errorCount) / total;
         return retVal;
+    }
+
+    /**
+     * @return the CoreSEED URL for this subsystem
+     */
+    public String getLink() {
+        return String.format(SUBSYSTEM_LINK, this.id);
     }
 
 

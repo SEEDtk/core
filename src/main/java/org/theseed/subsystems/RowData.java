@@ -15,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.theseed.io.LineReader;
 import org.theseed.io.MarkerFile;
 
-import j2html.tags.DomContent;
+import j2html.tags.ContainerTag;
 import static j2html.TagCreator.*;
 
 /**
@@ -120,7 +120,8 @@ public class RowData implements Comparable<RowData> {
             // We use the section protocol to get the fields as an array.
             for (String[] parts : funStream.new Section(null)) {
                 String type = StringUtils.substringBetween(parts[0], prefix, ".");
-                if (this.types.contains(type) && ! deleted.contains(parts[0]))
+                // A null type means we have an invalid feature ID.  We just skip it.
+                if (type != null && this.types.contains(type) && ! deleted.contains(parts[0]))
                     retVal.put(parts[0], parts[1]);
             }
         }
@@ -153,7 +154,7 @@ public class RowData implements Comparable<RowData> {
     /**
      * @return the display HTML for this genome
      */
-    public DomContent displayGenome() {
+    public ContainerTag displayGenome() {
         return a(this.name).withHref(String.format(GENOME_URL, this.genomeId));
     }
 
@@ -219,6 +220,13 @@ public class RowData implements Comparable<RowData> {
     @Override
     public String toString() {
         return this.genomeId + " (" + this.name + ")";
+    }
+
+    /**
+     * @return the genome name
+     */
+    public String getGenomeName() {
+        return this.name;
     }
 
 }
