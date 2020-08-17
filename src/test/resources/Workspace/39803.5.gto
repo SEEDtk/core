@@ -1,0 +1,206 @@
+{
+    "genetic_code":11,
+    "close_genomes":[
+        
+    ],
+    "scientific_name":"Escherichia virus Qbeta",
+    "source":"RAST",
+    "subsystems":[
+        
+    ],
+    "home":"CORE",
+    "features":[
+        {
+            "couplings":[
+                
+            ],
+            "family_assignments":[
+                
+            ],
+            "function":"Phage RNA-dependent RNA synthetase",
+            "protein_translation":"MSKTASSHNSLSAQLRRAANTRIEVEGNLALSIANDLLLAYGQSPFNSEAECISLSPRFDGTPDDFRINYLKAEVMSKYDDFSLGIDTEAAAWEKFLAAEAECALTNARLYRPDYSEDFNFSLGESCIHMARRKIAKLIGDAPSVEGMLRHCRFSGGATTTNNRSYGHPSFKFALPQACTPRALKYVLALRASTHFDIRISDISPFNKAVTVPKNSKTDRCIAIEPGWNMFFQLGIGGILRDRLRCWGIDLNDQTINQRRAHEGSVTNNLATVDLSAASDSISLALCELLLPPGWFEVLMDLRSPKGRLPDGSVVTYEKISSMGNGYTFELESLIFASLARSVCEILDLDSSEVTVYGDDIILPSCAVPALREVFKYVGFTTNTKKTFSEGPFRESCGKHYYSGVDVTPFYIRHRIVTPADLILVLNNLYRWATIDGVWDPRAHPVYLKYRKLLPKQLQRNTIPDGYGDGALVGSVLINPFAKNRGWIRYVPVITDHTRDRERAELGSYLYDLFSRCLPESNDGLPLRGPSSCDSVNLSAVDQLICRSNPTKISRSTGKFDIQYIACSSRVLAPYGVFQGTKVTSLHEV",
+            "annotations":[
+                [
+                    "Set function to replicase",
+                    "GenBank_file_import",
+                    1524159743.85238
+                ],
+                [
+                    "Feature renumbered from fig|39803.5.peg.4 to fig|39803.5.peg.4",
+                    "olson@patricbrc.org",
+                    1524159743.90153
+                ],
+                [
+                    "Set master function to\nPhage RNA-dependent RNA synthetase",
+                    "gjo",
+                    1532714597
+                ]
+            ],
+            "location":[
+                [
+                    "FJ483840.1",
+                    2353,
+                    "+",
+                    1770
+                ]
+            ],
+            "id":"fig|39803.5.peg.4",
+            "type":"CDS"
+        },
+        {
+            "couplings":[
+                
+            ],
+            "family_assignments":[
+                
+            ],
+            "function":"capsid protein",
+            "protein_translation":"MAKLETVTLSNIGKDGQQTLVLNPRGVNPTNGVAALSQAGAVPALEKRVTVSVSQPSRNRKNYKVQVKIQNPTACTANGSCDPSVTRQAYADVTFSFTQYSTDEERAFVRTELIALLASPLLIDAIDQLNPAY",
+            "annotations":[
+                [
+                    "Set function to capsid protein",
+                    "GenBank_file_import",
+                    1524159743.85238
+                ],
+                [
+                    "Feature renumbered from fig|39803.5.peg.3 to fig|39803.5.peg.3",
+                    "olson@patricbrc.org",
+                    1524159743.9015
+                ]
+            ],
+            "location":[
+                [
+                    "FJ483840.1",
+                    1345,
+                    "+",
+                    402
+                ]
+            ],
+            "id":"fig|39803.5.peg.3",
+            "type":"CDS"
+        },
+        {
+            "couplings":[
+                
+            ],
+            "family_assignments":[
+                
+            ],
+            "function":"read-through protein",
+            "protein_translation":"MAKLETVTLSNIGKDGQQTLVLNPRGVNPTNGVAALSQAGAVPALEKRVTVSVSQPSRNRKNYKVQVKIQNPTACTANGSCDPSVTRQAYADVTFSFTQYSTDEERAFVRTELIALLASPLLIDAIDQLNPAYXTLLIAGGGSGSNPDSVIPDPPIDPPPGTGKYTCPFAIWSLEEVYEPPTRNRPWPIYNAVELRPRKFDVALEDLLGNTNWRDWDSRLSYTTFRGCRGNGYIDLDATYLATDQAMRDQKYDIREGKKPGAFGNIERFIYLKSINAYCSLSDIAAYHADGVIVGFWRDPSSGGAIPFDFTKFDKTKCPIQAVIVVPRA",
+            "annotations":[
+                [
+                    "Set function to read-through protein",
+                    "GenBank_file_import",
+                    1524159743.85238
+                ],
+                [
+                    "Feature renumbered from fig|39803.5.peg.2 to fig|39803.5.peg.2",
+                    "olson@patricbrc.org",
+                    1524159743.90147
+                ]
+            ],
+            "location":[
+                [
+                    "FJ483840.1",
+                    1345,
+                    "+",
+                    990
+                ]
+            ],
+            "id":"fig|39803.5.peg.2",
+            "type":"CDS"
+        },
+        {
+            "couplings":[
+                
+            ],
+            "family_assignments":[
+                
+            ],
+            "function":"assembly\/maturation protein",
+            "protein_translation":"MPKLPRGLRFGADNEILNDFQELWFPDLFIESSDTHPWYTLKGRVLNAHLDDRLPNVGGRQVRRTPHRVTVPIASSGLRPVTTVQYDPAALSFLLNARVDWDFGNGDSANLVINDFLFRTSAPKEFDFSNSLVPRYTQAFSAFNAKYGTMIGEGLETIKYLGLLLRRLREGYRAVKRGDLRALRRVIQSYHNGKWKPTTAGNLWLEFRYGLMPLFYDIKDVMLDWQNRHDKIQRLLRFSVGHGEDCVVEFDNLYPAVAYFKLKGEITLERRHRHGISYANREGYAVFDNGSLRPVSDWKELATAFINPHEVAWELTPYSFVVDWFLNVGDILAQQGQLYHNIDIVDGFDRRDIRLKSFTIKGERNGRPVNVSADLSAVDLFYSRLHTSSLPFATLDLDTTFSSYKHVLDSIFLLTQRIKR",
+            "annotations":[
+                [
+                    "Set function to assembly\/maturation protein",
+                    "GenBank_file_import",
+                    1524159743.85238
+                ],
+                [
+                    "Feature renumbered from fig|39803.5.peg.1 to fig|39803.5.peg.1",
+                    "olson@patricbrc.org",
+                    1524159743.90144
+                ]
+            ],
+            "location":[
+                [
+                    "FJ483840.1",
+                    62,
+                    "+",
+                    1263
+                ]
+            ],
+            "id":"fig|39803.5.peg.1",
+            "type":"CDS"
+        }
+    ],
+    "contigs":[
+        {
+            "genetic_code":11,
+            "dna":"gggggaccccccttagggggtcacctcacacagcagtacttcactaagtatgagaggacatatgcctaaattaccacgtggtctgcgtttcggagccgataatgaaattcttaatgattttcaggagctctggtttccagacctctttatcgaatcttccgacacgcatccgtggtacacactgaaaggtcgtgtgttgaacgctcatcttgatgatcgcctacctaatgtaggtggtcgccaggtcaggcgtactccacatcgtgttactgttccgattgcctcttcaggccttcgtccggtaacaaccgttcagtatgatcccgcagcactatcgttcttattgaacgctcgtgttgattgggatttcggtaatggcgatagtgcgaaccttgtcattaatgactttttgtttcgcacttccgcacctaaggagttcgatttctcgaattctttagttcctcgttatactcaggccttctccgcttttaatgccaagtatggcactatgatcggcgaagggctcgagactataaaatatctcgggctgttactgcgcagactgcgtgagggttaccgcgctgttaaacgcggcgatttacgtgctcttcgcagggttatccagtcttaccataatggtaagtggaagccgactactgctggtaatctctggcttgaatttcgttatggccttatgcctctcttctatgacatcaaagacgtcatgttagattggcagaaccgtcatgataaaattcaacgcctccttcggttttctgtcggtcacggtgaggactgcgttgtcgaattcgacaacttatatccagccgttgcttactttaaactgaaaggtgagattacactcgaacgccgtcatcgtcatggtatatcttacgctaatcgcgaaggatatgctgttttcgataacggttcccttcggcctgtgtccgattggaaggagcttgccaccgcattcatcaatccgcatgaagttgcttgggagctaactccctacagcttcgttgttgattggttcttgaatgtcggtgacatacttgctcaacagggtcagctatatcataatatcgatattgtagacggttttgacagacgtgacatccggctcaaatccttcactataaaaggtgaacgaaatgggcggcctgttaacgtttctgctgacctgtctgctgtcgatttattttacagccgactccatacgagcagtcttccgttcgctacacttgatctcgatactacctttagttcgtataaacacgtccttgatagtatctttttattaacccaacgcattaagcgttgaaactttgggtcaatttgatcatggcaaaattagagactgttactttaagtaacatcgggaaagatggacaacaaactctggtcctcaacccgcgtggggtaaatcccactaacggtgttgccgcgctttcacaagcgggtgcagttcctgcactggagaagcgtgttaccgtttcggtatcccagccttctcgcaatcgcaagaactacaaggtccaggttaagatccagaacccgaccgcttgcactgcaaacggttcttgtgacccatccgttactcgccaggcatatgctgacgtgactttctcgttcacgcagtatagtaccgatgaggaacgagcttttgttcgtacagagcttatcgctctgctcgctagtcctctgctgatcgatgctattgatcagctgaatccagcgtattgaacactgctcattgccggtggtggctcagggtcaaaccccgattcggttatcccggatccaccgattgatccgccgccagggacaggcaagtatacctgtcccttcgcaatttggtccctagaggaggtttacgagcctcctactaggaaccgaccgtggcctatctacaatgctgtcgaactccggcctcgcaagtttgatgttgccctcgaagatcttttgggcaatacaaattggcgcgactgggattcacggctgagttataccacgttccgcggttgccgtggcaatggttatattgacctcgatgcgacttatcttgctactgatcaggctatgcgtgatcagaagtacgatattcgcgagggcaaaaaacctggtgctttcggtaacattgagcgattcatttatcttaagtcgataaatgcttattgctctcttagcgatattgcggcctatcacgccgatggtgtgatagttggcttttggcgcgatccatctagtggtggtgccataccgtttgacttcactaagtttgataagactaaatgtcctattcaagccgtgatagtcgttcctcgtgcttagtaactaaggatgaaatgcatgtctaagacagcatcttcgcataactctcttagcgcacaattgcgccgagctgcgaacacaagaattgaggtagaaggtaacctcgcactttccattgccaacgatttactattggcttatggtcaatcgccatttaactctgaagctgagtgtatttcactcagtccgagattcgacgggaccccggatgactttaggataaattatcttaaagccgaggtcatgtcgaagtatgacgatttcagcctaggtattgataccgaagctgctgcctgggaaaagttcctggcagcagaggctgaatgtgctttaacgaacgctcgtctctataggcctgactacagtgaggatttcaatttctcactgggcgagtcatgtattcacatggctcgtagaaaaatagccaagttaataggagacgctccgtccgttgagggtatgttgcgtcactgccgtttttccggtggtgccacaacaacgaataaccgttcgtacggtcatccgtccttcaagtttgcgcttccacaagcgtgtacgcctcgggctttgaaatatgttttagctcttagagcttctacacatttcgatatcagaatttctgatattagcccttttaataaagcagttactgtacctaagaacagtaaaaccgatcgttgtattgctatcgagcctggctggaatatgttttttcaactaggcatcggtggcattctacgcgatcggttgcgttgctggggtatcgatctgaatgatcagacgataaatcagcgccgcgctcacgaaggctccgttactaataatttagcaacggttgatctctcagcggcaagcgattctatatctcttgctctctgtgagctcttactgcccccaggctggtttgaggtccttatggacctcagatcacctaaagggcggttgcctgacggtagtgttgttacctatgagaagatttcctctatgggtaacggatacacattcgagcttgagtcgcttatctttgcttctcttgctcgttccgtttgtgagatactggacttagactcatctgaggtcactgtctacggagacgatattatcttaccgtcctgtgcagtccctgcccttcgggaagtctttaagtatgttggttttacaaccaatactaaaaagactttttccgaggggccgttcagagagtcgtgcggtaagcactactattctggcgtagatgttactcccttctacatacgtcaccgtatagtgacccctgccgatttaatactggttttgaataacctatatcggtgggccacgattgatggcgtatgggatcctagggcccatcccgtgtacctcaagtatcgtaagttgctgcctaaacagctgcaacgtaatactatacctgatggttacggtgatggggccctcgtcggatcggtcctgatcaatcctttcgcgaaaaaccgcgggtggatccggtacgtaccggtgatcacggaccatacaagggaccgagagcgcgctgagttagggtcgtatctttacgacctcttctcgcgttgtctcccggaaagtaacgatgggttgcctctaaggggtccgtcgagttgcgattctgtaaatctgtctgctgtcgatcaacttatctgtaggagcaatcctacaaagataagtagatctactggcaagttcgatatacagtatatcgcgtgcagtagccgtgttctggcaccctacggggtcttccagggcacgaaggttacatctctacacgaggtgtaacctgggagggcgccaatatggcgcctaattgtgaataaattatcacaattactcttacgagtgagagagggatctgctttgccctctctcctccca",
+            "length":4218,
+            "id":"FJ483840.1"
+        }
+    ],
+    "ncbi_taxonomy_id":39803,
+    "domain":"Viruses",
+    "ncbi_lineage":[
+        [
+            "Viruses",
+            10239,
+            "superkingdom"
+        ],
+        [
+            "Riboviria",
+            2559587,
+            "no rank"
+        ],
+        [
+            "Orthornavirae",
+            2732396,
+            "kingdom"
+        ],
+        [
+            "Lenarviricota",
+            2732407,
+            "phylum"
+        ],
+        [
+            "Allassoviricetes",
+            2732497,
+            "class"
+        ],
+        [
+            "Levivirales",
+            2732501,
+            "order"
+        ],
+        [
+            "Leviviridae",
+            11989,
+            "family"
+        ],
+        [
+            "Allolevivirus",
+            12008,
+            "genus"
+        ],
+        [
+            "Escherichia virus Qbeta",
+            39803,
+            "species"
+        ]
+    ],
+    "id":"39803.5",
+    "source_id":null
+}

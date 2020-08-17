@@ -3,6 +3,7 @@
 	<name>core</name>
 	<comment></comment>
 	<projects>
+		<project>sequence</project>
 		<project>shared</project>
 	</projects>
 	<buildSpec>

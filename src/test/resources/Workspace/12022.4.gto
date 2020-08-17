@@ -1,0 +1,249 @@
+{
+    "genetic_code":11,
+    "close_genomes":[
+        
+    ],
+    "scientific_name":"Enterobacterio phage MS2",
+    "source":"RAST",
+    "subsystems":[
+        
+    ],
+    "home":"CORE",
+    "features":[
+        {
+            "couplings":[
+                
+            ],
+            "family_assignments":[
+                
+            ],
+            "function":"Phage MS2 maturation protein A",
+            "protein_translation":"MRAFSTLDRENETFVPSVRVYADGETEDNSFSLKYRSNWTPGRFNSTGAKTKQWHYPSPYSRGALSVTSIDQGAYKRSGSSWGRPYEEKAGFGFSLDARSCYSLFPVSQNLTYIEVPQNVANRASTEVLQKVTQGNFNLGVALAEARSTASQLATQTIALVKAYTAARRGNWRQALRYLALNEDRKFRSKHVAGRWLELQFGWLPLMSDIQGAYEMLTKVHLQEFLPMRAVRQVGTNIKLDGRLSYPAANFQTTCNISRRIVIWFYINDARLAWLSSLGILNPLGIVWEKVPFSFVVDWLLPVGNMLEGLTAPVGCSYMSGTVTDVITGESIISVDAPYGWTVERQGTAKAQISAMHRGVQSVWPTTGAYVKSPFSMVHTLDALALIRQRLSR",
+            "annotations":[
+                [
+                    "Set function to unnamed protein product; A-protein",
+                    "GenBank_file_import",
+                    1524159732.54162
+                ],
+                [
+                    "Feature renumbered from fig|12022.4.peg.1 to fig|12022.4.peg.1",
+                    "olson@patricbrc.org",
+                    1524159732.58676
+                ],
+                [
+                    "Set master function to\nPhage protein",
+                    "gjo",
+                    1532714443
+                ],
+                [
+                    "Set master function to\nPage MS2 maturation protein A",
+                    "gjo",
+                    1538259643
+                ],
+                [
+                    "Set master function to\nPhage MS2 maturation protein A",
+                    "gjo",
+                    1538259669
+                ]
+            ],
+            "location":[
+                [
+                    "V00642.1",
+                    130,
+                    "+",
+                    1182
+                ]
+            ],
+            "id":"fig|12022.4.peg.1",
+            "type":"CDS"
+        },
+        {
+            "couplings":[
+                
+            ],
+            "family_assignments":[
+                [
+                    "PGFAM",
+                    "PGF_12065931"
+                ]
+            ],
+            "function":"Phage MS2 capsid protein",
+            "protein_translation":"MASNFTQFVLVDNGGTGDVTVAPSNFANGVAEWISSNSRSQAYKVTCSVRQSSAQNRKYTIKVEVPKVATQTVGGVELPVAAWRSYLNMELTIPIFATNSDCELIVKAMQGLLKDGNPIPSAIAANSGIY",
+            "annotations":[
+                [
+                    "Set function to unnamed protein product; coat protein",
+                    "GenBank_file_import",
+                    1524159732.54162
+                ],
+                [
+                    "Feature renumbered from fig|12022.4.peg.2 to fig|12022.4.peg.2",
+                    "olson@patricbrc.org",
+                    1524159732.5868
+                ],
+                [
+                    "Set master function to\nPhage protein",
+                    "gjo",
+                    1532714462
+                ],
+                [
+                    "Set master function to\nPhage MS2 capsid protein",
+                    "gjo",
+                    1538259591
+                ]
+            ],
+            "location":[
+                [
+                    "V00642.1",
+                    1335,
+                    "+",
+                    393
+                ]
+            ],
+            "id":"fig|12022.4.peg.2",
+            "type":"CDS"
+        },
+        {
+            "couplings":[
+                
+            ],
+            "family_assignments":[
+                
+            ],
+            "function":"Phage protein",
+            "protein_translation":"METRFPQQSQQTPASTNRRRPFKHEDYPCRRQQRSSTLYVLIFLAIFLSKFTNQLLLSLLEAVIRTVTTLQQLLT",
+            "annotations":[
+                [
+                    "Set function to unnamed protein product; L-protein",
+                    "GenBank_file_import",
+                    1524159732.54162
+                ],
+                [
+                    "Feature renumbered from fig|12022.4.peg.3 to fig|12022.4.peg.3",
+                    "olson@patricbrc.org",
+                    1524159732.58682
+                ],
+                [
+                    "Set master function to\nPhage protein",
+                    "gjo",
+                    1532714489
+                ]
+            ],
+            "location":[
+                [
+                    "V00642.1",
+                    1678,
+                    "+",
+                    228
+                ]
+            ],
+            "id":"fig|12022.4.peg.3",
+            "type":"CDS"
+        },
+        {
+            "couplings":[
+                
+            ],
+            "family_assignments":[
+                
+            ],
+            "function":"Phage RNA-dependent RNA synthetase",
+            "protein_translation":"MSKTTKKFNSLCIDLPRDLSLEIYQSIASVATGSGDPHSDDFTAIAYLRDELLTKHPTLGSGNDEATRRTLAIAKLREANGDRGQINREGFLHDKSLSWDPDVLQTSIRSLIGNLLSGYRSSLFGQCTFSNGAPMGHKLQDAAPYKKFAEQATVTPRALRAALLVRDQCAPWIRHAVRYNESYEFRLVVGNGVFTVPKNNKIDRAACKEPDMNMYLQKGVGAFIRRRLKSVGIDLNDQSINQRLAQQGSVDGSLATIDLSSASDSISDRLVWSFLPPELYSYLDRIRSHYGIVDGETIRWELFSTMGNGFTFELESMIFWAIVKATQIHFGNAGTIGIYGDDIICPSEIAPRVLEALAYYGFKPNLRKTFVSGLFRESCGAHFYRGVDVKPFYIKKPVDNLFALMLILNRLRGWGVVGGMSDPRLYKVWVRLSSQVPSMFFGGTDLAADYYVVSPPTAVSVYTKTPYGRLLADTRTSGFRLARIARERKFFSEKHDSGRYIAWFHTGGEITDSMKSAGVRVIRTSEWLTPVPTFPQECGPASSPR",
+            "annotations":[
+                [
+                    "Set function to unnamed protein product; replicase, beta subunit",
+                    "GenBank_file_import",
+                    1524159732.54162
+                ],
+                [
+                    "Feature renumbered from fig|12022.4.peg.4 to fig|12022.4.peg.4",
+                    "olson@patricbrc.org",
+                    1524159732.58685
+                ],
+                [
+                    "Set master function to\nPhage protein",
+                    "gjo",
+                    1532714518
+                ],
+                [
+                    "Set master function to\nPhage RNA-dependent RNA synthetase",
+                    "gjo",
+                    1532714597
+                ]
+            ],
+            "location":[
+                [
+                    "V00642.1",
+                    1761,
+                    "+",
+                    1638
+                ]
+            ],
+            "id":"fig|12022.4.peg.4",
+            "type":"CDS"
+        }
+    ],
+    "contigs":[
+        {
+            "genetic_code":11,
+            "dna":"gggtgggacccctttcggggtcctgctcaacttcctgtcgagctaatgccatttttaatgtctttagcgagacgctaccatggctatcgctgtaggtagccggaattccattcctaggaggtttgacctgtgcgagcttttagtacccttgatagggagaacgagaccttcgtcccctccgttcgcgtttacgcggacggtgagactgaagataactcattctctttaaaatatcgttcgaactggactcccggtcgttttaactcgactggggccaaaacgaaacagtggcactacccctctccgtattcacggggggcgttaagtgtcacatcgatagatcaaggtgcctacaagcgaagtgggtcatcgtggggtcgcccgtacgaggagaaagccggtttcggcttctccctcgacgcacgctcctgctacagcctcttccctgtaagccaaaacttgacttacatcgaagtgccgcagaacgttgcgaaccgggcgtcgaccgaagtcctgcaaaaggtcacccagggtaattttaaccttggtgttgctttagcagaggccaggtcgacagcctcacaactcgcgacgcaaaccattgcgctcgtgaaggcgtacactgccgctcgtcgcggtaattggcgccaggcgctccgctaccttgccctaaacgaagatcgaaagtttcgatcaaaacacgtggccggcaggtggttggagttgcagttcggttggttaccactaatgagtgatatccagggtgcatatgagatgcttacgaaggttcaccttcaagagtttcttcctatgagagccgtacgtcaggtcggtactaacatcaagttagatggccgtctgtcgtatccagctgcaaacttccagacaacgtgcaacatatcgcgacgtatcgtgatatggttttacataaacgatgcacgtttggcatggttgtcgtctctaggtatcttgaacccactaggtatagtgtgggaaaaggtgcctttctcattcgttgtcgactggctcctacctgtaggtaacatgctcgagggccttacggcccccgtgggatgctcctacatgtcaggaacagttactgacgtaataacgggtgagtccatcataagcgttgacgctccctacgggtggactgtggagagacagggcactgctaaggcccaaatctcagccatgcatcgaggggtacaatccgtatggccaacaactggcgcgtacgtaaagtctcctttctcgatggtccataccttagatgcgttagcattaatcaggcaacggctctctagatagagccctcaaccggagtttgaagcatggcttctaactttactcagttcgttctcgtcgacaatggcggaactggcgacgtgactgtcgccccaagcaacttcgctaacggggtcgctgaatggatcagctctaactcgcgttcacaggcttacaaagtaacctgtagcgttcgtcagagctctgcgcagaatcgcaaatacaccatcaaagtcgaggtgcctaaagtggcaacccagactgttggtggtgtagagcttcctgtagccgcatggcgttcgtacttaaatatggaactaaccattccaattttcgctacgaattccgactgcgagcttattgttaaggcaatgcaaggtctcctaaaagatggaaacccgattccctcagcaatcgcagcaaactccggcatctactaatagacgccggccattcaaacatgaggattacccatgtcgaagacaacaaagaagttcaactctttatgtattgatcttcctcgcgatctttctctcgaaatttaccaatcaattgcttctgtcgctactggaagcggtgatccgcacagtgacgactttacagcaattgcttacttaagggacgaattgctcacaaagcatccgaccttaggttctggtaatgacgaggcgacccgtcgtaccttagctatcgctaagctacgggaggcgaatggtgatcgcggtcagataaatagagaaggtttcttacatgacaaatccttgtcatgggatccggatgttttacaaaccagcatccgtagccttattggcaacctcctctctggctaccgatcgtcgttgtttgggcaatgcacgttctccaacggtgctcctatggggcacaagttgcaggatgcagcgccttacaagaagttcgctgaacaagcaaccgttaccccccgcgctctgagagcggctctattggtccgagaccaatgtgcgccgtggatcagacacgcggtccgctataacgagtcatatgaatttaggctcgttgtagggaacggagtgtttacagttccgaagaataataaaatagatcgggctgcctgtaaggagcctgatatgaatatgtacctccagaaaggggtcggtgctttcatcagacgccggctcaaatccgttggtatagacctgaatgatcaatcgatcaaccagcgtctggctcagcagggcagcgtagatggttcgcttgcgacgatagacttatcgtctgcatccgattccatctccgatcgcctggtgtggagttttctcccaccagagctatattcatatctcgatcgtatccgctcacactacggaatcgtagatggcgagacgatacgatgggaactattttccacaatgggaaatgggttcacatttgagctagagtccatgatattctgggcaatagtcaaagcgacccaaatccattttggtaacgccggaaccataggcatctacggggacgatattatatgtcccagtgagattgcaccccgtgtgctagaggcacttgcctactacggttttaaaccgaatcttcgtaaaacgttcgtgtccgggctctttcgcgagagctgcggcgcgcacttttaccgtggtgtcgatgtcaaaccgttttacatcaagaaacctgttgacaatctcttcgccctgatgctgatattaaatcggctacggggttggggagttgtcggaggtatgtcagatccacgcctctataaggtgtgggtacggctctcctcccaggtgccttcgatgttcttcggtgggacggacctcgctgccgactactacgtagtcagcccgcctacggcagtctcggtatacaccaagactccgtacgggcggctgctcgcggatacccgtacctcgggtttccgtcttgctcgtatcgctcgagaacgcaagttcttcagcgaaaagcacgacagtggtcgctacatagcgtggttccatactggaggtgaaatcaccgacagcatgaagtccgccggcgtgcgcgttatacgcacttcggagtggctaacgccggttcccacattccctcaggagtgtgggccagcgagctctcctcggtagctgaccgagggacccccgtaaacggggtgggtgtgctcgaaagagcacgggtgcgaaagcggtccggctccaccgaaaggtgggcgggcttcggcccagggacctccccctaaagagaggacccgggattctcccgatttggtaactagctgcttggctagttaccaccca",
+            "length":3569,
+            "id":"V00642.1"
+        }
+    ],
+    "ncbi_taxonomy_id":12022,
+    "domain":"Viruses",
+    "ncbi_lineage":[
+        [
+            "Viruses",
+            10239,
+            "superkingdom"
+        ],
+        [
+            "Riboviria",
+            2559587,
+            "no rank"
+        ],
+        [
+            "Orthornavirae",
+            2732396,
+            "kingdom"
+        ],
+        [
+            "Lenarviricota",
+            2732407,
+            "phylum"
+        ],
+        [
+            "Allassoviricetes",
+            2732497,
+            "class"
+        ],
+        [
+            "Levivirales",
+            2732501,
+            "order"
+        ],
+        [
+            "Leviviridae",
+            11989,
+            "family"
+        ],
+        [
+            "Levivirus",
+            11990,
+            "genus"
+        ],
+        [
+            "Escherichia virus MS2",
+            329852,
+            "species"
+        ],
+        [
+            "Enterobacteria phage MS2",
+            12022,
+            "no rank"
+        ]
+    ],
+    "id":"12022.4",
+    "source_id":null
+}

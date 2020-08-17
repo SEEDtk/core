@@ -1,0 +1,195 @@
+{
+    "genetic_code":11,
+    "close_genomes":[
+        
+    ],
+    "scientific_name":"Escherichia coli (pMccB17)",
+    "source":"RAST",
+    "subsystems":[
+        
+    ],
+    "home":"CORE",
+    "features":[
+        {
+            "couplings":[
+                
+            ],
+            "family_assignments":[
+                [
+                    "PLFAM",
+                    "PLF_561_00063347"
+                ],
+                [
+                    "PGFAM",
+                    "PGF_06452924"
+                ]
+            ],
+            "function":"McbG-like protein",
+            "protein_translation":"MDIIEKRITKRHLSESELSGVNYYNCIFERIQLDNFNFRDCEFEKCRFVNCSIKNLKLNFFKLIDCEFKDCLLQGVNAADIMFPCTFSLVNCDLRFVDFISLRLQKSIFLSCRFRDCLFEETDLRKSDFTGSEFNNTEFRHSDLSHCDFSMTEGLDINPEINRILSIKIPQEAGLKILKRMGVVVGG",
+            "annotations":[
+                [
+                    "Set function to unnamed protein product; McbG gene product (AA 1-187)",
+                    "GenBank_file_import",
+                    1471040721.40552
+                ],
+                [
+                    "Set master function to\nMcbG-like protein",
+                    "gjo",
+                    1532714647
+                ],
+                [
+                    "Assignment projected from fig|246197.19.peg.3272 based on similarity",
+                    "gjo",
+                    1532714647
+                ]
+            ],
+            "location":[
+                [
+                    "X07875.1",
+                    1482,
+                    "+",
+                    564
+                ]
+            ],
+            "id":"fig|562.11147.peg.3",
+            "type":"CDS"
+        },
+        {
+            "couplings":[
+                
+            ],
+            "family_assignments":[
+                [
+                    "PLFAM",
+                    "PLF_561_00012250"
+                ],
+                [
+                    "PGFAM",
+                    "PGF_08080846"
+                ]
+            ],
+            "function":"ABC transporter, ATP-binding protein",
+            "protein_translation":"MTIPLLEINSLSFSYKVNLPPVFNNLSLKIEQGELIGLLGENPAGKTTLFNLIRGGVSNYEGTLKRNFSGGELVSLPQVINLSGTLRNEEVLDLICCFNKLTKKQAWTDVNHKWNDNFFIRYDKIRRKRTYTVSYGEKRWLIISLMVTLCKNARLFLLDEPTVGIDIQYRMMLWELINKITADGKTVFFSTHIFDELTRDKIPFYMLSKNSINRYSDMSDFIQSNNETTQKRHLLKKLWEQETDTWI",
+            "annotations":[
+                [
+                    "Set function to unnamed protein product; McbF gene product (AA 1-247)",
+                    "GenBank_file_import",
+                    1471040721.40552
+                ],
+                [
+                    "Set master function to\nABC transporter, ATP-binding protein",
+                    "gjo",
+                    1474064199
+                ],
+                [
+                    "Assignment projected from fig|439292.5.peg.311 based on similarity",
+                    "gjo",
+                    1474064199
+                ]
+            ],
+            "location":[
+                [
+                    "X07875.1",
+                    748,
+                    "+",
+                    744
+                ]
+            ],
+            "id":"fig|562.11147.peg.2",
+            "type":"CDS"
+        },
+        {
+            "couplings":[
+                
+            ],
+            "family_assignments":[
+                [
+                    "PLFAM",
+                    "PLF_561_00046826"
+                ],
+                [
+                    "PGFAM",
+                    "PGF_01640923"
+                ]
+            ],
+            "function":"Phage protein",
+            "protein_translation":"MVTLKMAIIFLMEQIRTPFSLIWTIMSPTVLFFFLHFNEIELHYGDTAWLGKQISWFVGYISFSVVLFNYCLYLVGRRESGFIATFVHNMDGRLLFIRSQLIASLIMSILYVFFFILVVLTGFQASPDYQIVMIILKSIYINAFMMVSLTFMASFRVTFQTASTIYSVLITVCMVSGIVSLKYNEGIVYWINQVNPIAIYSTILQSDQELSLMTIFFYSIMLIISIISALTFKTEPVWSSQ",
+            "annotations":[
+                [
+                    "Set function to unnamed protein product; McbE gene product (AA 1-241)",
+                    "GenBank_file_import",
+                    1471040721.40552
+                ],
+                [
+                    "Set master function to\nPhage protein",
+                    "gjo",
+                    1532714626
+                ]
+            ],
+            "location":[
+                [
+                    "X07875.1",
+                    26,
+                    "+",
+                    726
+                ]
+            ],
+            "id":"fig|562.11147.peg.1",
+            "type":"CDS"
+        }
+    ],
+    "contigs":[
+        {
+            "genetic_code":11,
+            "dna":"ggtaccattcccataaggataacaaatggttacattaaaaatggcgataatttttctgatggaacaaatcagaacccctttcagcttaatatggacaattatgtcacctacagtgttgttctttttccttcatttcaatgaaattgaacttcattatggtgatacagcatggctcggaaaacaaatatcatggtttgtaggctacatttctttttctgttgttctgtttaattactgtctgtatctggtcggaagaagagaaagtggttttattgctaccttcgtgcataatatggatggtcgactattatttattcgttctcaattaatagcctcacttatcatgtctattttgtatgtgttttttttcattttagtcgtactaacaggattccaggcaagtccagattatcaaatagtaatgattattttaaaatcgatatacataaatgcatttatgatggtttcactcactttcatggcatcgttcagagtcacattccaaacagccagcactatctattctgtattaataactgtctgtatggtatcaggaattgtatcattaaaatataatgaggggatcgtttactggataaatcaggttaatcctatcgccatctattctacaatactccagtcagaccaggagttgtctctgatgacgatatttttctatagtataatgttaatcataagtattatttcagcactaaccttcaaaactgagccagtctggagttctcaatgaccatacctcttttagaaatcaactctctgagcttttcatataaagtaaatttaccccctgttttcaataatctgtcgcttaagattgagcagggagagttgataggtctgcttggagaaaatccagccgggaagaccactctttttaaccttatcaggggcggagtcagtaattatgaagggaccctcaagcgaaatttctctggtggagaattagtaagtctacctcaagtcataaatctttcaggtacactaaggaatgaggaggttcttgatttgatttgctgcttcaataagttaactaaaaaacaggcatggacagacgttaatcataaatggaatgataattttttcattcgctatgataaaataagacgtaaaaggacttacacggtaagttatggagagaagcgttggcttatcatatctttgatggtaacgctttgcaaaaatgcccgtttatttttactggatgaaccaactgtaggcattgatattcagtacagaatgatgttatgggaactgataaataagatcaccgctgacgggaaaacggtatttttctcaactcatatttttgatgaattaacaagagataaaatccccttctatatgctttcaaaaaatagtataaatcgttattctgatatgagtgattttattcaatccaataatgaaacaactcagaaaaggcatttattaaagaagttatgggaacaggagactgacacatggatataatagaaaaaagaatcacaaaacgacacctcagtgaaagtgaattatcaggtgtaaattattacaattgtatatttgaacgaatacagcttgacaactttaactttcgcgattgtgagttcgaaaaatgtcgcttcgtaaactgctcaataaagaatttaaaacttaatttttttaaacttattgactgtgaattcaaagattgtttattacaaggagtaaatgcagcagacattatgtttccctgtactttttctcttgtaaattgtgatttgagatttgttgattttattagtttacggttacagaaatctatttttttatcctgtcgcttccgtgattgtttatttgaggaaacagaccttcgtaaatctgattttactggttcggagtttaataatacagagttcagacattctgatttgtctcactgtgatttttcaatgacagaaggtctcgatataaatcctgagataaacaggatcttatctataaagataccacaggaagcaggtttaaaaatacttaaacgaatgggagtggttgtagggggatgaggtgagtagac",
+            "length":2056,
+            "id":"X07875.1"
+        }
+    ],
+    "ncbi_taxonomy_id":562,
+    "domain":"Bacteria",
+    "ncbi_lineage":[
+        [
+            "cellular organisms",
+            131567,
+            "no rank"
+        ],
+        [
+            "Bacteria",
+            2,
+            "superkingdom"
+        ],
+        [
+            "Proteobacteria",
+            1224,
+            "phylum"
+        ],
+        [
+            "Gammaproteobacteria",
+            1236,
+            "class"
+        ],
+        [
+            "Enterobacterales",
+            91347,
+            "order"
+        ],
+        [
+            "Enterobacteriaceae",
+            543,
+            "family"
+        ],
+        [
+            "Escherichia",
+            561,
+            "genus"
+        ],
+        [
+            "Escherichia coli",
+            562,
+            "species"
+        ]
+    ],
+    "id":"562.11147",
+    "source_id":null
+}

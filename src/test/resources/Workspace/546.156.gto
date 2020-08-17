@@ -1,0 +1,364 @@
+{
+    "genetic_code":11,
+    "close_genomes":[
+        
+    ],
+    "scientific_name":"Citrobacter freundii strain 62778",
+    "source":"RAST",
+    "subsystems":[
+        {
+            "role_bindings":[
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrA"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrAS"
+                },
+                {
+                    "features":[
+                        "fig|546.156.peg.1"
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrB"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrC"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrVC"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrD"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrE"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrS"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => SmQnr"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein Qnr family => unclassified"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Pentapeptide repeat protein MfpA => quinolone resistance in M.smeg, but NOT in M.tub"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"DNA gyrase subunit A (EC 5.99.1.3)"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"DNA gyrase subunit B (EC 5.99.1.3)"
+                }
+            ],
+            "name":"Quinolone, fluoroquinolone resistance via Pentapeptide repeat proteins",
+            "classification":[
+                "Stress Response, Defense and Virulence",
+                "Resistance to antibiotics and toxic compounds",
+                ""
+            ],
+            "variant_code":"active"
+        },
+        {
+            "role_bindings":[
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"DNA gyrase subunit A (EC 5.99.1.3)"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"DNA gyrase subunit B (EC 5.99.1.3)"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Topoisomerase IV subunit A (EC 5.99.1.-)"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Topoisomerase IV subunit B (EC 5.99.1.-)"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Aminoglycoside N(6')-acetyltransferase (EC 2.3.1.82) => AAC(6')-Ib-cr fluoroquinolone-acetylating"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Fluoroquinolone resistance, MFS efflux pump => QepA"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"MFS-type transporter quinolone resistance protein NorA"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"MFS-type transporter quinolone resistance protein NorB\/NorC"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Transcriptional regulator MgrA (Regulator of autolytic activity)"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrA"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrAS"
+                },
+                {
+                    "features":[
+                        "fig|546.156.peg.1"
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrB"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrC"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrVC"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrD"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrE"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => QnrS"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein => SmQnr"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Quinolone resistance pentapeptide repeat protein Qnr family => unclassified"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"Pentapeptide repeat protein MfpA => quinolone resistance in M.smeg, but NOT in M.tub"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"ABC transporter fluoroquinolone efflux, ATP-binding protein"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"ABC transporter fluoroquinolone efflux, permease component 1"
+                },
+                {
+                    "features":[
+                        
+                    ],
+                    "role_id":"ABC transporter fluoroquinolone efflux, permease component 2"
+                }
+            ],
+            "name":"Quinolone, fluoroquinolone resistance, all mechanisms",
+            "classification":[
+                "Stress Response, Defense and Virulence",
+                "Resistance to antibiotics and toxic compounds",
+                ""
+            ],
+            "variant_code":"active"
+        }
+    ],
+    "home":"CORE",
+    "features":[
+        {
+            "couplings":[
+                
+            ],
+            "family_assignments":[
+                [
+                    "PLFAM",
+                    "PLF_544_00003736"
+                ],
+                [
+                    "PGFAM",
+                    "PGF_03325896"
+                ]
+            ],
+            "function":"Quinolone resistance pentapeptide repeat protein => QnrB",
+            "protein_translation":"MTPLLYKKTGTNMALALVGEKIDRNRFTGEKIENSTFFNCDFSGADLSGTEFIGCQFYDRESQKGCNFSRAMLKDAIFKSCDLSMADFRNASALGIEIRHCRAQGADFRGASFMNMITTRTWFCSAYITNTNLSYANFSKVVLEKCELWENRWMGAQVLGATFSGSDLSGGEFSTFDWRAANFTHCDLTNSELGDLDIRGVDLQGVKLDNYQASLLMERLGIAIIG",
+            "annotations":[
+                [
+                    "Imported note:\nquinolone resistance protein; pentapeptide repeat protein",
+                    "GenBank_file_import",
+                    1471040188.70464
+                ],
+                [
+                    "Set function to QnrB10",
+                    "GenBank_file_import",
+                    1471040188.70464
+                ],
+                [
+                    "Set master function to\nPentapeptide repeat protein QnrB family => quinolone resistance protein QnrB10",
+                    "VeronikaV",
+                    1471049333
+                ],
+                [
+                    "Set master function to\nPentapeptide repeat protein QnrB family => Quinolone resistance protein QnrB10",
+                    "VeronikaV",
+                    1471050848
+                ],
+                [
+                    "Set master function to\nQuinolone resistance pentapeptide repeat protein => QnrB",
+                    "SvetaG",
+                    1532543798
+                ]
+            ],
+            "location":[
+                [
+                    "EU136182.1",
+                    1,
+                    "+",
+                    681
+                ]
+            ],
+            "id":"fig|546.156.peg.1",
+            "type":"CDS"
+        }
+    ],
+    "contigs":[
+        {
+            "genetic_code":11,
+            "dna":"atgacgccattactgtataaaaaaacaggtacaaatatggctctggcactcgttggcgaaaaaattgacagaaaccgcttcaccggtgagaaaattgaaaatagtacattttttaactgtgatttttcaggtgccgacctgagcggcactgaatttatcggctgtcagttctatgatcgtgaaagccagaaagggtgcaattttagtcgtgcgatgctgaaagatgccatttttaaaagctgtgatttatccatggcggattttcgcaatgccagtgcgcttggcattgaaattcgccactgtcgtgcgcaaggcgcagatttccgcggcgcaagctttatgaatatgatcactactcgcacctggttttgcagcgcatatatcactaacacaaatctaagctacgccaatttttcgaaagtcgtgctggaaaaatgtgagctgtgggaaaaccgttggatgggtgcccaggtactgggcgcgacgttcagtggttcagatctttccggcggcgagttttcgactttcgactggcgagcagcaaacttcacacattgcgatctgaccaattcggagttgggtgacttagatattcggggcgttgatttacaaggcgttaagttggacaactaccaggcatcgctgctcatggaacgtcttggcatcgcgattattggctag",
+            "length":681,
+            "id":"EU136182.1"
+        }
+    ],
+    "ncbi_taxonomy_id":546,
+    "domain":"Bacteria",
+    "ncbi_lineage":[
+        [
+            "cellular organisms",
+            131567,
+            "no rank"
+        ],
+        [
+            "Bacteria",
+            2,
+            "superkingdom"
+        ],
+        [
+            "Proteobacteria",
+            1224,
+            "phylum"
+        ],
+        [
+            "Gammaproteobacteria",
+            1236,
+            "class"
+        ],
+        [
+            "Enterobacterales",
+            91347,
+            "order"
+        ],
+        [
+            "Enterobacteriaceae",
+            543,
+            "family"
+        ],
+        [
+            "Citrobacter",
+            544,
+            "genus"
+        ],
+        [
+            "Citrobacter freundii complex",
+            1344959,
+            "species group"
+        ],
+        [
+            "Citrobacter freundii",
+            546,
+            "species"
+        ]
+    ],
+    "id":"546.156",
+    "source_id":null
+}

@@ -3,9 +3,14 @@
  */
 package org.theseed.subsystems;
 
+import static j2html.TagCreator.a;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theseed.io.LineReader;
 import org.theseed.io.MarkerFile;
+
+import j2html.tags.ContainerTag;
 
 /**
  * This object contains data about a subsystem.  This includes an array of role descriptors and an array of rows.
@@ -55,6 +62,9 @@ public class SubsystemData {
     private static final long STALE_TIME = 7 * 24 * 3600 * 1000;
     /** coreSEED subsystem page link format */
     private static final String SUBSYSTEM_LINK = "https://core.theseed.org/FIG/seedviewer.cgi?page=Subsystems;subsystem=%s";
+    /** format for subsystem page URLs */
+    private static String HEALTH_LINK = "subsystems.cgi?health=%s";
+
 
     /**
      * Create an empty subsystem.
@@ -291,10 +301,31 @@ public class SubsystemData {
     }
 
     /**
+     * @return a link to the health page for the specified subsystem
+     *
+     * @param subsystem		subsystem of interest
+     */
+    public ContainerTag getHealthLink() {
+        return a(this.getName()).withHref(String.format(HEALTH_LINK, this.getUrlId()));
+    }
+
+    /**
+     * @return the subsystem ID formatted for a URL
+     */
+    private String getUrlId() {
+        String retVal = null;
+        try {
+            retVal = URLEncoder.encode(this.getId(), StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        return retVal;
+    }
+    /**
      * @return the CoreSEED URL for this subsystem
      */
     public String getLink() {
-        return String.format(SUBSYSTEM_LINK, this.id);
+        return String.format(SUBSYSTEM_LINK, this.getUrlId());
     }
 
 
