@@ -63,7 +63,7 @@ public class SubsystemData {
     /** coreSEED subsystem page link format */
     private static final String SUBSYSTEM_LINK = "https://core.theseed.org/FIG/seedviewer.cgi?page=Subsystems;subsystem=%s";
     /** format for subsystem page URLs */
-    private static String HEALTH_LINK = "subsystems.cgi?health=%s";
+    private static String HEALTH_LINK = "/subsystems.cgi/health?id=%s";
 
 
     /**

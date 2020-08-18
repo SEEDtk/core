@@ -20,7 +20,7 @@ public class FormTest extends TestCase {
 
     public void testHtmlForm() throws IOException {
         File wsDir = new File("src/test/resources", "Workspace");
-        HtmlForm form = new HtmlForm("blast", "run", "parrello", wsDir);
+        HtmlForm form = new HtmlForm("test", "run", "parrello", wsDir);
         form.addBlastRow("q", "Query Sequences");
         form.addCheckBoxRow("debug", "Show more detailed log messages");
         form.addEnumRow("sort", "Output Sort Type", BlastDB.SortType.QUERY, BlastDB.SortType.values());

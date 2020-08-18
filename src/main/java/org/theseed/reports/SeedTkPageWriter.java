@@ -20,7 +20,8 @@ public class SeedTkPageWriter extends PageWriter {
     public void writePage(String title, Stream<DomContent> content) {
         System.out.println(document().render());
         ContainerTag body = body().with(content);
-        ContainerTag page = html(head(title(title), link().withRel("stylesheet").withHref("css/Basic.css")), body);
+        ContainerTag page = html(head(title(title), link().withRel("stylesheet").withHref("/css/Basic.css"),
+                script().withSrc("/css/utils.js")), body);
         System.out.println(page.render());
 
     }

@@ -11,7 +11,9 @@ import static j2html.TagCreator.*;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -36,6 +38,10 @@ public class HtmlForm {
     private HtmlTable<Key.Null> inputTable;
     /** list of files in the workspace directory */
     private List<String> workFiles;
+    /** map of file patterns to data list names */
+    private Map<String, String> dataListMap;
+    /** TRUE if files were used, else FALSE */
+    private boolean usedFiles;
     /** pattern for BLAST-related files */
     public static final Pattern BLAST_FILE_PATTERN = Pattern.compile(".+\\.(?:gto|fasta|fa|faa|fna)");
     /** pattern for text files */
@@ -56,13 +62,17 @@ public class HtmlForm {
      * @param wsDir		relevant workspace directory
      */
     public HtmlForm(String program, String command, String workspace, File wsDir) {
-        this.form = form().withMethod("Get").withAction("/" + program + ".cgi").withClass("web");
+        this.form = form().withMethod("POST").withAction("/" + program + ".cgi/" + command).withClass("web");
         this.inputTable = new HtmlTable<Key.Null>(new ColSpec.Normal("Parameter"), new ColSpec.Normal("Value"));
         // Add a hidden input for the workspace parameter.  The keyword for this parameter is the command name.
-        this.form.with(input().withType("hidden").withName(command).withValue(workspace));
+        this.form.with(input().withType("hidden").withName("workspace").withValue(workspace));
         // Now load the file list.  We ignore directories.
         File[] workDirFiles = wsDir.listFiles();
         this.workFiles = Arrays.stream(workDirFiles).filter(x -> x.isFile() && x.canRead()).map(x -> x.getName()).collect(Collectors.toList());
+        // Create the data list map.
+        this.dataListMap = new HashMap<String, String>();
+        // Denote no files were used.
+        this.usedFiles = false;
     }
 
     /**
@@ -90,7 +100,7 @@ public class HtmlForm {
         // Create the select tag.
         ContainerTag retVal = select().withName(name);
         for (IDescribable enumVal : values) {
-            ContainerTag option = option(enumVal.getDescription()).withValue(enumVal.toString());
+            ContainerTag option = option(enumVal.getDescription()).withValue(enumVal.name());
             if (init == enumVal)
                 option.attr("selected");
             retVal.with(option);
@@ -123,24 +133,71 @@ public class HtmlForm {
     /**
      * @return a file name-selection box
      *
+     * The file-name selection box is fairly complex.  The user can select either local or workspace files,
+     * and javascript is used to toggle between the two.
+     *
      * @param name			parameter name for the box
      * @param namePattern	a pattern the file name must match
      */
     private DomContent buildFileBox(String name, Pattern namePattern) {
         // We will use a data list.  Only the first N matching file names will be kept.
-        String listName = name + "_files";
-        ContainerTag dataList = datalist().withId(listName);
-        int used = 0;
-        for (int i = 0; i < this.workFiles.size() && used < MAX_FILES; i++) {
-            String fileName = this.workFiles.get(i);
-            Matcher m = namePattern.matcher(fileName);
-            if (m.matches()) {
-                dataList.with(option(fileName).withValue(fileName));
-                used++;
+        String listName = buildDataList(namePattern);
+        DomContent retVal = buildFileComplex(name, listName);
+        return retVal;
+    }
+
+    /**
+     * Build a configurable file box that allows specifying both local and global files.
+     *
+     * @param name		name of the file control
+     * @param listName	name of the populating data list
+     *
+     * @return a series of controls that allows choosing a local or workspace file
+     */
+    private DomContent buildFileComplex(String name, String listName) {
+        // We need the local checkbox, the local file control, and the workspace input box.
+        String nameLocal = name + "_local";
+        String nameWork = name + "_work";
+        String event = "configureFiles(this, '" + nameLocal + "', '" + nameWork + "');";
+        EmptyTag checkBox = input().withType("checkbox").attr("onChange", event).withId(name);
+        EmptyTag localBox = input().withType("file").withId(nameLocal).withStyle("display: none;").withClass("file");
+        EmptyTag fileBox = input().withType("text").withName(name).withId(nameWork).attr("list", listName).withClass("file")
+                .withStyle("display: inline-block;");
+        // Now create the full control.
+        DomContent retVal = join(checkBox, "Local", localBox, fileBox);
+        // Insure we add the multipart encoding to the form.
+        this.usedFiles = true;
+        return retVal;
+    }
+
+    /**
+     * Build a data list for a file box.
+     *
+     * @param namePattern	a pattern the file name must match
+     * @param listName		the name to give to the list
+     *
+     * @return the name of the data list.
+     */
+    private String buildDataList(Pattern namePattern) {
+        String retVal = this.dataListMap.get(namePattern.pattern());
+        if (retVal == null) {
+            // Here we have to create and name the data list.
+            retVal = String.format("_data_list_%04X", this.dataListMap.size());
+            ContainerTag dataList = datalist().withId(retVal);
+            int used = 0;
+            for (int i = 0; i < this.workFiles.size() && used < MAX_FILES; i++) {
+                String fileName = this.workFiles.get(i);
+                Matcher m = namePattern.matcher(fileName);
+                if (m.matches()) {
+                    dataList.with(option(fileName).withValue(fileName));
+                    used++;
+                }
             }
+            // Store the list name in the map.
+            this.dataListMap.put(namePattern.pattern(), retVal);
+            // Add the data list to the top of the form.
+            this.form.with(dataList);
         }
-        // Now create an input with the data list.
-        DomContent retVal = join(dataList, input().withType("text").withName(name).attr("list", listName).withClass("file"));
         return retVal;
     }
 
@@ -202,6 +259,8 @@ public class HtmlForm {
      * NOTE that after this the form cannot be modified.
      */
     public ContainerTag output() {
+        if (this.usedFiles)
+            this.form.attr("enctype", "multipart/form-data");
         this.form.with(this.inputTable.output())
             .with(p().with(input().withType("submit").withClass("submit")));
         return this.form;
