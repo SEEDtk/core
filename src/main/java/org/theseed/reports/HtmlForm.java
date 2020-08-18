@@ -48,6 +48,8 @@ public class HtmlForm {
     public static final Pattern TEXT_FILE_PATTERN = Pattern.compile(".+\\.(?:tbl|txt|tsv)");
     /** pattern for genome files */
     public static final Pattern GTO_FILE_PATTERN = Pattern.compile(".+\\.gto");
+    /** pattern for FASTA files */
+    public static final Pattern FASTA_FILE_PATTERN = Pattern.compile(".+\\.(?:fasta|fa|faa|fna)");
     /** pattern for read files */
     public static final Pattern READ_FILE_PATTERN = Pattern.compile(".+\\.(?:fq|fastq)");
     /** maximum number of files to display in a datalist */
