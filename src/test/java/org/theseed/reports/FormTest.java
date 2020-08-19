@@ -19,8 +19,9 @@ import org.theseed.sequence.blast.BlastDB;
 public class FormTest extends TestCase {
 
     public void testHtmlForm() throws IOException {
+        PageWriter writer = PageWriter.Type.SEEDTK.create();
         File wsDir = new File("src/test/resources", "Workspace");
-        HtmlForm form = new HtmlForm("test", "run", "parrello", wsDir);
+        HtmlForm form = new HtmlForm("test", "run", "parrello", wsDir, writer);
         form.addBlastRow("q", "Query Sequences");
         form.addCheckBoxRow("debug", "Show more detailed log messages");
         form.addEnumRow("sort", "Output Sort Type", BlastDB.SortType.QUERY, BlastDB.SortType.values());

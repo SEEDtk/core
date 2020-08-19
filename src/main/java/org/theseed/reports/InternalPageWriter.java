@@ -22,5 +22,10 @@ public class InternalPageWriter extends PageWriter {
         content.forEach(x -> System.out.println(x));
     }
 
+    @Override
+    public String local_url(String url) {
+        return url;
+    }
+
 
 }

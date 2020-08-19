@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theseed.io.LineReader;
 import org.theseed.io.MarkerFile;
+import org.theseed.reports.PageWriter;
 
 import j2html.tags.ContainerTag;
 
@@ -303,10 +304,10 @@ public class SubsystemData {
     /**
      * @return a link to the health page for the specified subsystem
      *
-     * @param subsystem		subsystem of interest
+     * @param writer	page writer to decorate URLs
      */
-    public ContainerTag getHealthLink() {
-        return a(this.getName()).withHref(String.format(HEALTH_LINK, this.getUrlId()));
+    public ContainerTag getHealthLink(PageWriter writer) {
+        return a(this.getName()).withHref(writer.local_url(String.format(HEALTH_LINK, this.getUrlId())));
     }
 
     /**

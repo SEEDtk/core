@@ -41,7 +41,7 @@ public abstract class FormProcessor extends WebProcessor {
         String program = this.getProgram();
         String command = this.getCommand();
         // Create the HTML form.
-        this.pageForm = new HtmlForm(program, command, this.getWorkSpace(), this.getWorkSpaceDir());
+        this.pageForm = new HtmlForm(program, command, this.getWorkSpace(), this.getWorkSpaceDir(), this.getPageWriter());
         // Ask the user for the table rows.
         this.buildForm(this.pageForm);
         // Format the web page.

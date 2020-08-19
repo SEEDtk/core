@@ -11,15 +11,14 @@ import static j2html.TagCreator.*;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.theseed.sequence.blast.Source;
 import org.theseed.utils.IDescribable;
+import org.theseed.utils.WebProcessor;
 
 /**
  * This object is used to design a simple HTML form for a CoreSEED web application.  Such applications have a workspace
@@ -38,10 +37,10 @@ public class HtmlForm {
     private HtmlTable<Key.Null> inputTable;
     /** list of files in the workspace directory */
     private List<String> workFiles;
-    /** map of file patterns to data list names */
-    private Map<String, String> dataListMap;
     /** TRUE if files were used, else FALSE */
     private boolean usedFiles;
+    /** page writer for this form */
+    private PageWriter writer;
     /** pattern for BLAST-related files */
     public static final Pattern BLAST_FILE_PATTERN = Pattern.compile(".+\\.(?:gto|fasta|fa|faa|fna)");
     /** pattern for text files */
@@ -62,19 +61,42 @@ public class HtmlForm {
      * @param command	the program command to use
      * @param workspace	name of the workspace
      * @param wsDir		relevant workspace directory
+     * @param writer	page writer for URL decoration
      */
-    public HtmlForm(String program, String command, String workspace, File wsDir) {
-        this.form = form().withMethod("POST").withAction("/" + program + ".cgi/" + command).withClass("web");
+    public HtmlForm(String program, String command, String workspace, File wsDir, PageWriter writer) {
+        this.init(program, command, workspace, wsDir, writer);
+    }
+
+    /**
+     * Initialize this form.
+     *
+     * @param program	program identifier (the program name will be "web." + identifier + ".jar")
+     * @param command	the program command to use
+     * @param workspace	name of the workspace
+     * @param wsDir		relevant workspace directory
+     * @param writer	page writer for URL decoration
+     */
+    private void init(String program, String command, String workspace, File wsDir, PageWriter writer) {
+        this.form = form().withMethod("POST")
+                .withAction(writer.local_url("/" + program + ".cgi/" + command))
+                .withClass("web");
         this.inputTable = new HtmlTable<Key.Null>(new ColSpec.Normal("Parameter"), new ColSpec.Normal("Value"));
         // Add a hidden input for the workspace parameter.  The keyword for this parameter is the command name.
         this.form.with(input().withType("hidden").withName("workspace").withValue(workspace));
+        // Save the page writer.
+        this.writer = writer;
         // Now load the file list.  We ignore directories.
         File[] workDirFiles = wsDir.listFiles();
         this.workFiles = Arrays.stream(workDirFiles).filter(x -> x.isFile() && x.canRead()).map(x -> x.getName()).collect(Collectors.toList());
-        // Create the data list map.
-        this.dataListMap = new HashMap<String, String>();
         // Denote no files were used.
         this.usedFiles = false;
+    }
+
+    /**
+     * Construct a new HTML form.  This is a shortcut when a WebProcessor is available
+     */
+    public HtmlForm(String program, String command, WebProcessor processor) {
+        this.init(program, command, processor.getWorkSpace(), processor.getWorkSpaceDir(), processor.getPageWriter());
     }
 
     /**
@@ -181,10 +203,10 @@ public class HtmlForm {
      * @return the name of the data list.
      */
     private String buildDataList(Pattern namePattern) {
-        String retVal = this.dataListMap.get(namePattern.pattern());
+        String retVal = this.writer.checkDataList(namePattern.pattern());
         if (retVal == null) {
             // Here we have to create and name the data list.
-            retVal = String.format("_data_list_%04X", this.dataListMap.size());
+            retVal = this.writer.getListID();
             ContainerTag dataList = datalist().withId(retVal);
             int used = 0;
             for (int i = 0; i < this.workFiles.size() && used < MAX_FILES; i++) {
@@ -196,7 +218,7 @@ public class HtmlForm {
                 }
             }
             // Store the list name in the map.
-            this.dataListMap.put(namePattern.pattern(), retVal);
+            this.writer.putDataList(namePattern.pattern(), retVal);
             // Add the data list to the top of the form.
             this.form.with(dataList);
         }

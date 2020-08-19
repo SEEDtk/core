@@ -74,14 +74,14 @@ public abstract class WebProcessor extends BaseProcessor {
     /**
      * @return the output page writer
      */
-    protected PageWriter getPageWriter() {
+    public PageWriter getPageWriter() {
         return this.pageWriter;
     }
 
     /*
      * @return the workspace directory
      */
-    protected File getWorkSpaceDir() {
+    public File getWorkSpaceDir() {
         return this.workSpaceDir;
     }
 
@@ -102,7 +102,7 @@ public abstract class WebProcessor extends BaseProcessor {
     /**
      * @return the workspace name
      */
-    protected String getWorkSpace() {
+    public String getWorkSpace() {
         return this.workSpace;
     }
 

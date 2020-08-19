@@ -5,7 +5,9 @@ package org.theseed.reports;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import j2html.tags.ContainerTag;
@@ -22,9 +24,15 @@ import j2html.Config;
  */
 public abstract class PageWriter {
 
+    // FIELDS
+    /** map of file patterns to datalist IDs */
+    private Map<String, String> dataListMap;
+
     public PageWriter() {
         // Insure the slash is in empty tags.
         Config.closeEmptyTags = true;
+        // Initialize the datalist map.
+        this.dataListMap = new HashMap<String, String>();
     }
 
     /**
@@ -124,6 +132,41 @@ public abstract class PageWriter {
     public ContainerTag subSection(String linkName, String title, DomContent... content) {
         ContainerTag retVal = div().with(h2(a(title).withName(linkName))).with(content);
         return retVal;
+    }
+
+    /**
+     * Convert a URL to its local format.  This usually involves prefixing "SEEDtk" or some other name.
+     *
+     * @param url		URL to convert
+     *
+     * @return the prefixed URL
+     */
+    public abstract String local_url(String url);
+
+    /**
+     * @return the ID of the data list corresponding to a type string, or NULL if there is none
+     *
+     * @param type string	type string to check
+     */
+    public String checkDataList(String type_string) {
+        return this.dataListMap.get(type_string);
+    }
+
+    /**
+     * Store a data list ID for a type string
+     *
+     * @param type_string	type string of interest
+     * @param list_id		associated data list ID
+     */
+    public void putDataList(String type_string, String list_id) {
+        this.dataListMap.put(type_string, list_id);
+    }
+
+    /**
+     * @return the next available ID for a data list
+     */
+    public String getListID() {
+        return String.format("_data_list_%04X", this.dataListMap.size());
     }
 
 }
