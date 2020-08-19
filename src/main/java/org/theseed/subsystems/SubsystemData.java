@@ -273,7 +273,11 @@ public class SubsystemData {
         // Denote that error count is known and save it.
         this.ambiguousCount = false;
         File errorCountFile = SubsystemData.errorCountFile(this.coreDir, this.id);
-        MarkerFile.write(errorCountFile, this.errorCount);
+        try {
+            MarkerFile.write(errorCountFile, this.errorCount);
+        } catch (UncheckedIOException e) {
+            log.error("Could not update error file for {}.", this.name);
+        }
     }
 
     /**
