@@ -10,7 +10,6 @@ import org.kohsuke.args4j.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theseed.reports.PageWriter;
-import org.theseed.utils.BaseProcessor;
 
 /**
  * This is the base class for web page service commands.  The first two positional parameters are the coreSEED directory

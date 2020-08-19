@@ -9,8 +9,6 @@ import static org.hamcrest.Matchers.*;
 
 import java.util.Arrays;
 
-import org.theseed.subsystems.PegState;
-
 import j2html.tags.ContainerTag;
 
 /**

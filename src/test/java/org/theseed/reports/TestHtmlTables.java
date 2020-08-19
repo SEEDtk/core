@@ -5,8 +5,6 @@ import junit.framework.TestCase;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-import org.theseed.reports.Key;
-
 
 
 public class TestHtmlTables extends TestCase {
