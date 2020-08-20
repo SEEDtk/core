@@ -56,7 +56,7 @@ public class FormTest extends TestCase {
      */
     private HtmlForm buildTestForm(PageWriter writer, File wsDir) throws IOException {
         HtmlForm retVal = new HtmlForm("test", "run", "parrello", wsDir, writer);
-        retVal.addBlastRow("q", "Query Sequences");
+        retVal.addBlastRow("qtype", "qfile", "Query Sequences");
         retVal.addCheckBoxRow("debug", "Show more detailed log messages");
         retVal.addEnumRow("sort", "Output Sort Type", BlastDB.SortType.QUERY, BlastDB.SortType.values());
         retVal.addFileRow("tabFile", "Table file", HtmlForm.TEXT_FILE_PATTERN);

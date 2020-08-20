@@ -14,19 +14,13 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 @Target(FIELD)
 /**
- * This annotation represents a form integer element.  Both int and double fields can use this
- * annotation.  As with FormElement, the name and display label are taken from the associated
- * @Option annotation.
+ * This annotation specifies a file-input form element.  The parameter specifies a search pattern for the file in the form of a regular
+ * expression.
  *
  * @author Bruce Parrello
  *
  */
-public @interface FormIntElement {
+public @interface FormFileElement {
 
-
-    /** minimum value for the element */
-    int min();
-
-    /** maximum value for the element */
-    int max();
+    String pattern();
 }

@@ -47,15 +47,20 @@ public class HtmlForm {
     /** cookie file with saved form state */
     private CookieFile savedForm;
     /** pattern for BLAST-related files */
-    public static final Pattern BLAST_FILE_PATTERN = Pattern.compile(".+\\.(?:gto|fasta|fa|faa|fna)");
+    public static final String BLAST_FILE_REGEX = ".+\\.(?:gto|fasta|fa|faa|fna)";
+    public static final Pattern BLAST_FILE_PATTERN = Pattern.compile(BLAST_FILE_REGEX);
     /** pattern for text files */
-    public static final Pattern TEXT_FILE_PATTERN = Pattern.compile(".+\\.(?:tbl|txt|tsv)");
+    public static final String TEXT_FILE_REGEX = ".+\\.(?:tbl|txt|tsv)";
+    public static final Pattern TEXT_FILE_PATTERN = Pattern.compile(TEXT_FILE_REGEX);
     /** pattern for genome files */
-    public static final Pattern GTO_FILE_PATTERN = Pattern.compile(".+\\.gto");
+    public static final String GTO_FILE_REGEX = ".+\\.gto";
+    public static final Pattern GTO_FILE_PATTERN = Pattern.compile(GTO_FILE_REGEX);
     /** pattern for FASTA files */
-    public static final Pattern FASTA_FILE_PATTERN = Pattern.compile(".+\\.(?:fasta|fa|faa|fna)");
+    public static final String FASTA_FILE_REGEX = ".+\\.(?:fasta|fa|faa|fna)";
+    public static final Pattern FASTA_FILE_PATTERN = Pattern.compile(FASTA_FILE_REGEX);
     /** pattern for read files */
-    public static final Pattern READ_FILE_PATTERN = Pattern.compile(".+\\.(?:fq|fastq)");
+    public static final String READ_FILE_REGEX = ".+\\.(?:fq|fastq)";
+    public static final Pattern READ_FILE_PATTERN = Pattern.compile(READ_FILE_REGEX);
     /** maximum number of files to display in a datalist */
     private static final int MAX_FILES = 40;
     /** filter for workspace to ignore internal files */
@@ -319,12 +324,13 @@ public class HtmlForm {
     /**
      * Add a BLAST source input.  This is two boxes, a dropdown and a file box.
      *
-     * @param type			source type (will be prefixed to "type" and "file")
+     * @param type			source type option name
+     * @param file			file name option name
      * @param description	parameter description
      */
-    public void addBlastRow(String type, String description) {
-        DomContent boxes = join(this.buildEnumBox(type + "type", Source.dna, Source.values()),
-                this.buildFileBox(type + "file", BLAST_FILE_PATTERN));
+    public void addBlastRow(String type, String file, String description) {
+        DomContent boxes = join(this.buildEnumBox(type, Source.dna, Source.values()),
+                this.buildFileBox(file, BLAST_FILE_PATTERN));
         this.newRow(description, boxes);
     }
 

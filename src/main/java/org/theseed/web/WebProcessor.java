@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
@@ -16,9 +19,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theseed.reports.HtmlForm;
 import org.theseed.reports.PageWriter;
+import org.theseed.sequence.blast.Source;
 import org.theseed.utils.BaseProcessor;
 import org.theseed.utils.IDescribable;
+import org.theseed.web.forms.FormBlastElement;
 import org.theseed.web.forms.FormElement;
+import org.theseed.web.forms.FormFileElement;
 import org.theseed.web.forms.FormIntElement;
 
 /**
@@ -173,6 +179,96 @@ public abstract class WebProcessor extends BaseProcessor {
     protected abstract void runWebCommand(CookieFile cookies) throws Exception;
 
     /**
+     * This is a utility structure for extracting useful annotations.
+     *
+     * @author Bruce Parrello
+     */
+    private static class FormThing {
+
+        private String name;
+        private String label;
+        private String fieldName;
+        private Annotation formAnnotation;
+
+        /**
+         * Constructor to set up for processing form annotations.
+         *
+         * @param field		field to analyze
+         */
+        public FormThing(Field field) {
+            Annotation[] annotations = field.getAnnotations();
+            findOption(field, annotations);
+            // Find the form annotation.  This is so very ugly.
+            for (Annotation annotation : annotations) {
+                if (annotation instanceof FormElement || annotation instanceof FormIntElement ||
+                        annotation instanceof FormBlastElement || annotation instanceof FormFileElement)
+                    formAnnotation = annotation;
+            }
+            // Error out if we have a form annotation without a valid option element.
+            if (formAnnotation != null && name == null)
+                throw new IllegalArgumentException("Field " + fieldName + " needs a double-dashed @Option.");
+        }
+
+        /**
+         * Default constructor for internal use.
+         */
+        public FormThing() { };
+        /**
+         * @return TRUE if the field has the specified option name.
+         *
+         * @param field		field to analyze
+         */
+        public static boolean hasOptionName(Field field, String name) {
+            FormThing testInstance = new FormThing();
+            Annotation[] annotations = field.getAnnotations();
+            testInstance.findOption(field, annotations);
+            return name.equals(testInstance.getName());
+        }
+
+        /**
+         * Try to find the Option annotation and extract its data.
+         *
+         * @param field			field being processed
+         * @param annotations	annotations on the field
+         */
+        private void findOption(Field field, Annotation[] annotations) {
+            name = null;
+            label = null;
+            formAnnotation = null;
+            fieldName = field.getName();
+            Optional<Annotation> optionElement = Arrays.stream(annotations).filter(x -> x instanceof Option).findFirst();
+            if (optionElement.isPresent()) {
+                Option option = (Option) optionElement.get();
+                if (option.name().startsWith("--"))
+                    name = option.name().substring(2);
+                label = option.usage();
+            }
+        }
+
+        /**
+         * @return the name from the Option annotation
+         */
+        protected String getName() {
+            return this.name;
+        }
+
+        /**
+         * @return the label form the Option annotation
+         */
+        protected String getLabel() {
+            return this.label;
+        }
+
+        /**
+         * @return the form annotation
+         */
+        protected Annotation getFormAnnotation() {
+            return formAnnotation;
+        }
+
+    }
+
+    /**
      * Build a form for this command using the Form* annotations.  This command is called from
      * the form's webprocessor to build a form for the command processor.
      *
@@ -197,13 +293,14 @@ public abstract class WebProcessor extends BaseProcessor {
         List<String> badTypes = new ArrayList<String>();
         for (Field field : fields) {
             Class<?> type = field.getType();
-            Annotation[] annotations = field.getAnnotations();
+            FormThing formThing = new FormThing(field);
             try {
-                for (Annotation annotation : annotations) {
+                Annotation annotation = formThing.getFormAnnotation();
+                if (annotation != null) {
+                    String name = formThing.getName();
+                    String label = formThing.getLabel();
+                    // Here we have a real form element.
                     if (annotation instanceof FormElement) {
-                        FormElement formAnnotation = (FormElement) annotation;
-                        String name = formAnnotation.name();
-                        String label = formAnnotation.label();
                         if (type == java.lang.Boolean.TYPE) {
                             retVal.addCheckBoxRow(name, label);
                         } else if (type == java.lang.Double.TYPE) {
@@ -212,12 +309,12 @@ public abstract class WebProcessor extends BaseProcessor {
                             Enum<?> value = (Enum<?>) field.get(processor);
                             IDescribable[] constants = (IDescribable[]) type.getEnumConstants();
                             retVal.addEnumRow(name, label, value, constants);
+                        } else if (type == String.class) {
+                            retVal.addTextRow(name, label, (String) field.get(processor));
                         } else
                             badTypes.add(field.getName());
                     } else if (annotation instanceof FormIntElement) {
                         FormIntElement formAnnotation = (FormIntElement) annotation;
-                        String name = formAnnotation.name();
-                        String label = formAnnotation.label();
                         int min = formAnnotation.min();
                         int max = formAnnotation.max();
                         if (type == java.lang.Integer.TYPE) {
@@ -228,6 +325,17 @@ public abstract class WebProcessor extends BaseProcessor {
                             retVal.addIntRow(name, label, init, min, max);
                         } else
                             badTypes.add(field.getName());
+                    } else if (annotation instanceof FormBlastElement) {
+                        FormBlastElement formAnnotation = (FormBlastElement) annotation;
+                        if (type == String.class) {
+                            String typeId = formAnnotation.id();
+                            retVal.addBlastRow(typeId, name, label);
+                        } else
+                            badTypes.add(field.getName());
+                    } else if (annotation instanceof FormFileElement) {
+                        FormFileElement formAnnotation = (FormFileElement) annotation;
+                        Pattern filePattern = Pattern.compile(formAnnotation.pattern());
+                        retVal.addFileRow(name, label, filePattern);
                     }
                 }
             } catch (IllegalAccessException e) {
@@ -246,6 +354,62 @@ public abstract class WebProcessor extends BaseProcessor {
         }
         return retVal;
 
+    }
+
+    /**
+     * Save the form data to the cookie file.
+     *
+     * @param cookies	cookie file for saving form data
+     * @throws IllegalAccessException
+     */
+    public void saveForm(CookieFile cookies) throws IllegalAccessException {
+        Class<? extends WebProcessor> processorType = this.getClass();
+        Field[] fields = processorType.getDeclaredFields();
+        // We will track the blast elements in here.
+        for (Field field : fields) {
+            Class<?> type = field.getType();
+            FormThing formThing = new FormThing(field);
+            Annotation annotation = formThing.getFormAnnotation();
+            if (annotation != null) {
+                if (annotation instanceof FormBlastElement) {
+                    // BLAST fields are tricky, because we have to store two values.
+                    String typeOptionName = ((FormBlastElement) annotation).id();
+                    // Search for the matching type field.
+                    Optional<Field> possibleMatch = Arrays.stream(fields).filter(x -> FormThing.hasOptionName(x, typeOptionName)).findFirst();
+                    if (possibleMatch.isPresent()) {
+                        // Store the file field.
+                        cookies.put(formThing.getName(), (String) field.get(this));
+                        // Store the type field.
+                        Source dbType = (Source) possibleMatch.get().get(this);
+                        cookies.put(typeOptionName, dbType.name());
+                    }
+                } else {
+                    if (type == java.lang.Boolean.TYPE)
+                        cookies.put(formThing.getName(), field.getBoolean(this));
+                    else if (type == java.lang.Integer.TYPE)
+                        cookies.put(formThing.getName(), field.getInt(this));
+                    else if (type == java.lang.Double.TYPE)
+                        cookies.put(formThing.getName(), field.getDouble(this));
+                    else if (type == String.class)
+                        cookies.put(formThing.getName(), (String) field.get(this));
+                    else if (type.isEnum()) {
+                        Enum<?> value = (Enum<?>) field.get(this);
+                        cookies.put(formThing.getName(), value.name());
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Throw an error if the current field did not have a proper option attached.
+     *
+     * @param field		field of interest
+     * @param name		name value taken from the field's option annotation, or NULL if no valid one was found
+     */
+    public void verifyOption(Field field, String name) {
+        if (name == null)
+            throw new IllegalArgumentException("Field " + field.getName() + " needs a double-dashed @Option.");
     }
 
 }
