@@ -10,6 +10,8 @@ import j2html.tags.EmptyTag;
 import static j2html.TagCreator.*;
 
 import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -18,7 +20,8 @@ import java.util.stream.Collectors;
 
 import org.theseed.sequence.blast.Source;
 import org.theseed.utils.IDescribable;
-import org.theseed.utils.WebProcessor;
+import org.theseed.web.CookieFile;
+import org.theseed.web.WebProcessor;
 
 /**
  * This object is used to design a simple HTML form for a CoreSEED web application.  Such applications have a workspace
@@ -41,6 +44,8 @@ public class HtmlForm {
     private boolean usedFiles;
     /** page writer for this form */
     private PageWriter writer;
+    /** cookie file with saved form state */
+    private CookieFile savedForm;
     /** pattern for BLAST-related files */
     public static final Pattern BLAST_FILE_PATTERN = Pattern.compile(".+\\.(?:gto|fasta|fa|faa|fna)");
     /** pattern for text files */
@@ -53,6 +58,9 @@ public class HtmlForm {
     public static final Pattern READ_FILE_PATTERN = Pattern.compile(".+\\.(?:fq|fastq)");
     /** maximum number of files to display in a datalist */
     private static final int MAX_FILES = 40;
+    /** filter for workspace to ignore internal files */
+    private static final FilenameFilter WORK_FILE_FILTER = new WorkFiles();
+
 
     /**
      * Construct a new HTML form.
@@ -62,8 +70,10 @@ public class HtmlForm {
      * @param workspace	name of the workspace
      * @param wsDir		relevant workspace directory
      * @param writer	page writer for URL decoration
+     *
+     * @throws IOException
      */
-    public HtmlForm(String program, String command, String workspace, File wsDir, PageWriter writer) {
+    public HtmlForm(String program, String command, String workspace, File wsDir, PageWriter writer) throws IOException {
         this.init(program, command, workspace, wsDir, writer);
     }
 
@@ -75,8 +85,10 @@ public class HtmlForm {
      * @param workspace	name of the workspace
      * @param wsDir		relevant workspace directory
      * @param writer	page writer for URL decoration
+     *
+     * @throws IOException
      */
-    private void init(String program, String command, String workspace, File wsDir, PageWriter writer) {
+    private void init(String program, String command, String workspace, File wsDir, PageWriter writer) throws IOException {
         this.form = form().withMethod("POST")
                 .withAction(writer.local_url("/" + program + ".cgi/" + command))
                 .withClass("web");
@@ -85,17 +97,44 @@ public class HtmlForm {
         this.form.with(input().withType("hidden").withName("workspace").withValue(workspace));
         // Save the page writer.
         this.writer = writer;
-        // Now load the file list.  We ignore directories.
-        File[] workDirFiles = wsDir.listFiles();
+        // Get the cookie file.
+        String cookieName = formCookieName(program, command);
+        this.savedForm = new CookieFile(wsDir, cookieName);
+        // Now load the file list.  We ignore directories and "_" files.
+        File[] workDirFiles = wsDir.listFiles(WORK_FILE_FILTER);
         this.workFiles = Arrays.stream(workDirFiles).filter(x -> x.isFile() && x.canRead()).map(x -> x.getName()).collect(Collectors.toList());
         // Denote no files were used.
         this.usedFiles = false;
     }
 
     /**
-     * Construct a new HTML form.  This is a shortcut when a WebProcessor is available
+     * @return the cookie file for an operation's form.
+     *
+     * @param wsDir		workspace directory
+     * @param program	program name
+     * @param command	command name
+     *
      */
-    public HtmlForm(String program, String command, WebProcessor processor) {
+    public static String formCookieName(String program, String command)  {
+        return "form." + program + "." + command;
+    }
+
+    /** This is the filename filter used to get all the workspace files. */
+    private static class WorkFiles implements FilenameFilter {
+
+        @Override
+        public boolean accept(File dir, String name) {
+            return name.charAt(0) != '_';
+        }
+
+    }
+
+    /**
+     * Construct a new HTML form.  This is a shortcut when a WebProcessor is available.
+     *
+     * @throws IOException
+     */
+    public HtmlForm(String program, String command, WebProcessor processor) throws IOException {
         this.init(program, command, processor.getWorkSpace(), processor.getWorkSpaceDir(), processor.getPageWriter());
     }
 
@@ -121,11 +160,15 @@ public class HtmlForm {
      * @param values	array of enum values
      */
     private ContainerTag buildEnumBox(String name, Enum<?> init, IDescribable[] values) {
+        // Get the saved value of the control.  We use a string here because of the vague
+        // type of the enum.
+        String initVal = this.savedForm.get(name, init.name());
         // Create the select tag.
         ContainerTag retVal = select().withName(name);
         for (IDescribable enumVal : values) {
+            String optVal = enumVal.name();
             ContainerTag option = option(enumVal.getDescription()).withValue(enumVal.name());
-            if (init == enumVal)
+            if (optVal.contentEquals(initVal))
                 option.attr("selected");
             retVal.with(option);
         }
@@ -183,10 +226,14 @@ public class HtmlForm {
         String nameLocal = name + "_local";
         String nameWork = name + "_work";
         String event = "configureFiles(this, '" + nameLocal + "', '" + nameWork + "');";
-        EmptyTag checkBox = input().withType("checkbox").attr("onChange", event).withId(name);
+        EmptyTag checkBox = input().withType("checkbox").attr("onChange", event).withId(name).withClass("fileChecker");
         EmptyTag localBox = input().withType("file").withId(nameLocal).withStyle("display: none;").withClass("file");
         EmptyTag fileBox = input().withType("text").withName(name).withId(nameWork).attr("list", listName).withClass("file")
                 .withStyle("display: inline-block;");
+        // If there is a saved value for this control, put it in the file box.
+        String savedFile = this.savedForm.get(name, "");
+        if (! savedFile.isEmpty())
+            fileBox.withValue(savedFile);
         // Now create the full control.
         DomContent retVal = join(checkBox, "Local", localBox, fileBox);
         // Insure we add the multipart encoding to the form.
@@ -226,7 +273,7 @@ public class HtmlForm {
     }
 
     /**
-     * Add a text input.
+     * Add a text input.  Do not use NULL for the default here.
      *
      * @param name			parameter name
      * @param description	parameter description
@@ -234,8 +281,9 @@ public class HtmlForm {
      */
     public void addTextRow(String name, String description, String init) {
         EmptyTag inputBox = input().withType("text").withName(name);
-        if (init != null && ! init.isEmpty())
-            inputBox.withValue(init);
+        String defaultVal = this.savedForm.get(name, init);
+        if (! defaultVal.isEmpty())
+            inputBox.withValue(defaultVal);
         this.newRow(description, inputBox);
     }
 
@@ -246,7 +294,9 @@ public class HtmlForm {
      * @param description	parameter description
      */
     public void addCheckBoxRow(String name, String description) {
+        boolean defaultVal = this.savedForm.get(name, false);
         EmptyTag checkBox = input().withType("checkbox").withName(name);
+        if (defaultVal) checkBox.attr("checked");
         this.newRow(description, checkBox);
     }
 
@@ -260,7 +310,8 @@ public class HtmlForm {
      * @param max			maximum value
      */
     public void addIntRow(String name, String description, int init, int min, int max) {
-        EmptyTag inputBox = input().withType("number").withName(name).withValue(Integer.toString(init))
+        String defaultVal = this.savedForm.get(name, Integer.toString(init));
+        EmptyTag inputBox = input().withType("number").withName(name).withValue(defaultVal)
                 .attr("min", Integer.toString(min)).attr("max", Integer.toString(max));
         this.newRow(description, inputBox);
     }
@@ -280,13 +331,16 @@ public class HtmlForm {
     /**
      * @return the completed form
      *
-     * NOTE that after this the form cannot be modified.
+     * NOTE that after this the cookie file is closed and the form cannot be modified.
+     *
+     * @throws IOException
      */
-    public ContainerTag output() {
+    public ContainerTag output() throws IOException {
         if (this.usedFiles)
             this.form.attr("enctype", "multipart/form-data");
         this.form.with(this.inputTable.output())
             .with(p().with(input().withType("submit").withClass("submit")));
+        this.savedForm.close();
         return this.form;
     }
 

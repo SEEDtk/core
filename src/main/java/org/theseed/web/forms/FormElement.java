@@ -1,0 +1,33 @@
+/**
+ *
+ */
+package org.theseed.web.forms;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+@Documented
+@Retention(RUNTIME)
+@Target(FIELD)
+/**
+ * This annotation represents a basic form element.  It specifies the name and the label for the form.
+ *
+ * This is a very crude mechanism.  The annotated field must be protected, and the processor class must
+ * be in "org.theseed.web".  At some future point we may fix this.  In the meantime, it simplifies a lot.
+ *
+ * @author Bruce Parrello
+ *
+ */
+public @interface FormElement {
+
+    /** name of the form element */
+    String name();
+
+    /** label to put on the form element */
+    String label();
+
+}

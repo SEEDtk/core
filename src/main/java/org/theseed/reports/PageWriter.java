@@ -31,6 +31,8 @@ public abstract class PageWriter {
     public PageWriter() {
         // Insure the slash is in empty tags.
         Config.closeEmptyTags = true;
+        // Use our custom escaper.
+        Config.textEscaper = PageWriter::escape;
         // Initialize the datalist map.
         this.dataListMap = new HashMap<String, String>();
     }
@@ -167,6 +169,40 @@ public abstract class PageWriter {
      */
     public String getListID() {
         return String.format("_data_list_%04X", this.dataListMap.size());
+    }
+
+    /**
+     * Custom method for escaping text that leaves single quotes alone.
+     *
+     * @param s		string to escape
+     * @return		the HTML-escaped string
+     */
+    public static String escape(String s) {
+        if (s == null) {
+            return null;
+        }
+        StringBuilder escapedText = new StringBuilder();
+        char currentChar;
+        for (int i = 0; i < s.length(); i++) {
+            currentChar = s.charAt(i);
+            switch (currentChar) {
+                case '<':
+                    escapedText.append("&lt;");
+                    break;
+                case '>':
+                    escapedText.append("&gt;");
+                    break;
+                case '&':
+                    escapedText.append("&amp;");
+                    break;
+                case '"':
+                    escapedText.append("&quot;");
+                    break;
+                default:
+                    escapedText.append(currentChar);
+            }
+        }
+        return escapedText.toString();
     }
 
 }

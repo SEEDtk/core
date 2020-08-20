@@ -21,7 +21,9 @@ public class SeedTkPageWriter extends PageWriter {
         System.out.println(document().render());
         ContainerTag body = body().attr("onload", "setup();").with(content);
         ContainerTag page = html(head(title(title), link().withRel("stylesheet").withHref("/SEEDtk/css/Basic.css"),
-                script().withSrc("/SEEDtk/css/utils.js")), body);
+                script().withSrc("/SEEDtk/css/utils.js"), script().withSrc("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"),
+                link().withRel("icon").withType("image/png").withHref("/SEEDtk/favicon.ico")
+                ), body);
         System.out.println(page.render());
 
     }
