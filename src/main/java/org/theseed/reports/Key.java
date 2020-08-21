@@ -6,6 +6,8 @@ package org.theseed.reports;
 import java.util.Comparator;
 
 import org.apache.commons.lang3.StringUtils;
+import org.theseed.locations.Location;
+
 import static j2html.TagCreator.*;
 
 /**
@@ -190,6 +192,41 @@ public abstract class Key {
         @Override
         public void store(CellContent cell, ColSpec col) {
             col.store(cell, this.value);
+        }
+
+    }
+
+    /**
+     * Feature ID key, sort by location.
+     */
+    public static class Feature extends Key implements Comparable<Key.Feature> {
+
+        // FIELDS
+        private String fid;
+        private Location loc;
+
+        /**
+         * Create a new feature key.
+         *
+         * @param feat		feature to use as the key
+         */
+        public Feature(org.theseed.genome.Feature feat) {
+            this.fid = feat.getId();
+            this.loc = feat.getLocation();
+        }
+
+        @Override
+        public void store(CellContent cell, ColSpec col) {
+            col.store(cell, this.fid);
+
+        }
+
+        @Override
+        public int compareTo(Feature o) {
+            int retVal = this.loc.compareTo(o.loc);
+            if (retVal == 0)
+                retVal = this.fid.compareTo(o.fid);
+            return retVal;
         }
 
     }

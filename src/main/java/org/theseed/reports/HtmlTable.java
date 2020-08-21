@@ -268,6 +268,15 @@ public class HtmlTable<K extends Key & Comparable<K>> {
              return tr().with(Arrays.stream(this.cells).map(x -> x.output()));
          }
 
+         /**
+          * Highlight a cell.
+          *
+          * @param colIdx	column index of the cell to highlight
+          */
+         public void highlight(int colIdx) {
+             this.cells[colIdx].highlight();
+         }
+
     }
 
     /**

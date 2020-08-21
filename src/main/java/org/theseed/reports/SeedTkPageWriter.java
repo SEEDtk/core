@@ -25,7 +25,7 @@ public class SeedTkPageWriter extends PageWriter {
                 link().withRel("icon").withType("image/png").withHref("/SEEDtk/favicon.ico")
                 ), body);
         System.out.println(page.render());
-
+        System.out.flush();
     }
 
     @Override

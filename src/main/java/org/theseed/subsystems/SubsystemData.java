@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theseed.io.LineReader;
 import org.theseed.io.MarkerFile;
+import org.theseed.reports.LinkObject;
 import org.theseed.reports.PageWriter;
 
 import j2html.tags.ContainerTag;
@@ -61,8 +62,6 @@ public class SubsystemData {
     /** number of milliseconds it takes for an error check to go stale (7 days of 24 hours of 3600 seconds
      * of 1000 milliseconds) */
     private static final long STALE_TIME = 7 * 24 * 3600 * 1000;
-    /** coreSEED subsystem page link format */
-    private static final String SUBSYSTEM_LINK = "https://core.theseed.org/FIG/seedviewer.cgi?page=Subsystems;subsystem=%s";
     /** format for subsystem page URLs */
     private static String HEALTH_LINK = "/subsystems.cgi/health?id=%s";
 
@@ -330,7 +329,7 @@ public class SubsystemData {
      * @return the CoreSEED URL for this subsystem
      */
     public String getLink() {
-        return String.format(SUBSYSTEM_LINK, this.getUrlId());
+        return String.format(LinkObject.Core.SUBSYSTEM_LINK, this.getUrlId());
     }
 
 

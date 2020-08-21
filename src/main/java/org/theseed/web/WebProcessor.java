@@ -27,6 +27,9 @@ import org.theseed.web.forms.FormElement;
 import org.theseed.web.forms.FormFileElement;
 import org.theseed.web.forms.FormIntElement;
 
+import j2html.tags.ContainerTag;
+import static j2html.TagCreator.*;
+
 /**
  * This is the base class for web page service commands.  The first two positional parameters are the coreSEED directory
  * and the workspace ID.  An environment option specifies the page format.
@@ -45,6 +48,8 @@ public abstract class WebProcessor extends BaseProcessor {
     private File workSpaceDir;
     /** working directory for temp files */
     private File workDir;
+    /** class ID for preselected cursor focus */
+    public static final String FOCUS_CLASS = "_focus";
 
     // COMMAND-LINE OPTIONS
 
@@ -59,8 +64,6 @@ public abstract class WebProcessor extends BaseProcessor {
     /** workspace name */
     @Argument(index = 1, metaVar = "workspace", usage = "workspace name")
     private String workSpace;
-
-    // TODO put back buttons on result pages
 
     /**
      * Set the default options.
@@ -144,6 +147,18 @@ public abstract class WebProcessor extends BaseProcessor {
     }
 
     /**
+     * @return a local link using this object's page writer
+     *
+     * @param text		text of the link
+     * @param href		URL of the link
+     */
+    protected ContainerTag localLink(String text, String href) {
+        String url = this.pageWriter.local_url(href);
+        ContainerTag retVal = a(text).withHref(url);
+        return retVal;
+    }
+
+    /**
      * @return the named file in the workspace
      *
      * @param name		name of desired file
@@ -165,6 +180,7 @@ public abstract class WebProcessor extends BaseProcessor {
      */
     protected final void runCommand() throws Exception {
         try (CookieFile cookies = new CookieFile(this.workSpaceDir, this.getCookieName())) {
+            this.saveForm(cookies);
             this.runWebCommand(cookies);
         }
     }
