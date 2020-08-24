@@ -4,6 +4,7 @@
 package org.theseed.reports;
 
 import java.util.stream.Stream;
+import static j2html.TagCreator.*;
 
 import j2html.tags.DomContent;
 
@@ -17,8 +18,9 @@ import j2html.tags.DomContent;
 public class InternalPageWriter extends PageWriter {
 
     @Override
-    public void writePage(String title, Stream<DomContent> content) {
+    public void writePage(String title, DomContent heading, Stream<DomContent> content) {
         // We are internal to another page, so the title is ignored.
+        System.out.println(h1(heading));
         content.forEach(x -> System.out.println(x));
     }
 

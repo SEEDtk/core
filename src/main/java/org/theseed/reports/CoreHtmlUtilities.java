@@ -3,10 +3,19 @@
  */
 package org.theseed.reports;
 
+import static j2html.TagCreator.div;
+import static j2html.TagCreator.table;
+import static j2html.TagCreator.td;
+import static j2html.TagCreator.th;
+import static j2html.TagCreator.tr;
+
+import java.util.List;
 import java.util.Set;
 
 import org.theseed.genome.Feature;
+import org.theseed.sequence.Sequence;
 
+import j2html.tags.ContainerTag;
 import j2html.tags.DomContent;
 
 /**
@@ -27,4 +36,23 @@ public class CoreHtmlUtilities {
         DomContent retVal = HtmlUtilities.joinDelimited(subsystems.stream().map(x -> LinkObject.Core.subsystemLink(x)), " | ");
         return retVal;
     }
+
+    /**
+     * @return an alignment display table for a set of aligned sequences
+     *
+     * The sequences go in a table, with the label as the row header with a hover title of the comment, and the
+     * sequence in the main column.  The alignment div is used to insure the table behaves properly.
+     *
+     * @param aligned	list of sequences to display
+     */
+    public static ContainerTag alignmentTable(List<Sequence> aligned) {
+        ContainerTag alignTable = table();
+        for (Sequence seq : aligned) {
+            ContainerTag row = tr().with(th(seq.getLabel()).withTitle(seq.getComment())).with(td(seq.getSequence()));
+            alignTable.with(row);
+        }
+        ContainerTag alignDiv = div(alignTable).withId("Aligned");
+        return alignDiv;
+    }
+
 }

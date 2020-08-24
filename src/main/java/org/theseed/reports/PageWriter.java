@@ -42,10 +42,11 @@ public abstract class PageWriter {
      * subclass sends it to the standard output with the proper formatting.
      *
      * @param title		title to use if this is a standalone web page
+     * @param heading	heading element
      * @param content	array of content items to put on the page
      */
-    public void writePage(String title, DomContent... content) {
-        this.writePage(title, Arrays.stream(content));
+    public void writePage(String title, DomContent heading, DomContent... content) {
+        this.writePage(title, heading, Arrays.stream(content));
     }
 
     /**
@@ -55,8 +56,8 @@ public abstract class PageWriter {
      * @param title		title to use if this is a standalone web page
      * @param content	array of content items to put on the page
      */
-    public void writePage(String title, List<DomContent> content) {
-        this.writePage(title, content.stream());
+    public void writePage(String title, DomContent heading, List<DomContent> content) {
+        this.writePage(title, heading, content.stream());
     }
 
     /**
@@ -66,7 +67,7 @@ public abstract class PageWriter {
      * @param title		title to use if this is a standalone web page
      * @param content	stream of content items to put on the page
      */
-    protected abstract void writePage(String title, Stream<DomContent> stream);
+    protected abstract void writePage(String title, DomContent heading, Stream<DomContent> stream);
 
 
     /**

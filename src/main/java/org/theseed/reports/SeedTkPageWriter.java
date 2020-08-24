@@ -16,14 +16,17 @@ import java.util.stream.Stream;
  */
 public class SeedTkPageWriter extends PageWriter {
 
+    private static final DomContent BREAK = br().withClass("logo");
+
     @Override
-    public void writePage(String title, Stream<DomContent> content) {
+    public void writePage(String title, DomContent heading, Stream<DomContent> content) {
         System.out.println(document().render());
-        ContainerTag body = body().attr("onload", "setup();").with(content);
+        ContainerTag body = body().attr("onload", "setup();")
+                .with(a(img().withSrc("/SEEDtk/css/seed-logo-blue.png").withClass("logo")).withHref("/SEEDtk/"))
+                .with(h1(heading)).with(BREAK).with(content);
         ContainerTag page = html(head(title(title), link().withRel("stylesheet").withHref("/SEEDtk/css/Basic.css"),
                 script().withSrc("/SEEDtk/css/utils.js"), script().withSrc("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"),
-                link().withRel("icon").withType("image/png").withHref("/SEEDtk/favicon.ico")
-                ), a(img().withSrc("/SEEDtk/css/seed-logo-blue.png").withClass("logo")).withHref("/SEEDtk/"), body);
+                link().withRel("icon").withType("image/png").withHref("/SEEDtk/favicon.ico")), body);
         System.out.println(page.render());
         System.out.flush();
     }
