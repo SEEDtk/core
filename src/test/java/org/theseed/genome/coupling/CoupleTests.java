@@ -33,7 +33,7 @@ public class CoupleTests extends TestCase {
     }
 
     public void testCouplingSet() throws IOException {
-        CouplingSet couples = new CouplingSet(new File("src/test/resources", "couples.tbl"), "PGF_00006351", "PGF_00884706");
+        CouplingSet couples = new CouplingSet(new File("data", "couples.tbl"), "PGF_00006351", "PGF_00884706");
         assertThat(couples.getFamily(0), equalTo("PGF_00006351"));
         assertThat(couples.getFamily(1), equalTo("PGF_00884706"));
         assertThat(couples.getFunction(0), equalTo("Efflux ABC transporter, permease protein"));

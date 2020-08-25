@@ -22,7 +22,7 @@ import org.apache.commons.io.FileUtils;
 public class CookieFileTest extends TestCase {
 
     public void testCookieFile() throws IOException {
-        File wsDir = new File("src/test/resources", "Workspace");
+        File wsDir = new File("data", "Workspace");
         // Make sure we delete the cookie file.
         File cookieFileName = new File(wsDir, "_testCookies.cookie.tbl");
         if (cookieFileName.exists())

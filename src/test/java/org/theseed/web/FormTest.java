@@ -24,9 +24,9 @@ public class FormTest extends TestCase {
 
     public void testHtmlForm() throws IOException {
         PageWriter writer = PageWriter.Type.SEEDTK.create();
-        File wsDir = new File("src/test/resources", "Workspace");
+        File wsDir = new File("data", "Workspace");
         // Make sure we delete the cookie file.
-        File cookieFileName = new File(wsDir, HtmlForm.formCookieName("test", "run"));
+        File cookieFileName = new File(wsDir, "_" + HtmlForm.formCookieName("test", "run") + ".cookie.tbl");
         if (cookieFileName.exists())
             FileUtils.forceDelete(cookieFileName);
         HtmlForm form = buildTestForm(writer, wsDir);
@@ -41,7 +41,7 @@ public class FormTest extends TestCase {
         }
         formHtml = buildTestForm(writer, wsDir).output().render();
         // Verify that the form has the new defaults.
-        assertThat(formHtml, equalTo(""));
+        assertThat(formHtml, equalTo("<form method=\"POST\" action=\"/SEEDtk/test.cgi/run\" class=\"web\" enctype=\"multipart/form-data\"><input type=\"hidden\" name=\"workspace\" value=\"parrello\"/><table><tr><th>Parameter</th><th>Value</th></tr><tr><td>Query Sequences</td><td><select name=\"qtype\"><option value=\"db\">Existing Blast Database</option><option value=\"dna\" selected>DNA FASTA file</option><option value=\"prot\">Protein FASTA file</option><option value=\"contigs\">Contigs in a GTO</option><option value=\"pegs\">Proteins in a GTO</option><option value=\"features\">Feature DNA in a GTO</option><option value=\"pegs_dna\">DNA of PEGs in a GTO</option><option value=\"rna\">RNA features in a GTO</option></select> <input type=\"checkbox\" onChange=\"configureFiles(this, 'qfile_local', 'qfile_work');\" id=\"qfile\" class=\"fileChecker\"/> Local <input type=\"file\" id=\"qfile_local\" style=\"display: none;\" class=\"file\"/> <input type=\"text\" name=\"qfile\" id=\"qfile_work\" list=\"_data_list_0000\" class=\"file\" style=\"display: inline-block;\"/></td></tr><tr><td>Show more detailed log messages</td><td><input type=\"checkbox\" name=\"debug\" checked/></td></tr><tr><td>Output Sort Type</td><td><select name=\"sort\"><option value=\"QUERY\">Sort by Query Sequence</option><option value=\"SUBJECT\" selected>Sort by Subject Sequence</option></select></td></tr><tr><td>Table file</td><td><input type=\"checkbox\" onChange=\"configureFiles(this, 'tabFile_local', 'tabFile_work');\" id=\"tabFile\" class=\"fileChecker\"/> Local <input type=\"file\" id=\"tabFile_local\" style=\"display: none;\" class=\"file\"/> <input type=\"text\" name=\"tabFile\" id=\"tabFile_work\" list=\"_data_list_0001\" class=\"file\" style=\"display: inline-block;\" value=\"frog.prince.tbl\"/></td></tr><tr><td>Percent Identity</td><td><input type=\"number\" name=\"pctIdent\" value=\"0\" min=\"0\" max=\"100\"/></td></tr><tr><td>Maximum E-value</td><td><input type=\"text\" name=\"maxE\" value=\"1e-10\"/></td></tr></table><p><input type=\"submit\" class=\"submit\"/></p></form>"));
     }
 
     /**

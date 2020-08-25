@@ -56,7 +56,7 @@ public class SubsystemTest extends TestCase {
     }
 
     public void testRow() throws IOException {
-        File coreDir = new File("src/test/resources");
+        File coreDir = new File("data");
         RowData row = RowData.load(coreDir, "83333.1\t-1\t\t\t", 6);
         assertThat(row, nullValue());
         row = RowData.load(coreDir, "83333.1\tactive\trna.4,5\t\t30\t100", 6);
@@ -88,7 +88,7 @@ public class SubsystemTest extends TestCase {
         assertThat(funs.get("fig|83333.1.peg.4428"), equalTo("Transcriptional regulator YjdC, AcrR family"));
         // Verify no deleted features are in the function map.
         Set<String> deleted = new HashSet<String>(1000);
-        try (LineReader delFile = new LineReader(new File("src/test/resources/Organisms/83333.1/Features/peg", "deleted.features"))) {
+        try (LineReader delFile = new LineReader(new File("data/Organisms/83333.1/Features/peg", "deleted.features"))) {
             for (String fid : delFile)
                 deleted.add(fid);
         }
@@ -102,7 +102,7 @@ public class SubsystemTest extends TestCase {
      * test column data
      */
     public void testColumns() {
-        File coreDir = new File("src/test/resources");
+        File coreDir = new File("data");
         ColumnData col0 = new ColumnData(0, "R1", "fake role / other role");
         assertThat(col0.getColIdx(), equalTo(0));
         assertThat(col0.getFunction(), equalTo("fake role / other role"));
@@ -168,7 +168,7 @@ public class SubsystemTest extends TestCase {
     }
 
     public void testSubsystem() throws IOException {
-        File coreDir = new File("src/test/resources");
+        File coreDir = new File("data");
         SubsystemData subsystem = SubsystemData.load(coreDir, "Threonine_synthesis");
         assertThat(subsystem, nullValue());
         subsystem = SubsystemData.load(coreDir, "2-nitroimidazole_resistance");
