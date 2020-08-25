@@ -43,8 +43,12 @@ public class CoreHtmlUtilities {
      * The sequences go in a table, with the label as the row header with a hover title of the comment, and the
      * sequence in the main column.  The alignment div is used to insure the table behaves properly.
      *
+     * A summary row is placed along the bottom.  This row contains the consensus letter and displays statistics when clicked.
+     * The most common non-hyphen letter is given a colored background.
+     *
      * @param aligned	list of sequences to display
      */
+    // TODO coloring and counting
     public static ContainerTag alignmentTable(List<Sequence> aligned) {
         ContainerTag alignTable = table();
         for (Sequence seq : aligned) {

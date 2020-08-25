@@ -28,8 +28,6 @@ import org.theseed.web.forms.FormFileElement;
 import org.theseed.web.forms.FormIntElement;
 
 import j2html.tags.ContainerTag;
-import j2html.tags.DomContent;
-
 import static j2html.TagCreator.*;
 
 /**
