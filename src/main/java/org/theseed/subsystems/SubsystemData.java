@@ -332,5 +332,14 @@ public class SubsystemData {
         return String.format(LinkObject.Core.SUBSYSTEM_LINK, this.getUrlId());
     }
 
+    /**
+     * @return the role for the specified column
+     *
+     * @param i		index (0-based) of the desired column
+     */
+    public String getRole(int i) {
+        return this.columns[i].getFunction();
+    }
+
 
 }

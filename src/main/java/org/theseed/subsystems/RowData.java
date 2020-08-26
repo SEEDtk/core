@@ -73,8 +73,9 @@ public class RowData implements Comparable<RowData> {
             // Get the genome name. Don't fail if the genome is missing.
             String genomeId = parts[0];
             File orgDir = new File(dataDir, "Organisms/" + genomeId);
+            File deleteFile = new File(orgDir, "DELETED");
             String name = "";
-            if (orgDir.isDirectory())
+            if (orgDir.isDirectory() && ! deleteFile.exists())
                 name = MarkerFile.read(new File(orgDir, "GENOME"));
             // Create the row.
             retVal = new RowData(genomeId, name, parts[1]);
