@@ -202,6 +202,8 @@ public class SubsystemTest extends TestCase {
         assertThat(subsystem2.getName(), equalTo(subsystem.getName()));
         assertThat(subsystem2.getErrorCount(), equalTo(subsystem.getErrorCount()));
         assertThat(subsystem2.isSuspectErrorCount(), isFalse());
+        assertThat(subsystem2.isPrivate(), isFalse());
+        assertThat(subsystem2.getCurator(), equalTo("VeronikaV"));
         ColumnData col = subsystem.getColumns()[0];
         assertThat(col.getAbbr(), equalTo("NimR"));
         assertThat(col.getFunction(), equalTo("Transcriptional regulator of NimT, AraC family"));
@@ -229,6 +231,9 @@ public class SubsystemTest extends TestCase {
         assertThat(MarkerFile.readInt(SubsystemData.errorCountFile(coreDir, subsystem.getId())), equalTo(0));
         assertThat(subsystem.getErrorCount(), equalTo(0));
         assertThat(subsystem.getHealth(), equalTo(1.0));
+        assertThat(subsystem.getCurator(), equalTo("gjo"));
+        subsystem = SubsystemData.load(coreDir, "ZZ_gjo_need_homes");
+        assertThat(subsystem.isPrivate(), isTrue());
     }
 
 }

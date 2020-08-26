@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theseed.io.LineReader;
 import org.theseed.io.MarkerFile;
+import org.theseed.io.TabbedLineReader;
 import org.theseed.reports.LinkObject;
 import org.theseed.reports.PageWriter;
 
@@ -117,7 +118,7 @@ public class SubsystemData {
      * Load a subsystem from the SEED.
      *
      * @param coreDir	SEED data directory
-     * @param id		ID of the subsystem
+     * @param ssId		ID of the subsystem
      *
      * @return the fully-populated subsystem, or NULL if the subsystem does not exist
      */
@@ -241,6 +242,40 @@ public class SubsystemData {
         return this.missingGenomes.size();
     }
 
+    /**
+     * @return the curator of this subsystem
+     *
+     * The curator name is in the middle column of the last record in a 3-column headerless file.
+     */
+    public String getCurator() throws IOException {
+        String retVal = "FIG:unknown";
+        File curatorLog = new File(this.coreDir, "Subsystems/" + this.id + "/curation.log");
+        if (curatorLog.exists()) {
+            try (TabbedLineReader curatorStream = new TabbedLineReader(curatorLog, 3)) {
+                for (TabbedLineReader.Line line : curatorStream)
+                    retVal = line.get(1);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        }
+        return retVal;
+    }
+
+    /**
+     * @return TRUE if the subsystem is private
+     *
+     * A subsystem is private if it is experimental or not exchangeable.
+     */
+    public boolean isPrivate() {
+        File classFile = new File(this.coreDir, "Subsystems/" + this.id + "/CLASSIFICATION");
+        String classification = MarkerFile.read(classFile);
+        boolean retVal = StringUtils.containsIgnoreCase(classification, "experimental");
+        if (! retVal) {
+            File exchangeFile = new File(this.coreDir, "Subsystems/" + this.id + "/EXCHANGABLE");
+            retVal = (! exchangeFile.exists());
+        }
+        return retVal;
+    }
     /**
      * Run validation on all rows of this subsystem and tally the
      * results.
