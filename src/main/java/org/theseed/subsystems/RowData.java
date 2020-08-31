@@ -5,11 +5,13 @@ package org.theseed.subsystems;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.theseed.io.LineReader;
@@ -102,11 +104,32 @@ public class RowData implements Comparable<RowData> {
      * @throws IOException
      */
     public Map<String, String> getFunctions() throws IOException {
+        Map<String, String> retVal = readFunctions(this.orgDir, this.genomeId, this.types);
+        return retVal;
+    }
+
+    /**
+     * Read the functions for this genome.  Only non-deleted features are processed.
+     *
+     * @param genomeDir		directory containing the genome
+     * @param genomeId		ID of the genome
+     * @param types			set of feature types of interest; or NULL to process all types
+     *
+     * @return a map from feature IDs to functions
+     *
+     * @throws IOException
+     */
+    public static Map<String, String> readFunctions(File genomeDir, String genomeId, Set<String> types) throws IOException {
         Map<String, String> retVal = new HashMap<String, String>(3000);
+        File featureDir = new File(genomeDir, "Features");
+        // Initialize the feature type set if we don't have one.
+        if (types == null) {
+            types = Files.walk(featureDir.toPath(), 1).map(p -> p.getFileName().toString()).collect(Collectors.toSet());
+        }
         // Compute the deleted features.
         Set<String> deleted = new HashSet<String>(100);
-        for (String type : this.types) {
-            File deleteFile = new File(this.orgDir, "Features/" + type + "/deleted.features");
+        for (String type : types) {
+            File deleteFile = new File(featureDir, type + "/deleted.features");
             if (deleteFile.exists())
                 try (LineReader deleteStream = new LineReader(deleteFile)) {
                     for (String fid : deleteStream)
@@ -115,14 +138,14 @@ public class RowData implements Comparable<RowData> {
         }
         // Now read the assigned functions.  We only keep the ones of interest that are NOT
         // deleted.
-        File functionFile = new File(this.orgDir, "assigned_functions");
+        File functionFile = new File(genomeDir, "assigned_functions");
         try (LineReader funStream = new LineReader(functionFile)) {
-            String prefix = "fig|" + this.genomeId + ".";
+            String prefix = "fig|" + genomeId + ".";
             // We use the section protocol to get the fields as an array.
             for (String[] parts : funStream.new Section(null)) {
                 String type = StringUtils.substringBetween(parts[0], prefix, ".");
                 // A null type means we have an invalid feature ID.  We just skip it.
-                if (type != null && this.types.contains(type) && ! deleted.contains(parts[0]))
+                if (type != null && types.contains(type) && ! deleted.contains(parts[0]))
                     retVal.put(parts[0], parts[1]);
             }
         }
