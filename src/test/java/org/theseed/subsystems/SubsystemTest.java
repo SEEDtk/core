@@ -32,6 +32,7 @@ public class SubsystemTest extends TestCase {
     public void testCell() {
         RowData row = new RowData("123.4", "fake genome", "likely");
         assertThat(row.getGenomeId(), equalTo("123.4"));
+        assertThat(row.isActive(), isTrue());
         String rowHtml = row.displayGenome().render();
         assertThat(rowHtml, stringContainsInOrder(Arrays.asList("<a", "123.4", "fake genome</a>")));
         assertThat(row.getVariant(), equalTo("likely"));
@@ -65,6 +66,8 @@ public class SubsystemTest extends TestCase {
         assertThat(row2.getGenomeId(), equalTo("83333.1"));
         assertThat(row3.getGenomeId(), equalTo("100226.1"));
         assertThat(row3.isMissing(), isTrue());
+        assertThat(row2.isActive(), isFalse());
+        assertThat(row2.isActive(), isFalse());
         assertThat(row, equalTo(row2));
         assertThat(row.compareTo(row2), equalTo(0));
         assertThat(row, not(equalTo(row3)));
@@ -121,6 +124,7 @@ public class SubsystemTest extends TestCase {
         assertThat(col1.getAbbr(), equalTo("R2"));
         ColumnData col2 = new ColumnData(2, "R3", "new role");
         RowData row = RowData.load(coreDir, "83333.1\t0\t101\t102,103\t104", 6);
+        assertThat(row.isActive(), isFalse());
         row.getCell(0).setState("fig|83333.1.peg.100", "bonus role", col0);
         assertThat(row.getCell(0).contains("fig|83333.1.peg.100"), isFalse());
         row.getCell(0).setState("fig|83333.1.peg.101", "fake role / other role # comment", col0);
@@ -150,9 +154,11 @@ public class SubsystemTest extends TestCase {
         assertThat(col2.getCount(PegState.BAD_ROLE), equalTo(0));
         assertThat(col2.hasErrors(), isTrue());
         row = RowData.load(coreDir, "99287.1\tactive\t\t1,2", 6);
+        assertThat(row.isActive(), isTrue());
         row.getCell(1).setState("fig|99287.1.peg.1", "wrong role", col1);
         col1.countCell(row.getCell(1));
         row = RowData.load(coreDir, "209261.1\tactive\t\t4", 6);
+        assertThat(row.isActive(), isTrue());
         row.getCell(1).setState("fig|209261.1.peg.4", "wrong role", col1);
         col1.countCell(row.getCell(1));
         assertThat(col1.getCount(PegState.GOOD), equalTo(0));
@@ -181,12 +187,14 @@ public class SubsystemTest extends TestCase {
         List<RowData> rows = new ArrayList<RowData>(subsystem.getRows());
         rows.sort(null);
         RowData row = rows.get(0);
+        assertThat(row.isActive(), isFalse());
         assertThat(row.getGenomeId(), equalTo("83333.1"));
         assertThat(row.getVariant(), equalTo("inactive"));
         assertThat(row.getCell(0).contains("fig|83333.1.peg.4"), isTrue());
         assertThat(row.getCell(1).contains("fig|83333.1.peg.5"), isTrue());
         assertThat(row.getCell(2).contains("fig|83333.1.rna.6"), isTrue());
         row = rows.get(3);
+        assertThat(row.isActive(), isTrue());
         assertThat(row.getGenomeId(), equalTo("99287.1"));
         assertThat(row.getVariant(), equalTo("active.1.1"));
         assertThat(row.getCell(0).contains("fig|99287.1.peg.1237"), isTrue());

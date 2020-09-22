@@ -3,8 +3,11 @@ package org.theseed.web;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +31,8 @@ import org.theseed.web.forms.FormFileElement;
 import org.theseed.web.forms.FormIntElement;
 
 import j2html.tags.ContainerTag;
+import j2html.tags.DomContent;
+
 import static j2html.TagCreator.*;
 
 /**
@@ -415,6 +420,20 @@ public abstract class WebProcessor extends BaseProcessor {
                 }
             }
         }
+    }
+
+    /**
+     * @return a link to search for the specified function/role in the CoreSEED
+     *
+     * @param coreFunDesc	function/role to search for
+     *
+     * @throws UnsupportedEncodingException
+     */
+    protected DomContent roleSearchLink(String coreFunDesc) throws UnsupportedEncodingException {
+        String pattern = URLEncoder.encode(Pattern.quote(coreFunDesc), StandardCharsets.UTF_8.toString());
+        String coreFunUrl = this.getPageWriter().local_url("/blast.cgi/search?workspace=" + this.getWorkSpace() + ";regex=" + pattern);
+        DomContent roleSearch = a(coreFunDesc).withHref(coreFunUrl).withTarget("_blank");
+        return roleSearch;
     }
 
     /**

@@ -253,4 +253,11 @@ public class RowData implements Comparable<RowData> {
         return this.name;
     }
 
+    /**
+     * @return TRUE if this row is for an active variant
+     */
+    public boolean isActive() {
+        return (! this.isMissing() && VariantId.isActive(this.variantCode));
+    }
+
 }

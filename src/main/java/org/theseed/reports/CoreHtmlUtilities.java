@@ -33,6 +33,16 @@ public class CoreHtmlUtilities {
      */
     public static DomContent subsystemList(Feature feat) {
         Set<String> subsystems = feat.getSubsystems();
+        DomContent retVal = subsystemList(subsystems);
+        return retVal;
+    }
+
+    /**
+     * @return the HTML for a list of subsystems
+     *
+     * @param subsystems	set of subsystems to list
+     */
+    public static DomContent subsystemList(Set<String> subsystems) {
         DomContent retVal = HtmlUtilities.joinDelimited(subsystems.stream().map(x -> LinkObject.Core.subsystemLink(x)), " | ");
         return retVal;
     }

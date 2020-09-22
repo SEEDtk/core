@@ -267,11 +267,23 @@ public class SubsystemData {
      * A subsystem is private if it is experimental or not exchangeable.
      */
     public boolean isPrivate() {
-        File classFile = new File(this.coreDir, "Subsystems/" + this.id + "/CLASSIFICATION");
+        return isPrivate(this.coreDir, this.id);
+    }
+
+    /**
+     * @return TRUE if a subsystem is private
+     *
+     * A subsystem is private if it is experimental or not exchangeable.
+     *
+     * @param coreDir	coreSEED data directory
+     * @param ssId		ID of the relevant subsystem
+     */
+    public static boolean isPrivate(File coreDir, String ssId) {
+        File classFile = new File(coreDir, "Subsystems/" + ssId + "/CLASSIFICATION");
         String classification = MarkerFile.read(classFile);
         boolean retVal = StringUtils.containsIgnoreCase(classification, "experimental");
         if (! retVal) {
-            File exchangeFile = new File(this.coreDir, "Subsystems/" + this.id + "/EXCHANGABLE");
+            File exchangeFile = new File(coreDir, "Subsystems/" + ssId + "/EXCHANGABLE");
             retVal = (! exchangeFile.exists());
         }
         return retVal;
