@@ -171,6 +171,16 @@ public class ColSpec {
     }
 
     /**
+     * String column with a fixed-width font.
+     */
+    public static class Aligned extends ColSpec {
+
+        public Aligned(String title) {
+            super(title, "%6.2f", "align");
+        }
+    }
+
+    /**
      * Flag column.  Centered text.
      */
     public static class Flag extends ColSpec {
