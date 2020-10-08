@@ -26,6 +26,8 @@ public class ColSpec {
     private String format;
     /** styles to use for all cells */
     private String[] styles;
+    /** tooltip text (if any) */
+    private String tooltip;
 
     /**
      * Construct a column specification with a different floating-point format.
@@ -39,6 +41,17 @@ public class ColSpec {
         this.title = col_title;
         this.format = fp_format;
         this.styles = baseStyles;
+        this.tooltip = null;
+    }
+
+    /**
+     * Specify a tooltip for this column.  This is a fluent method, as it is expected to be used during definition.
+     *
+     * @param tip	text of the tooltip
+     */
+    public ColSpec setTip(String tip) {
+        this.tooltip = tip;
+        return this;
     }
 
     /**
@@ -85,8 +98,11 @@ public class ColSpec {
     /**
      * @return the title of this column
      */
-    protected String getTitle() {
-        return this.title;
+    protected DomContent getTitle() {
+        DomContent retVal = text(this.title);
+        if (this.tooltip != null)
+            retVal = CoreHtmlUtilities.toolTip(retVal, this.tooltip);
+        return retVal;
     }
 
     /**
@@ -189,6 +205,13 @@ public class ColSpec {
             super(title, "%6.2f", "flag");
         }
 
+    }
+
+    /**
+     * @return the tooltip text
+     */
+    protected String getTooltip() {
+        return this.tooltip;
     }
 
 }

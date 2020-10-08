@@ -44,7 +44,8 @@ public class TestHtmlTables extends TestCase {
         output = table3.output().render();
         assertThat(output, equalTo("<table><tr><th>Subsystem</th><th class=\"num\">Errors</th></tr><tr><td>A new subsystem</td><td class=\"num\">0</td></tr><tr><td>Adenine synthase</td><td class=\"highlight num\">1</td></tr><tr><td>Alludium deforest</td><td class=\"num\">0</td></tr><tr><td>Alludium deForest</td><td class=\"num\">0</td></tr><tr><td>An old subsystem</td><td class=\"num\">0</td></tr><tr><td>Arginine thingnitase</td><td class=\"highlight num\">1</td></tr><tr><td>Effluent ruthlessness</td><td class=\"num\">0</td></tr><tr><td>Frosty the snowman</td><td class=\"highlight num\">1</td></tr></table>"));
         // Finally, the null key.
-        HtmlTable<Key.Null> table4 = new HtmlTable<Key.Null>(new ColSpec.Normal("Subsystem"), new ColSpec.RequiredCount("Good"), new ColSpec.Flag("Expired"));
+        HtmlTable<Key.Null> table4 = new HtmlTable<Key.Null>(new ColSpec.Normal("Subsystem").setTip("subsystems are good"),
+                new ColSpec.RequiredCount("Good"), new ColSpec.Flag("Expired"));
         table4.new Row(Key.NONE).add("A new subsystem").add(1).add(false);
         table4.new Row(Key.NONE).add("An old subsystem").add(2).add(true);
         table4.new Row(Key.NONE).add("Arginine thingnitase").add(3).add(false);
@@ -54,7 +55,7 @@ public class TestHtmlTables extends TestCase {
         table4.new Row(Key.NONE).add("Frosty the snowman").add(1).add(false);
         table4.new Row(Key.NONE).add("Effluent ruthlessness").add(0).add(true);
         output = table4.output().render();
-        assertThat(output, equalTo("<table><tr><th>Subsystem</th><th class=\"num\">Good</th><th class=\"flag\">Expired</th></tr><tr><td>A new subsystem</td><td class=\"num\">1</td><td class=\"flag\">&nbsp;</td></tr><tr><td>An old subsystem</td><td class=\"num\">2</td><td class=\"flag\">Y</td></tr><tr><td>Arginine thingnitase</td><td class=\"num\">3</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Adenine synthase</td><td class=\"highlight num\">0</td><td class=\"flag\">Y</td></tr><tr><td>Alludium deForest</td><td class=\"num\">3</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Alludium deforest</td><td class=\"num\">2</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Frosty the snowman</td><td class=\"num\">1</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Effluent ruthlessness</td><td class=\"highlight num\">0</td><td class=\"flag\">Y</td></tr></table>"));
+        assertThat(output, equalTo("<table><tr><th><span class=\"tt\">Subsystem<span class=\"tip\">subsystems are good</span></span></th><th class=\"num\">Good</th><th class=\"flag\">Expired</th></tr><tr><td>A new subsystem</td><td class=\"num\">1</td><td class=\"flag\">&nbsp;</td></tr><tr><td>An old subsystem</td><td class=\"num\">2</td><td class=\"flag\">Y</td></tr><tr><td>Arginine thingnitase</td><td class=\"num\">3</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Adenine synthase</td><td class=\"highlight num\">0</td><td class=\"flag\">Y</td></tr><tr><td>Alludium deForest</td><td class=\"num\">3</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Alludium deforest</td><td class=\"num\">2</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Frosty the snowman</td><td class=\"num\">1</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Effluent ruthlessness</td><td class=\"highlight num\">0</td><td class=\"flag\">Y</td></tr></table>"));
     }
 
 }

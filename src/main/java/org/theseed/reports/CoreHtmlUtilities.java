@@ -48,6 +48,16 @@ public class CoreHtmlUtilities {
     }
 
     /**
+     * @return the HTML for a tooltipped string
+     *
+     * @param base		HTML object to be tooltipped
+     * @param tip		text of the tooltip
+     */
+    public static DomContent toolTip(DomContent base, String tip) {
+        return span(rawHtml(base.render() + span(tip).withClass("tip").render())).withClass("tt");
+    }
+
+    /**
      * @return an alignment display table for a set of aligned sequences
      *
      * The sequences go in a table. The list is a row header with a hover title of the comment, and the
@@ -96,7 +106,7 @@ public class CoreHtmlUtilities {
                     .map(x -> String.format("%c = %d%%", x.getTarget(), (x.getCount() * 100 + 50) / aligned.size()))
                     .collect(Collectors.joining(", "));
             // Embed the consensus character in the tooltip and add it to the buffer.
-            DomContent conChar = span(rawHtml(Character.toString(consensus.charAt(i)) + span(analysis).withClass("tip").render())).withClass("tt");
+            DomContent conChar = toolTip(text(Character.toString(consensus.charAt(i))), analysis);
             buffer.append(conChar.render());
         }
         ContainerTag consensusRow = tr().with(th("CONSENSUS")).with(td(rawHtml(buffer.toString())));
