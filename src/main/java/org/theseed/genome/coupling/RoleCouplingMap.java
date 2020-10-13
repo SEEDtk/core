@@ -7,8 +7,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -34,7 +36,7 @@ import org.theseed.proteins.RoleMap;
  * @author Bruce Parrello
  *
  */
-public class RoleCouplingMap {
+public class RoleCouplingMap implements Serializable {
 
     // FIELDS
     /** role definition map */
@@ -56,23 +58,49 @@ public class RoleCouplingMap {
     /**
      * Construct a role-coupling map from a kmers.reps coupling report.
      *
-     * @param inFile	coupling report containing the role couplings
+     * @param inFile	coupling report containing the role couplings (file)
      *
      * @throws IOException
      */
     public RoleCouplingMap(File inFile) throws IOException {
+        this.init();
         try (TabbedLineReader inStream = new TabbedLineReader(inFile)) {
-            int role1Idx = inStream.findField("role1");
-            int role2Idx = inStream.findField("role2");
-            int sizeIdx = inStream.findField("size");
-            int strengthIdx = inStream.findField("sim_distance");
-            for (TabbedLineReader.Line line : inStream) {
-                String role1Desc = line.get(role1Idx);
-                String role2Desc = line.get(role2Idx);
-                Role role1 = this.roleMap.findOrInsert(role1Desc);
-                Role role2 = this.roleMap.findOrInsert(role2Desc);
-                this.couple(role1.getId(), role2.getId(), line.getInt(sizeIdx), line.getDouble(strengthIdx));
-            }
+            readFromStream(inStream);
+        }
+    }
+
+    /**
+     * Construct a role-coupling map from a kmers.reps coupling report.
+     *
+     * @param input	coupling report containing the role couplings (stream)
+     *
+     * @throws IOException
+     */
+    public RoleCouplingMap(InputStream input) throws IOException {
+        this.init();
+        try (TabbedLineReader inStream = new TabbedLineReader(input)) {
+            readFromStream(inStream);
+        }
+    }
+
+    /**
+     * Read this coupling map from an input stream.
+     *
+     * @param inStream		input stream containing a coupling report
+     *
+     * @throws IOException
+     */
+    protected void readFromStream(TabbedLineReader inStream) throws IOException {
+        int role1Idx = inStream.findField("role1");
+        int role2Idx = inStream.findField("role2");
+        int sizeIdx = inStream.findField("size");
+        int strengthIdx = inStream.findField("sim_distance");
+        for (TabbedLineReader.Line line : inStream) {
+            String role1Desc = line.get(role1Idx);
+            String role2Desc = line.get(role2Idx);
+            Role role1 = this.roleMap.findOrInsert(role1Desc);
+            Role role2 = this.roleMap.findOrInsert(role2Desc);
+            this.couple(role1.getId(), role2.getId(), line.getInt(sizeIdx), line.getDouble(strengthIdx));
         }
     }
 
@@ -111,10 +139,13 @@ public class RoleCouplingMap {
      * @throws IOException
      */
     private void readObject(ObjectInputStream is) throws IOException {
+        // Initialize the object.
+        this.init();
         // Loop through the role definitions.
         String role = is.readUTF();
         while (! role.contentEquals(MARKER)) {
-            this.roleMap.put(role, is.readUTF());
+            Role roleO = new Role(role, is.readUTF());
+            this.roleMap.put(roleO);
             role = is.readUTF();
         }
         // Loop through the coupling definitions.  For each coupling, we add both directions.
@@ -125,6 +156,7 @@ public class RoleCouplingMap {
             int size = is.readInt();
             double strength = is.readDouble();
             this.couple(role, target, size, strength);
+            role = is.readUTF();
         }
     }
 
@@ -222,11 +254,26 @@ public class RoleCouplingMap {
 
     /**
      * @return the description of a role
+     *
+     * @param ID of the role of interest
      */
     public String getName(String roleId) {
         return this.roleMap.getName(roleId);
     }
 
+    /**
+     * @return the ID of the role having a description, or NULL if the role is not in the map
+     *
+     * @param roleDesc	description of interest
+     */
+    public String getRole(String roleDesc) {
+        String retVal = null;
+        Role role = this.roleMap.getByName(roleDesc);
+        if (role != null) {
+            retVal = role.getId();
+        }
+        return retVal;
+    }
     /**
      * @return the highest-strength coupling in the specified coupling list relevant to the specified feature
      *
