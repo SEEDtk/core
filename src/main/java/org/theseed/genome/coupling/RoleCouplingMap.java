@@ -47,6 +47,8 @@ public class RoleCouplingMap implements Serializable {
     private static final String MARKER = "//";
     /** empty set of couplings */
     private static final SortedSet<Coupling> NO_COUPLINGS = new TreeSet<Coupling>();
+    /** serialization class ID */
+    private static final long serialVersionUID = -6953186280381142675L;
 
     /**
      * Construct a blank, empty role-coupling map.
@@ -275,7 +277,7 @@ public class RoleCouplingMap implements Serializable {
         return retVal;
     }
     /**
-     * @return the highest-strength coupling in the specified coupling list relevant to the specified feature
+     * @return the highest-strength coupling in the specified coupling list relevant to the specified feature, or NULL if there is none
      *
      * @param couplings		set of desired couplings, sorted by strength
      * @param feat			feature of interest
@@ -294,6 +296,13 @@ public class RoleCouplingMap implements Serializable {
             }
         }
         return retVal;
+    }
+
+    /**
+     * @return the underlying role map
+     */
+    public RoleMap getMap() {
+        return this.roleMap;
     }
 
 }
