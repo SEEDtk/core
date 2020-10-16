@@ -131,7 +131,7 @@ public abstract class Key {
 
         @Override
         public int compareTo(RevFloat o) {
-            return Double.compare(this.value, o.value);
+            return Double.compare(o.value, this.value);
         }
 
         @Override

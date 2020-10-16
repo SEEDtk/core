@@ -52,9 +52,22 @@ public class CoreHtmlUtilities {
      *
      * @param base		HTML object to be tooltipped
      * @param tip		text of the tooltip
+     * @param type		tooltip class
+     */
+    public static DomContent toolTip(DomContent base, String tip, String type) {
+        return span(rawHtml(base.render() + span(tip).withClass(type).render())).withClass("tt");
+    }
+
+    /**
+     * @return the HTML for a tooltipped string
+     *
+     * This creates a top-style tooltip always.
+     *
+     * @param base		HTML object to be tooltipped
+     * @param tip		text of the tooltip
      */
     public static DomContent toolTip(DomContent base, String tip) {
-        return span(rawHtml(base.render() + span(tip).withClass("tip").render())).withClass("tt");
+        return toolTip(base, tip, "tip");
     }
 
     /**

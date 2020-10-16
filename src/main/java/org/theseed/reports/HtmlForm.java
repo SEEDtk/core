@@ -181,6 +181,54 @@ public class HtmlForm {
     }
 
     /**
+     * Add a choice box with a numeric return.  The return value will be the list index of the chosen
+     * value.  If the list is empty, the control is a hidden that always returns 0.
+     *
+     * @param name			parameter name
+     * @param description	parameter description
+     * @param defaultValue	default string value to pre-select
+     * @param values		list of string values
+     */
+    public void addChoiceBoxIndexed(String name, String description, String defaultValue, List<String> values) {
+        DomContent retVal;
+        if (values.size() <= 1) {
+            // Here we have an empty list or a singleton that can only have the one value.
+            retVal = input().attr("type", "hidden").attr("name", name).attr("value", "0");
+        } else {
+            // Here we have a real selection.
+            ContainerTag selector = select().withName(name);
+            for (int i = 0; i < values.size(); i++) {
+                String optVal = values.get(i);
+                ContainerTag option = option(optVal).withValue(Integer.toString(i));
+                if (optVal.contentEquals(defaultValue))
+                    option.attr("selected");
+                selector.with(option);
+            }
+            retVal = selector;
+        }
+        newRow(description, retVal);
+    }
+
+    /**
+     * Add a choice box with a string return.  The return value will be the text of the chosen value.
+     *
+     * @param name			parameter name
+     * @param description	parameter description
+     * @param defaultValue	default string value to pre-select
+     * @param values		list of string values
+     */
+    public void addChoiceBox(String name, String description, String defaultValue, List<String> values) {
+        ContainerTag retVal = select().withName(name);
+        for (String optVal : values) {
+            ContainerTag option = option(optVal).withValue(optVal);
+            if (optVal.contentEquals(defaultValue))
+                option.attr("selected");
+            retVal.with(option);
+        }
+        newRow(description, retVal);
+    }
+
+    /**
      * Add a file input.
      *
      * @param name			parameter name

@@ -101,7 +101,7 @@ public class ColSpec {
     protected DomContent getTitle() {
         DomContent retVal = text(this.title);
         if (this.tooltip != null)
-            retVal = CoreHtmlUtilities.toolTip(retVal, this.tooltip);
+            retVal = CoreHtmlUtilities.toolTip(retVal, this.tooltip, "btip");
         return retVal;
     }
 
