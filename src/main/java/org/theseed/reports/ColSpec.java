@@ -187,6 +187,17 @@ public class ColSpec {
     }
 
     /**
+     * String column with a fixed width.
+     */
+    public static class Narrow extends ColSpec {
+
+        public Narrow(String title) {
+            super(title, "%6.2f", "narrow");
+        }
+
+    }
+
+    /**
      * String column with a fixed-width font.
      */
     public static class Aligned extends ColSpec {
