@@ -41,6 +41,8 @@ public class CookieFileTest extends TestCase {
             assertThat(fTest, isFalse());
             cookies.put("sTest", "thing string");
             cookies.put("iTest", 20);
+            String[] keys = cookies.getKeys();
+            assertThat(keys, arrayContaining("dTest", "fTest", "iTest", "sTest", "tTest"));
         }
         // Test reading it back in.
         try (CookieFile cookies = new CookieFile(wsDir, "testCookies")) {

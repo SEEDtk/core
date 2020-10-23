@@ -98,8 +98,8 @@ public class HtmlForm {
                 .withAction(writer.local_url("/" + program + ".cgi/" + command))
                 .withClass("web");
         this.inputTable = new HtmlTable<Key.Null>(new ColSpec.Normal("Parameter"), new ColSpec.Normal("Value"));
-        // Add a hidden input for the workspace parameter.  The keyword for this parameter is the command name.
-        this.form.with(input().withType("hidden").withName("workspace").withValue(workspace));
+        // Add a hidden input for the workspace parameter.
+        addHidden("workspace", workspace);
         // Save the page writer.
         this.writer = writer;
         // Get the cookie file.
@@ -110,6 +110,25 @@ public class HtmlForm {
         this.workFiles = Arrays.stream(workDirFiles).filter(x -> x.isFile() && x.canRead()).map(x -> x.getName()).collect(Collectors.toList());
         // Denote no files were used.
         this.usedFiles = false;
+    }
+
+    /**
+     * Add a hidden parameter to the form.
+     *
+     * @param name		parameter name
+     * @param value		parameter value
+     */
+    public void addHidden(String name, String value) {
+        this.form.with(input().withType("hidden").withName(name).withValue(value));
+    }
+
+    /**
+     * Specify the target window for this form's result.
+     *
+     * @param target	new proposed target
+     */
+    public void setTarget(String target) {
+        this.form.attr("target", target);
     }
 
     /**
@@ -348,6 +367,17 @@ public class HtmlForm {
      */
     public void addCheckBoxRow(String name, String description) {
         boolean defaultVal = this.savedForm.get(name, false);
+        addCheckBoxWithDefault(name, description, defaultVal);
+    }
+
+    /**
+     * Add a checkbox input with a preselected default.
+     *
+     * @param name			parameter name
+     * @param description	parameter description
+     * @param defaultVal	initial value
+     */
+    public void addCheckBoxWithDefault(String name, String description, boolean defaultVal) {
         EmptyTag checkBox = input().withType("checkbox").withName(name);
         if (defaultVal) checkBox.attr("checked");
         this.newRow(description, checkBox);
@@ -397,6 +427,5 @@ public class HtmlForm {
         this.savedForm.close();
         return this.form;
     }
-
 
 }

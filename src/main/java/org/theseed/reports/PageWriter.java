@@ -74,7 +74,7 @@ public abstract class PageWriter {
      * This enum indicates the types of output.
      */
     public static enum Type {
-        INTERNAL, SEEDTK, FREESTANDING;
+        INTERNAL, SEEDTK, FREESTANDING, IFRAME;
 
         public PageWriter create() {
             PageWriter retVal = null;
@@ -87,6 +87,9 @@ public abstract class PageWriter {
                 break;
             case FREESTANDING :
                 retVal = new FreePageWriter();
+                break;
+            case IFRAME :
+                retVal = new IFramePageWriter();
                 break;
             }
             return retVal;
@@ -207,6 +210,21 @@ public abstract class PageWriter {
             }
         }
         return escapedText.toString();
+    }
+
+    /**
+     * @return a local URL with a workspace
+     *
+     * @param string	main URL
+     * @param workSpace	workspace to attach
+     */
+    public String local_url(String string, String workSpace) {
+        String retVal;
+        if (string.contains("?"))
+            retVal = string.replaceFirst("\\?", "?workspace=" + workSpace + ";");
+        else
+            retVal = string + "?workspace=" + workSpace;
+        return this.local_url(retVal);
     }
 
 }

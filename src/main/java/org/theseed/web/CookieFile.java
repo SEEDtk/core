@@ -91,6 +91,14 @@ public class CookieFile implements AutoCloseable {
     }
 
     /**
+     * @return the key names for this cookie file
+     */
+    public String[] getKeys() {
+        String[] retVal = this.varMap.keySet().stream().sorted().toArray(String[]::new);
+        return retVal;
+    }
+
+    /**
      * @return the value of a key (boolean)
      *
      * @param key			key whose value is desired

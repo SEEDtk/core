@@ -33,4 +33,16 @@ public class TestPageWriter extends TestCase {
         assertThat(writer.highlightBlock(items).render(), equalTo("<div id=\"Pod\"><p>p1</p><code>c1</code></div>"));
         assertThat(writer.subSection("name", "My Title", p("body text"), p("foot text")).render(), equalTo("<div><h2><a name=\"name\">My Title</a></h2><p>body text</p><p>foot text</p></div>"));
     }
+
+    public void testLocalUrl() {
+        PageWriter writer = PageWriter.Type.SEEDTK.create();
+        String url1 = writer.local_url("command?workspace=test");
+        assertThat(url1, equalTo("command?workspace=test"));
+        url1 = writer.local_url("/command.cgi/type?parm=1");
+        assertThat(url1, equalTo("/SEEDtk/command.cgi/type?parm=1"));
+        url1 = writer.local_url("/command.cgi/type?parm=1", "ws");
+        assertThat(url1, equalTo("/SEEDtk/command.cgi/type?workspace=ws;parm=1"));
+        url1 = writer.local_url("/command.cgi/type", "ws");
+        assertThat(url1, equalTo("/SEEDtk/command.cgi/type?workspace=ws"));
+    }
 }
