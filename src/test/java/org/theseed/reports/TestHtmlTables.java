@@ -5,6 +5,8 @@ import junit.framework.TestCase;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+import java.util.Arrays;
+
 
 
 public class TestHtmlTables extends TestCase {
@@ -56,6 +58,33 @@ public class TestHtmlTables extends TestCase {
         table4.new Row(Key.NONE).add("Effluent ruthlessness").add(0).add(true);
         output = table4.output().render();
         assertThat(output, equalTo("<table><tr><th><span class=\"tt\">Subsystem<span class=\"btip\">subsystems are good</span></span></th><th class=\"num\">Good</th><th class=\"flag\">Expired</th></tr><tr><td>A new subsystem</td><td class=\"num\">1</td><td class=\"flag\">&nbsp;</td></tr><tr><td>An old subsystem</td><td class=\"num\">2</td><td class=\"flag\">Y</td></tr><tr><td>Arginine thingnitase</td><td class=\"num\">3</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Adenine synthase</td><td class=\"highlight num\">0</td><td class=\"flag\">Y</td></tr><tr><td>Alludium deForest</td><td class=\"num\">3</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Alludium deforest</td><td class=\"num\">2</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Frosty the snowman</td><td class=\"num\">1</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Effluent ruthlessness</td><td class=\"highlight num\">0</td><td class=\"flag\">Y</td></tr></table>"));
+    }
+
+    public void testRevRatio() {
+        Key.RevRatio key0_2 = new Key.RevRatio(0.0, 2.0); 	//  0.0*
+        Key.RevRatio key1_2 = new Key.RevRatio(1.0, 2.0); 	//  0.5*
+        Key.RevRatio key4_2 = new Key.RevRatio(4.0, 2.0); 	//  2.0*
+        Key.RevRatio keyn1_2 = new Key.RevRatio(-1.0, 2.0);	// -0.5*
+        Key.RevRatio key0_1 = new Key.RevRatio(0.0, 1.0);	//  0.0*
+        Key.RevRatio key1_1 = new Key.RevRatio(1.0, 1.0);	//  1.0*
+        Key.RevRatio key4_1 = new Key.RevRatio(4.0, 1.0);	//  4.0*
+        Key.RevRatio keyn1_1 = new Key.RevRatio(-1.0, 1.0);	// -1.0*
+        Key.RevRatio key0_0 = new Key.RevRatio(0.0, 0.0);	//  0/0*
+        Key.RevRatio key1_0 = new Key.RevRatio(1.0, 0.0);	//  1/0*
+        Key.RevRatio key4_0 = new Key.RevRatio(4.0, 0.0);	//  4/0*
+        Key.RevRatio keyn1_0 = new Key.RevRatio(-1.0, 0.0);	// -1/0*
+        Key.RevRatio key0_n1 = new Key.RevRatio(0.0, -1.0);	//  0.0*
+        Key.RevRatio key1_n1 = new Key.RevRatio(1.0, -1.0);	// -1.0*
+        Key.RevRatio key4_n1 = new Key.RevRatio(4.0, -1.0);	// -4.0*
+        Key.RevRatio keyn1_n1 = new Key.RevRatio(-1.0, -1.0);// 1.0*
+        Key.RevRatio[] values = new Key.RevRatio[] { key0_2, key1_2, key4_2, keyn1_2,
+                key0_1, key1_1, key4_1, keyn1_1, key0_0, key1_0, key4_0, keyn1_0,
+                key0_n1, key1_n1, key4_n1, keyn1_n1 };
+        Arrays.sort(values);
+        assertThat(values, arrayContaining(key4_1, key4_2, key1_1, keyn1_n1, key1_2, key0_2,
+                key0_1, key0_n1, keyn1_2, keyn1_1, key1_n1, key4_n1,
+                key4_0, key1_0, keyn1_0, key0_0));
+
     }
 
 }

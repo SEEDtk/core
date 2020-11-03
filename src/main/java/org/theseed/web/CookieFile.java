@@ -73,6 +73,13 @@ public class CookieFile implements AutoCloseable {
     }
 
     /**
+     * @return the value of a key (string) or NULL if it does not exist
+     */
+    public String getString(String key) {
+        return this.varMap.get(key);
+    }
+
+    /**
      * @return the value of a key (integer)
      *
      * @param key			key whose value is desired
@@ -183,6 +190,17 @@ public class CookieFile implements AutoCloseable {
      */
     public CookieFile put(String key, int newVal) {
         return this.put(key, Integer.toString(newVal));
+    }
+
+    /**
+     * Delete a key value.
+     *
+     * @param key			key to delete
+     */
+    public CookieFile delete(String key) {
+        this.varMap.remove(key);
+        this.changed = true;
+        return this;
     }
 
 

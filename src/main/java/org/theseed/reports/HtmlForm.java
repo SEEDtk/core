@@ -208,7 +208,7 @@ public class HtmlForm {
      * @param defaultValue	default string value to pre-select
      * @param values		list of string values
      */
-    public void addChoiceBoxIndexed(String name, String description, String defaultValue, List<String> values) {
+    public void addChoiceIndexedRow(String name, String description, String defaultValue, List<String> values) {
         DomContent retVal;
         if (values.size() <= 1) {
             // Here we have an empty list or a singleton that can only have the one value.
@@ -236,7 +236,7 @@ public class HtmlForm {
      * @param defaultValue	default string value to pre-select
      * @param values		list of string values
      */
-    public void addChoiceBox(String name, String description, String defaultValue, List<String> values) {
+    public void addChoiceRow(String name, String description, String defaultValue, List<String> values) {
         ContainerTag retVal = select().withName(name);
         for (String optVal : values) {
             ContainerTag option = option(optVal).withValue(optVal);
@@ -244,6 +244,20 @@ public class HtmlForm {
                 option.attr("selected");
             retVal.with(option);
         }
+        newRow(description, retVal);
+    }
+
+    /**
+     * Add a search box backed by a data list.
+     *
+     * @param name			parameter name
+     * @param description	parameter description
+     * @param defaultValue	default string value to pre-select
+     * @param listName		name of data list
+     */
+    public void addSearchRow(String name, String description, String defaultValue, String listName) {
+        EmptyTag retVal = input().withType("text").withName(name)
+                .withId(name).attr("list", listName).withClass("file");
         newRow(description, retVal);
     }
 
@@ -342,6 +356,19 @@ public class HtmlForm {
             this.form.with(dataList);
         }
         return retVal;
+    }
+
+    /**
+     * Build a data list for a string set.
+     *
+     * @param strings		a list of strings to put in the data list
+     * @param listName		the name to give to the list
+     */
+    public void createDataList(List<String> strings, String listName) {
+        ContainerTag dataList = datalist().withId(listName);
+        for (String string : strings)
+            dataList.with(option(string).withValue(string));
+        this.form.with(dataList);
     }
 
     /**

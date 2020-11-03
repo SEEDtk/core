@@ -316,4 +316,15 @@ public class HtmlTable<K extends Key & Comparable<K>> {
         return this.rows.size();
     }
 
+    /**
+     * Put row numbers in the specified column of the table.
+     *
+     * @param i		column to use for numbering (usually 0)
+     */
+    public void setIndexColumn(int i) {
+        int r = 1;
+        for (Row row : rows)
+            row.store(i, r++);
+    }
+
 }

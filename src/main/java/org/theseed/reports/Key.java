@@ -142,6 +142,51 @@ public abstract class Key {
     }
 
     /**
+     * Floating-point ratio, reverse sorting, with zero denominators at the end.
+     */
+    public static class RevRatio extends Key implements Comparable<RevRatio> {
+
+        // FIELDS
+        private final double numerator;
+        private final double denominator;
+        private final double value;
+
+        public RevRatio(double num, double dem) {
+            this.numerator = num;
+            this.denominator = dem;
+            this.value = this.numerator / this.denominator;
+        }
+
+        @Override
+        public int compareTo(RevRatio o) {
+            int retVal;
+            boolean thisNan = Double.isNaN(this.value);
+            boolean oNan = Double.isNaN(o.value);
+            if (thisNan)
+                retVal = (oNan ? 0 : 1);
+            else if (oNan)
+                retVal = -1;
+            else if (this.denominator == o.denominator) {
+                retVal = Double.compare(o.numerator, this.numerator);
+                if (this.denominator < 0.0) retVal = -retVal;
+            } else if (this.denominator != 0 && o.denominator == 0)
+                retVal = -1;
+            else if (this.denominator == 0 && o.denominator != 0)
+                retVal = 1;
+            else
+                retVal = Double.compare(o.value, this.value);
+            return retVal;
+        }
+
+        @Override
+        public void store(CellContent cell, ColSpec col) {
+            col.store(cell, this.value);
+        }
+
+    }
+
+
+    /**
      * String, case-insensitive sorting
      */
     public static class Text extends Key implements Comparable<Text> {

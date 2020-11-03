@@ -21,7 +21,7 @@ public class ColSpec {
 
     // FIELDS
     /** column title */
-    private String title;
+    private DomContent title;
     /** floating-point format */
     private String format;
     /** styles to use for all cells */
@@ -37,7 +37,7 @@ public class ColSpec {
      * @param fp_format		special format for floating-point values
      * @param baseStyles	permanent styles for this column
      */
-    protected ColSpec(String col_title, String fp_format, String... baseStyles) {
+    protected ColSpec(DomContent col_title, String fp_format, String... baseStyles) {
         this.title = col_title;
         this.format = fp_format;
         this.styles = baseStyles;
@@ -99,7 +99,7 @@ public class ColSpec {
      * @return the title of this column
      */
     protected DomContent getTitle() {
-        DomContent retVal = text(this.title);
+        DomContent retVal = this.title;
         if (this.tooltip != null)
             retVal = CoreHtmlUtilities.toolTip(retVal, this.tooltip, "btip");
         return retVal;
@@ -127,6 +127,10 @@ public class ColSpec {
     public static class Num extends ColSpec {
 
         public Num(String title) {
+            super(text(title), "%6.2f", "num");
+        }
+
+        public Num(DomContent title) {
             super(title, "%6.2f", "num");
         }
 
@@ -138,6 +142,10 @@ public class ColSpec {
     public static class Fraction extends ColSpec {
 
         public Fraction(String title) {
+            super(text(title), "%8.4f", "num");
+        }
+
+        public Fraction(DomContent title) {
             super(title, "%8.4f", "num");
         }
 
@@ -149,6 +157,10 @@ public class ColSpec {
     public static class ErrorCount extends Num {
 
         public ErrorCount(String title) {
+            super(title);
+        }
+
+        public ErrorCount(DomContent title) {
             super(title);
         }
 
@@ -168,6 +180,10 @@ public class ColSpec {
             super(title);
         }
 
+        public RequiredCount(DomContent title) {
+            super(title);
+        }
+
         @Override
         protected void store(CellContent cell, int num) {
             super.store(cell, num);
@@ -181,6 +197,10 @@ public class ColSpec {
     public static class Normal extends ColSpec {
 
         public Normal(String title) {
+            super(text(title), "%6.2f");
+        }
+
+        public Normal(DomContent title) {
             super(title, "%6.2f");
         }
 
@@ -192,6 +212,10 @@ public class ColSpec {
     public static class Narrow extends ColSpec {
 
         public Narrow(String title) {
+            super(text(title), "%6.2f", "narrow");
+        }
+
+        public Narrow(DomContent title) {
             super(title, "%6.2f", "narrow");
         }
 
@@ -203,8 +227,13 @@ public class ColSpec {
     public static class Aligned extends ColSpec {
 
         public Aligned(String title) {
+            super(text(title), "%6.2f", "align");
+        }
+
+        public Aligned(DomContent title) {
             super(title, "%6.2f", "align");
         }
+
     }
 
     /**
@@ -213,6 +242,10 @@ public class ColSpec {
     public static class Flag extends ColSpec {
 
         public Flag(String title) {
+            super(text(title), "%6.2f", "flag");
+        }
+
+        public Flag(DomContent title) {
             super(title, "%6.2f", "flag");
         }
 
