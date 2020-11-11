@@ -17,6 +17,7 @@ import org.theseed.sequence.Sequence;
 
 import j2html.tags.ContainerTag;
 import j2html.tags.DomContent;
+import j2html.tags.EmptyTag;
 
 /**
  * This is a static class that contains useful methods for generating web pages relating to CoreSEED genomes.
@@ -68,6 +69,36 @@ public class CoreHtmlUtilities {
      */
     public static DomContent toolTip(DomContent base, String tip) {
         return toolTip(base, tip, "tip");
+    }
+
+    /**
+     * @return a floating check box
+     *
+     * @param label		label for the checkbox
+     * @param name		name for the checkbox
+     * @param defVal	default value for the checkbox
+     */
+    public static DomContent checkBox(String label, String name, boolean defVal) {
+        return checkBox(label, name, defVal, null);
+    }
+
+
+    /**
+     * @return a floating check box with a click event
+     *
+     * @param label		label for the checkbox
+     * @param name		name for the checkbox
+     * @param defVal	default value for the checkbox
+     * @param onclick 	click event (or NULL if none)
+     */
+    public static DomContent checkBox(String label, String name, boolean defVal, String onclick) {
+        EmptyTag box = input().withType("checkbox").withName(name);
+        if (defVal)
+            box.attr("checked");
+        if (onclick != null)
+            box.attr("onchange", onclick);
+        DomContent retVal = rawHtml(box.render() + label);
+        return retVal;
     }
 
     /**
