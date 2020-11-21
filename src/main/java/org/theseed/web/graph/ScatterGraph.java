@@ -52,6 +52,9 @@ public class ScatterGraph implements IGraph {
     private Axis.Y yAxis;
     /** collection of data points */
     private List<Point> points;
+    /** click event method (if any) */
+    private String clickEvent;
+
 
     /**
      * This is a tiny class to represent a data point.
@@ -117,6 +120,15 @@ public class ScatterGraph implements IGraph {
         this.drawLine("axis", this.leftMargin, xAxisY, this.width - this.rightMargin, xAxisY);
         this.drawLine("axis", this.leftMargin, xAxisY, this.leftMargin, this.topMargin);
         this.points = new LinkedList<Point>();
+    }
+
+    /**
+     * Specify a click event for the dots.  The event is called with the x and y of the dot.
+     *
+     * @param method	click event method name
+     */
+    public void setClickEvent(String method) {
+        this.clickEvent = method;
     }
 
     /**
@@ -265,6 +277,9 @@ public class ScatterGraph implements IGraph {
             ContainerTag dot = new ContainerTag("circle").attr("cx", xPos).attr("cy", yPos)
                     .attr("fill", this.circleFill.html()).attr("r", this.radius)
                     .with(title(point.getLabel()));
+            if (this.clickEvent != null) {
+                dot.attr("onClick", String.format("%s(%g,%g)", this.clickEvent, point.getX(), point.getY()));
+            }
             this.container.with(dot);
         }
     }

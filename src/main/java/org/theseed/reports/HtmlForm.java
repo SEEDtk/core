@@ -132,6 +132,15 @@ public class HtmlForm {
     }
 
     /**
+     * Specify an ID for this form.
+     *
+     * @param id	proposed form ID
+     */
+    public void setId(String id) {
+        this.form.withId(id);
+    }
+
+    /**
      * @return the cookie file for an operation's form.
      *
      * @param wsDir		workspace directory
