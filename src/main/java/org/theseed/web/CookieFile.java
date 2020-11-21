@@ -4,6 +4,7 @@
 package org.theseed.web;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -207,13 +208,23 @@ public class CookieFile implements AutoCloseable {
     @Override
     public void close() throws IOException {
         if (this.changed) {
-            // Write the values to the output file.
-            try (PrintWriter outStream = new PrintWriter(this.mapFile)) {
-                for (Map.Entry<String, String> keyValue : this.varMap.entrySet()) {
-                    outStream.println(keyValue.getKey() + " " + keyValue.getValue());
-                }
+            flush();
+        }
+    }
+
+    /**
+     * Flush all the current changes to disk.
+     *
+     * @throws FileNotFoundException
+     */
+    public void flush() throws FileNotFoundException {
+        // Write the values to the output file.
+        try (PrintWriter outStream = new PrintWriter(this.mapFile)) {
+            for (Map.Entry<String, String> keyValue : this.varMap.entrySet()) {
+                outStream.println(keyValue.getKey() + " " + keyValue.getValue());
             }
         }
+        this.changed = false;
     }
 
 }
