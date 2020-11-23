@@ -86,7 +86,7 @@ public abstract class Axis {
         this.max = Math.ceil(this.max / gridGap) * gridGap;
         axisRange = this.max - this.min;
         // Create the tick format.
-        int iPrecision = (int) precision;
+        int iPrecision = (int) Math.floor(Math.log10(gridGap));
         if (iPrecision < -6 || iPrecision > 6)
             this.tickFormat = "%g";
         else if (iPrecision < 0)
