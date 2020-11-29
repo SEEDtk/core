@@ -25,6 +25,7 @@ import org.theseed.reports.PageWriter;
 import org.theseed.sequence.blast.Source;
 import org.theseed.utils.BaseProcessor;
 import org.theseed.utils.IDescribable;
+import org.theseed.utils.ParseFailureException;
 import org.theseed.web.forms.FormBlastElement;
 import org.theseed.web.forms.FormElement;
 import org.theseed.web.forms.FormFileElement;
@@ -87,8 +88,9 @@ public abstract class WebProcessor extends BaseProcessor {
      * Set up the workspace and the page writer.
      *
      * @throws IOException
+     * @throws ParseFailureException
      */
-    protected final boolean validateParms() throws IOException {
+    protected final boolean validateParms() throws IOException, ParseFailureException {
         this.workSpaceDir = new File(this.coreDir, "Workspaces/" + this.workSpace);
         if (! this.workSpaceDir.isDirectory())
             throw new FileNotFoundException("Invalid or unauthorized workspace \"" + workSpace + "\" specified.");
@@ -108,8 +110,10 @@ public abstract class WebProcessor extends BaseProcessor {
      * Validate the client parameters.
      *
      * @return TRUE if it is safe to proceed
+     *
+     * @throws ParseFailureException
      */
-    protected abstract boolean validateWebParms() throws IOException;
+    protected abstract boolean validateWebParms() throws IOException, ParseFailureException;
 
     /**
      * @return the cookie file name for this command
