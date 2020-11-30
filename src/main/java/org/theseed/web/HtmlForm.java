@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.theseed.reports;
+package org.theseed.web;
 
 import j2html.tags.ContainerTag;
 import j2html.tags.DomContent;
@@ -12,16 +12,22 @@ import static j2html.TagCreator.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.theseed.io.TabbedLineReader;
+import org.theseed.reports.PageWriter;
 import org.theseed.sequence.blast.Source;
 import org.theseed.utils.IDescribable;
-import org.theseed.web.CookieFile;
-import org.theseed.web.WebProcessor;
 
 /**
  * This object is used to design a simple HTML form for a CoreSEED web application.  Such applications have a workspace
@@ -209,6 +215,53 @@ public class HtmlForm {
     }
 
     /**
+     * Create a row with a dropdown box initialized from a tab-delimited file.  The "description" column of the
+     * file contains the description to be displayed in the box, and the "value" column contains the value to
+     * return.  The first data record of the file contains the default value.
+     *
+     * @param name			parameter name
+     * @param description	parameter description
+     * @param mapFile		file containing the choices
+     */
+    public void addMapRow(String name, String description, File mapFile) {
+        ContainerTag dropdown = this.buildMapBox(name, mapFile);
+        this.newRow(description, dropdown);
+    }
+
+    /**
+     * @return a dropdown box built from a file.
+     *
+     * @param name		parameter name
+     * @param mapFile	mapping file, tab-delimited, with the description in column "description" and the value in column "value"
+     */
+    private ContainerTag buildMapBox(String name, File mapFile) {
+        // Read the map from the file.
+        List<Map.Entry<String, String>> mapList = new ArrayList<>();
+        try (TabbedLineReader mapStream = new TabbedLineReader(mapFile)) {
+            int descIdx = mapStream.findField("description");
+            int valIdx = mapStream.findField("value");
+            for (TabbedLineReader.Line line : mapStream)
+                mapList.add(new AbstractMap.SimpleEntry<String, String>(line.get(valIdx), line.get(descIdx)));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+        if (mapList.size() < 1)
+            throw new IllegalArgumentException("File " + mapFile + " has no data.");
+        // Get the saved value of the control.
+        String initVal = this.savedForm.get(name, mapList.get(0).getKey());
+        // Create the select tag.
+        ContainerTag retVal = select().withName(name);
+        for (Map.Entry<String, String> pair : mapList) {
+            String value = pair.getKey();
+            ContainerTag option = option(pair.getValue()).withValue(value);
+            if (value.contentEquals(initVal))
+                option.attr("selected");
+            retVal.with(option);
+        }
+        return retVal;
+    }
+
+    /**
      * Add a choice box with a numeric return.  The return value will be the list index of the chosen
      * value.  If the list is empty, the control is a hidden that always returns 0.
      *
@@ -288,7 +341,7 @@ public class HtmlForm {
      * @param description		description string for the parameter
      * @param inputObject		content to put in the input cell
      */
-    private void newRow(String description, DomContent inputObject) {
+    public void newRow(String description, DomContent inputObject) {
         this.inputTable.new Row(Key.NONE).add(description).add(inputObject);
     }
 
@@ -446,6 +499,51 @@ public class HtmlForm {
         DomContent boxes = join(this.buildEnumBox(type, Source.dna, Source.values()),
                 this.buildFileBox(file, BLAST_FILE_PATTERN));
         this.newRow(description, boxes);
+    }
+
+    /**
+     * Build a table of filter boxes.  This is done via an special table that only has interior vertical borders
+     * and is described by parallel arrays.  Each column in the filter has its own array position.
+     *
+     * @param id			ID to give to the table
+     * @param description	description of what is being filtered
+     * @param names			array of parameter names
+     * @param titles		descriptions of the parameter
+     * @param possibles		list of selections for each parameter
+     * @param selections	list of values selected for each parameter
+     */
+    public void addFilterBox(String id, String description, String[] names, String[] titles, List<? extends Collection<String>> possibles,
+            List<? extends Collection<String>> selections) {
+        ContainerTag filterTable = table().withClass("filterBox").withId(id);
+        // Get iterators for all of the possibilities.
+        List<Iterator<String>> iters = possibles.stream().map(x -> x.iterator()).collect(Collectors.toList());
+        // Create the first row of the table, containing the titles.
+        ContainerTag row = tr().with(Arrays.stream(titles).map(x -> th(a(x).withHref("javascript:toggleFilter('" + id + "','" + x + "');"))));
+        // Loop through the data rows.
+        boolean found = true;
+        while (found) {
+            // Add the previous row.
+            filterTable.with(row);
+            // Start the new row, and denote we have not found any active iterators.
+            row = tr();
+            found = false;
+            // Loop through the columns of this row.
+            for (int i = 0; i < names.length; i++) {
+                Iterator<String> iter = iters.get(i);
+                if (! iter.hasNext())
+                    row.with(td(rawHtml("&nbsp;")));
+                else {
+                    // Here we have an active iterator, so there's a checkbox in this row.
+                    String option = iter.next();
+                    EmptyTag checkbox = input().withType("checkbox").withName(names[i]).withValue(option);
+                    if (selections.get(i).contains(option)) checkbox.attr("checked");
+                    row.with(td().with(checkbox).withText(option));
+                    found = true;
+                }
+            }
+        }
+        // Now add the form row for this filter box.
+        this.newRow(description, filterTable);
     }
 
     /**

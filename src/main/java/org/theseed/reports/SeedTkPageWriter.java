@@ -27,7 +27,7 @@ public class SeedTkPageWriter extends PageWriter {
     public void writePage(String title, DomContent heading, Stream<DomContent> content) {
         System.out.println(document().render());
         ContainerTag body = body().attr("onload", "setup();")
-                .with(a(img().withSrc("/SEEDtk/css/seed-logo-blue.png").withClass("logo")).withHref("/SEEDtk/").withAlt("SEED logo"))
+                .with(a(img().withSrc("/SEEDtk/css/seed-logo-blue.png").withClass("logo").withAlt("SEED logo")).withHref("/SEEDtk/"))
                 .with(h1(heading)).with(BREAK).with(content);
         ContainerTag page = html(head(title(title), SEEDTK_STYLES,
                 script().withSrc("/SEEDtk/css/utils.js"), script().withSrc("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"),

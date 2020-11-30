@@ -1,12 +1,13 @@
 /**
  *
  */
-package org.theseed.reports;
+package org.theseed.web;
 
 import java.util.Comparator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.theseed.locations.Location;
+import org.theseed.reports.NaturalSort;
 
 import static j2html.TagCreator.*;
 

@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.theseed.reports;
+package org.theseed.web;
 
 import java.util.Set;
 import java.util.TreeSet;

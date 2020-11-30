@@ -16,11 +16,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.theseed.reports.HtmlForm;
 import org.theseed.reports.PageWriter;
 import org.theseed.sequence.blast.Source;
 import org.theseed.utils.BaseProcessor;
@@ -30,6 +30,7 @@ import org.theseed.web.forms.FormBlastElement;
 import org.theseed.web.forms.FormElement;
 import org.theseed.web.forms.FormFileElement;
 import org.theseed.web.forms.FormIntElement;
+import org.theseed.web.forms.FormMapElement;
 
 import j2html.tags.ContainerTag;
 import j2html.tags.DomContent;
@@ -168,6 +169,22 @@ public abstract class WebProcessor extends BaseProcessor {
     }
 
     /**
+     * @return a local link to the specified command
+     *
+     * @param text		text of link
+     * @param program	program to invoke
+     * @param command	command within the program
+     * @param parms		additional parameters (key=value)
+     */
+    public ContainerTag commandLink(String text, String program, String command, String... parms) {
+        String url = "/" + program + ".cgi/" + command + "?workspace=" + this.getWorkSpace();
+        if (parms.length > 0)
+            url += ";" + StringUtils.join(parms, ';');
+        return localLink(text, url);
+
+    }
+
+    /**
      * @return the named file in the workspace
      *
      * @param name		name of desired file
@@ -226,7 +243,9 @@ public abstract class WebProcessor extends BaseProcessor {
             // Find the form annotation.  This is so very ugly.
             for (Annotation annotation : annotations) {
                 if (annotation instanceof FormElement || annotation instanceof FormIntElement ||
-                        annotation instanceof FormBlastElement || annotation instanceof FormFileElement)
+                        annotation instanceof FormBlastElement || annotation instanceof FormFileElement ||
+                        annotation instanceof FormMapElement
+                        )
                     formAnnotation = annotation;
             }
             // Error out if we have a form annotation without a valid option element.
@@ -278,7 +297,7 @@ public abstract class WebProcessor extends BaseProcessor {
         }
 
         /**
-         * @return the label form the Option annotation
+         * @return the usage description from the Option annotation
          */
         protected String getLabel() {
             return this.label;
@@ -350,6 +369,10 @@ public abstract class WebProcessor extends BaseProcessor {
                             retVal.addIntRow(name, label, init, min, max);
                         } else
                             badTypes.add(field.getName());
+                    } else if (annotation instanceof FormMapElement) {
+                        FormMapElement formAnnotation = (FormMapElement) annotation;
+                        File mapFile = new File(this.coreDir, formAnnotation.file());
+                        retVal.addMapRow(name, label, mapFile);
                     } else if (annotation instanceof FormBlastElement) {
                         FormBlastElement formAnnotation = (FormBlastElement) annotation;
                         if (type == String.class) {

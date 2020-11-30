@@ -7,6 +7,10 @@ import static org.hamcrest.Matchers.*;
 
 import java.util.Arrays;
 
+import org.theseed.web.ColSpec;
+import org.theseed.web.HtmlTable;
+import org.theseed.web.Key;
+
 
 
 public class TestHtmlTables extends TestCase {

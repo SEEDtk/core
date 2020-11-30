@@ -1,13 +1,14 @@
 /**
  *
  */
-package org.theseed.reports;
+package org.theseed.web;
 
 import j2html.tags.ContainerTag;
 import j2html.tags.DomContent;
 import static j2html.TagCreator.*;
 
 import org.apache.commons.lang3.StringUtils;
+import org.theseed.reports.CoreHtmlUtilities;
 
 /**
  * This class specifies a column in an HTML table.  A column specification defines how to format a table

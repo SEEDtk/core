@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.theseed.reports;
+package org.theseed.web;
 
 import java.util.Arrays;
 import java.util.SortedSet;
@@ -48,8 +48,8 @@ public class HtmlTable<K extends Key & Comparable<K>> {
         // FIELDS
         /** original row index */
         private int idx;
-        /** row key string (this cannot be changed after construction */
-        private final K key;
+        /** row key string */
+        private K key;
         /** array of column values */
         private CellContent[] cells;
         /** index of the next empty column in this cell */
@@ -287,6 +287,18 @@ public class HtmlTable<K extends Key & Comparable<K>> {
     public HtmlTable(ColSpec... cols) {
         this.columns = cols;
         this.rows = new TreeSet<HtmlTable<K>.Row>();
+    }
+
+    /**
+     * Change the key of a row.
+     *
+     * @param row	row of interest
+     * @param key	new key value
+     */
+    public void moveRow(Row row, K key) {
+        this.rows.remove(row);
+        row.key = key;
+        this.rows.add(row);
     }
 
     /**
