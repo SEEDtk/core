@@ -342,7 +342,7 @@ public class HtmlForm {
      * @param inputObject		content to put in the input cell
      */
     protected void newRow(String description, DomContent inputObject) {
-        this.inputTable.new Row(Key.NONE).add(description).add(inputObject);
+        new Row<Key.Null>(this.inputTable, Key.NONE).add(description).add(inputObject);
     }
 
     /**
@@ -446,6 +446,16 @@ public class HtmlForm {
         if (! defaultVal.isEmpty())
             inputBox.withValue(defaultVal);
         this.newRow(description, inputBox);
+    }
+
+    /**
+     * Add a message row.  This crosses the whole table and is generally used for messaging.
+     *
+     * @param content	HTML content for the row
+     */
+    public void addMessageRow(DomContent content) {
+        MessageRow<Key.Null> row = new MessageRow<Key.Null>(this.inputTable, Key.NONE);
+        row.store(content);
     }
 
     /**

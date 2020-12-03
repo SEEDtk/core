@@ -46,6 +46,17 @@ public class CookieFile implements AutoCloseable {
      */
     public CookieFile(File workSpaceDir, String typeName) throws IOException {
         this.mapFile = computeFile(workSpaceDir, typeName);
+        readMap();
+    }
+
+    /**
+     * Read a cookie file from a specified file name.
+     *
+     * @param input file name
+     *
+     * @throws IOException
+     */
+    public void readMap() throws IOException {
         // Create the map.
         this.varMap = new HashMap<String, String>();
         // Only try to read the file if it exists.  Otherwise, we have an empty map.
@@ -64,6 +75,18 @@ public class CookieFile implements AutoCloseable {
     }
 
     /**
+     * Load a cookie file into memory
+     *
+     * @param file	file name
+     *
+     * @throws IOException
+     */
+    public CookieFile(File file) throws IOException {
+        this.mapFile = file;
+        this.readMap();
+    }
+
+    /**
      * Get a cookie file name.
      *
      * @param workSpaceDir	workspace directory
@@ -72,7 +95,16 @@ public class CookieFile implements AutoCloseable {
      * @return a file object for accessing the cookie file
      */
     public static File computeFile(File workSpaceDir, String typeName) {
-        return new File(workSpaceDir, String.format(FILE_NAME, typeName));
+        return new File(workSpaceDir, cookieFileName(typeName));
+    }
+
+    /**
+     * @return the title portion of the cookie file name for the specified type
+     *
+     * @param typeName	cookie file type
+     */
+    public static String cookieFileName(String typeName) {
+        return String.format(FILE_NAME, typeName);
     }
 
     /**
