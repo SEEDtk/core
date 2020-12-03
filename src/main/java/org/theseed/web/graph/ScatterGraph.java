@@ -62,7 +62,8 @@ public class ScatterGraph implements IGraph {
     private static class Point {
         private double x;
         private double y;
-        String label;
+        private String label;
+        private Color color;
 
         /**
          * Create a point.
@@ -70,11 +71,13 @@ public class ScatterGraph implements IGraph {
          * @param label		label of the point
          * @param x			x-value of the point
          * @param y			y-value of the point
+         * @param color		color to use for this point
          */
-        public Point(String label, double x, double y) {
+        public Point(String label, double x, double y, Color color) {
             this.label = label;
             this.x = x;
             this.y = y;
+            this.color = color;
         }
 
         /**
@@ -96,6 +99,13 @@ public class ScatterGraph implements IGraph {
          */
         protected String getLabel() {
             return this.label;
+        }
+
+        /**
+         * @return the plot color HTML
+         */
+        protected String getColor() {
+            return this.color.html();
         }
 
     }
@@ -206,7 +216,7 @@ public class ScatterGraph implements IGraph {
      * @param y			y-value of the point
      */
     public void add(String label, double x, double y) {
-        Point point = new Point(label, x, y);
+        Point point = new Point(label, x, y, this.circleFill);
         this.xAxis.point(x);
         this.yAxis.point(y);
         this.points.add(point);
@@ -275,13 +285,22 @@ public class ScatterGraph implements IGraph {
             int xPos = this.xAxis.getPoint(point.getX());
             int yPos = this.yAxis.getPoint(point.getY());
             ContainerTag dot = new ContainerTag("circle").attr("cx", xPos).attr("cy", yPos)
-                    .attr("fill", this.circleFill.html()).attr("r", this.radius)
+                    .attr("fill", point.getColor()).attr("r", this.radius)
                     .with(title(point.getLabel()));
             if (this.clickEvent != null) {
                 dot.attr("onClick", String.format("%s(%g,%g)", this.clickEvent, point.getX(), point.getY()));
             }
             this.container.with(dot);
         }
+    }
+
+    /**
+     * Specify the color for points on the graph.
+     *
+     * @param newColor	color to use for the graph points
+     */
+    public void setColor(Color newColor) {
+        this.circleFill = newColor;
     }
 
 }

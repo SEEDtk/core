@@ -341,7 +341,7 @@ public class HtmlForm {
      * @param description		description string for the parameter
      * @param inputObject		content to put in the input cell
      */
-    public void newRow(String description, DomContent inputObject) {
+    protected void newRow(String description, DomContent inputObject) {
         this.inputTable.new Row(Key.NONE).add(description).add(inputObject);
     }
 
@@ -542,6 +542,10 @@ public class HtmlForm {
                 }
             }
         }
+        // Put in a button to reset all the checkboxes.
+        row = tr(td(input().withType("button").attr("onclick", "resetFilter('" + id + "');").attr("value", "Clear Filters"))
+                .attr("colspan", names.length).withClass("flag"));
+        filterTable.with(row);
         // Now add the form row for this filter box.
         this.newRow(description, filterTable);
     }

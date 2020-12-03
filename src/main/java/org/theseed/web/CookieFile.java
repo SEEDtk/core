@@ -45,7 +45,7 @@ public class CookieFile implements AutoCloseable {
      * @throws IOException
      */
     public CookieFile(File workSpaceDir, String typeName) throws IOException {
-        this.mapFile = new File(workSpaceDir, String.format(FILE_NAME, typeName));
+        this.mapFile = computeFile(workSpaceDir, typeName);
         // Create the map.
         this.varMap = new HashMap<String, String>();
         // Only try to read the file if it exists.  Otherwise, we have an empty map.
@@ -61,6 +61,18 @@ public class CookieFile implements AutoCloseable {
         }
         // Denote we're unchanged.
         this.changed = false;
+    }
+
+    /**
+     * Get a cookie file name.
+     *
+     * @param workSpaceDir	workspace directory
+     * @param typeName		name of the cookie file
+     *
+     * @return a file object for accessing the cookie file
+     */
+    public static File computeFile(File workSpaceDir, String typeName) {
+        return new File(workSpaceDir, String.format(FILE_NAME, typeName));
     }
 
     /**
@@ -218,13 +230,24 @@ public class CookieFile implements AutoCloseable {
      * @throws FileNotFoundException
      */
     public void flush() throws FileNotFoundException {
+        flush(this.mapFile);
+        this.changed = false;
+    }
+
+    /**
+     * Flush all current changes to the specified file.
+     *
+     * @param outFile	output cookie file
+     *
+     * @throws FileNotFoundException
+     */
+    public void flush(File outFile) throws FileNotFoundException {
         // Write the values to the output file.
-        try (PrintWriter outStream = new PrintWriter(this.mapFile)) {
+        try (PrintWriter outStream = new PrintWriter(outFile)) {
             for (Map.Entry<String, String> keyValue : this.varMap.entrySet()) {
                 outStream.println(keyValue.getKey() + " " + keyValue.getValue());
             }
         }
-        this.changed = false;
     }
 
 }

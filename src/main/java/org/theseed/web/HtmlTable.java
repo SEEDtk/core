@@ -37,7 +37,7 @@ public class HtmlTable<K extends Key & Comparable<K>> {
     /** list of table rows */
     private SortedSet<Row> rows;
     /** HTML for an empty cell */
-    private static final DomContent EMPTY = rawHtml("&nbsp;");
+    protected static final DomContent EMPTY = rawHtml("&nbsp;");
 
     /**
      * This is a nested class describing a table row.  It is the main workhorse for this
@@ -108,13 +108,13 @@ public class HtmlTable<K extends Key & Comparable<K>> {
         public Row(K key) {
             this.key = key;
             // Note the row index is 1-based.
-            this.idx = HtmlTable.this.rows.size() + 1;
+            this.idx = HtmlTable.this.getHeight() + 1;
             // Create the cells and denote they are empty.
             this.cells = new CellContent[HtmlTable.this.getWidth()];
             Arrays.setAll(this.cells, i -> new CellContent(EMPTY));
             this.nextCol = 0;
             // Add the row to the table.
-            HtmlTable.this.rows.add(this);
+            HtmlTable.this.addRow(this);
         }
 
         /**
@@ -126,7 +126,7 @@ public class HtmlTable<K extends Key & Comparable<K>> {
          * @return this row (to allow chaining)
          */
         public Row store(int colIdx, int num) {
-            HtmlTable.this.columns[colIdx].store(this.cells[colIdx], num);
+            HtmlTable.this.getColumn(colIdx).store(this.cells[colIdx], num);
             return this.adjust(colIdx);
         }
 
@@ -149,7 +149,7 @@ public class HtmlTable<K extends Key & Comparable<K>> {
          * @return this row (to allow chaining)
          */
         public Row store(int colIdx, double num) {
-            HtmlTable.this.columns[colIdx].store(this.cells[colIdx], num);
+            HtmlTable.this.getColumn(colIdx).store(this.cells[colIdx], num);
             return this.adjust(colIdx);
         }
 
@@ -164,9 +164,9 @@ public class HtmlTable<K extends Key & Comparable<K>> {
         public Row store(int colIdx, String text) {
             // Note we have to insure that a blank cell is a non-breaking space.
             if (text == null || text.isEmpty()) {
-                HtmlTable.this.columns[colIdx].store(this.cells[colIdx], rawHtml("&nbsp;"));
+                HtmlTable.this.getColumn(colIdx).store(this.cells[colIdx], rawHtml("&nbsp;"));
             } else {
-                HtmlTable.this.columns[colIdx].store(this.cells[colIdx], text);
+                HtmlTable.this.getColumn(colIdx).store(this.cells[colIdx], text);
             }
             return this.adjust(colIdx);
         }
@@ -191,7 +191,7 @@ public class HtmlTable<K extends Key & Comparable<K>> {
          * @return this row (to allow chaining)
          */
         public Row store(int colIdx, DomContent html) {
-            HtmlTable.this.columns[colIdx].store(this.cells[colIdx], html);
+            HtmlTable.this.getColumn(colIdx).store(this.cells[colIdx], html);
             return this.adjust(colIdx);
         }
 
@@ -256,7 +256,7 @@ public class HtmlTable<K extends Key & Comparable<K>> {
           * @return this row (to allow chaining)
           */
          public Row addKey() {
-             this.key.store(this.cells[this.nextCol], HtmlTable.this.columns[this.nextCol]);
+             this.key.store(this.cells[this.nextCol], HtmlTable.this.getColumn(this.nextCol));
              this.nextCol++;
              return this;
          }
@@ -277,6 +277,20 @@ public class HtmlTable<K extends Key & Comparable<K>> {
              this.cells[colIdx].highlight();
          }
 
+        /**
+         * @return the key
+         */
+        protected K getKey() {
+            return this.key;
+        }
+
+        /**
+         * @param key the key to set
+         */
+        protected void setKey(K key) {
+            this.key = key;
+        }
+
     }
 
     /**
@@ -290,6 +304,15 @@ public class HtmlTable<K extends Key & Comparable<K>> {
     }
 
     /**
+     * @return the specified column specification
+     *
+     * @param colIdx	index of the desired column
+     */
+    protected ColSpec getColumn(int colIdx) {
+        return this.columns[colIdx];
+    }
+
+    /**
      * Change the key of a row.
      *
      * @param row	row of interest
@@ -297,9 +320,19 @@ public class HtmlTable<K extends Key & Comparable<K>> {
      */
     public void moveRow(Row row, K key) {
         this.rows.remove(row);
-        row.key = key;
+        row.setKey(key);
         this.rows.add(row);
     }
+
+    /**
+     * Add a row to this table.
+     *
+     * @param row	new row to add
+     */
+    protected void addRow(Row row) {
+        this.rows.add(row);
+    }
+
 
     /**
      * @return the number of columns in this table
