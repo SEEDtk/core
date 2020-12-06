@@ -52,7 +52,7 @@ public class TestHtmlTables extends TestCase {
         assertThat(output, equalTo("<table><tr><th>Subsystem</th><th class=\"num\">Errors</th></tr><tr><td>A new subsystem</td><td class=\"num\">0</td></tr><tr><td>Adenine synthase</td><td class=\"highlight num\">1</td></tr><tr><td>Alludium deforest</td><td class=\"num\">0</td></tr><tr><td>Alludium deForest</td><td class=\"num\">0</td></tr><tr><td>An old subsystem</td><td class=\"num\">0</td></tr><tr><td>Arginine thingnitase</td><td class=\"highlight num\">1</td></tr><tr><td>Effluent ruthlessness</td><td class=\"num\">0</td></tr><tr><td>Frosty the snowman</td><td class=\"highlight num\">1</td></tr></table>"));
         // Finally, the null key.
         HtmlTable<Key.Null> table4 = new HtmlTable<Key.Null>(new ColSpec.Normal("Subsystem").setTip("subsystems are good"),
-                new ColSpec.RequiredCount("Good"), new ColSpec.Flag("Expired"));
+                new ColSpec.RequiredCount("Good"), new ColSpec.Centered("Expired"));
         new Row<Key.Null>(table4, Key.NONE).add("A new subsystem").add(1).add(false);
         new Row<Key.Null>(table4, Key.NONE).add("An old subsystem").add(2).add(true);
         new Row<Key.Null>(table4, Key.NONE).add("Arginine thingnitase").add(3).add(false);

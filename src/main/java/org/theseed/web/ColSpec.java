@@ -238,20 +238,20 @@ public class ColSpec {
     }
 
     /**
-     * Flag column.  Centered text.
+     * Centered text (used for flags).
      */
-    public static class Flag extends ColSpec {
+    public static class Centered extends ColSpec {
 
-        public Flag(String title) {
+        public Centered(String title) {
             super(text(title), "%6.2f", "flag");
         }
 
-        public Flag(DomContent title) {
+        public Centered(DomContent title) {
             super(title, "%6.2f", "flag");
         }
 
     }
-
+    
     /**
      * @return the tooltip text
      */
