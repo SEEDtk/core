@@ -196,4 +196,14 @@ public class Row<K extends Key & Comparable<K>> extends BaseRow<K> {
          this.cells[colIdx].highlight();
      }
 
+     /**
+      * Add a style to a cell.
+      *
+      * @param colIdx	column index of the cell to style
+      * @param style	style to add
+      */
+     public void addStyle(int colIdx, String style) {
+         this.cells[colIdx].addStyle(style);
+     }
+
 }
