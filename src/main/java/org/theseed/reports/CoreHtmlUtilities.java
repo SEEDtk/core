@@ -7,6 +7,7 @@ import static j2html.TagCreator.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -43,7 +44,7 @@ public class CoreHtmlUtilities {
      *
      * @param subsystems	set of subsystems to list
      */
-    public static DomContent subsystemList(Set<String> subsystems) {
+    public static DomContent subsystemList(Collection<String> subsystems) {
         DomContent retVal = HtmlUtilities.joinDelimited(subsystems.stream().map(x -> LinkObject.Core.subsystemLink(x)), " | ");
         return retVal;
     }
