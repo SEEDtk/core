@@ -278,16 +278,57 @@ public class HtmlForm {
         } else {
             // Here we have a real selection.
             ContainerTag selector = select().withName(name);
-            for (int i = 0; i < values.size(); i++) {
-                String optVal = values.get(i);
-                ContainerTag option = option(optVal).withValue(Integer.toString(i));
-                if (optVal.contentEquals(defaultValue))
-                    option.attr("selected");
-                selector.with(option);
-            }
+            fillSelector(defaultValue, values, selector);
             retVal = selector;
         }
         newRow(description, retVal);
+    }
+
+    /**
+     * Add a choice box with a numeric return.  The return value will be the list index of the chosen
+     * value, or -1 if the special value is selected.
+     *
+     * @param name			parameter name
+     * @param description	parameter description
+     * @param defaultValue	default string value to pre-select, or NULL to select the special value
+     * @param values		list of string values
+     * @param special		special value that returns -1
+     */
+    public void addChoiceIndexedRow(String name, String description, String defaultValue, List<String> values, String special) {
+        DomContent retVal;
+        if (values.size() <= 1) {
+            // Here we have an empty list or a singleton that can only have the one value.
+            retVal = input().attr("type", "hidden").attr("name", name).attr("value", "-1");
+        } else {
+            // Here we have a real selection.
+            ContainerTag selector = select().withName(name);
+            // Create the special value.
+            ContainerTag option0 = option(special).withValue("-1");
+            if (defaultValue == null)
+                option0.attr("selected");
+            selector.with(option0);
+            // Fill in the list values.
+            fillSelector(defaultValue, values, selector);
+            retVal = selector;
+        }
+        newRow(description, retVal);
+    }
+
+    /**
+     * Fill in a selector with the option values from a string list.
+     *
+     * @param defaultValue	default string to pre-select
+     * @param values		list of values to put in for selection
+     * @param selector		target container tag
+     */
+    private void fillSelector(String defaultValue, List<String> values, ContainerTag selector) {
+        for (int i = 0; i < values.size(); i++) {
+            String optVal = values.get(i);
+            ContainerTag option = option(optVal).withValue(Integer.toString(i));
+            if (optVal.equals(defaultValue))
+                option.attr("selected");
+            selector.with(option);
+        }
     }
 
     /**
