@@ -342,12 +342,42 @@ public class HtmlForm {
     public void addChoiceRow(String name, String description, String defaultValue, List<String> values) {
         ContainerTag retVal = select().withName(name);
         for (String optVal : values) {
-            ContainerTag option = option(optVal).withValue(optVal);
-            if (optVal.contentEquals(defaultValue))
-                option.attr("selected");
-            retVal.with(option);
+            addChoice(retVal, optVal, defaultValue);
         }
         newRow(description, retVal);
+    }
+
+    /**
+     * Add a choice box with a string return.  The return value will be the text of the chosen value.
+     * This version adds an out-of-list value for the empty case
+     *
+     * @param name			parameter name
+     * @param description	parameter description
+     * @param defaultValue	default string value to pre-select
+     * @param values		list of string values
+     * @param extraValue	extra value
+     */
+    public void addChoiceRow(String name, String description, String defaultValue, List<String> values, String extraValue) {
+        ContainerTag retVal = select().withName(name);
+        addChoice(retVal, extraValue, defaultValue);
+        for (String optVal : values) {
+            addChoice(retVal, optVal, defaultValue);
+        }
+        newRow(description, retVal);
+    }
+
+    /**
+     * Add a choice to a selector.
+     *
+     * @param tag			selector to which the option will be added
+     * @param optVal		value of the option
+     * @param defaultValue	default value to be pre-selected
+     */
+    private void addChoice(ContainerTag tag, String optVal, String defaultValue) {
+        ContainerTag option = option(optVal).withValue(optVal);
+        if (optVal.contentEquals(defaultValue))
+            option.attr("selected");
+        tag.with(option);
     }
 
     /**
