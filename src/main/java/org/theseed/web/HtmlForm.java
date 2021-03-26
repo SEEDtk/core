@@ -296,7 +296,8 @@ public class HtmlForm {
      */
     public void addChoiceIndexedRow(String name, String description, String defaultValue, List<String> values, String special) {
         DomContent retVal;
-        if (values.size() <= 1) {
+        int choices = values.size() + (special != null ? 1 : 0);
+        if (choices <= 1) {
             // Here we have an empty list or a singleton that can only have the one value.
             retVal = input().attr("type", "hidden").attr("name", name).attr("value", "-1");
         } else {
