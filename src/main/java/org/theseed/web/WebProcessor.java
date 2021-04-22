@@ -57,6 +57,8 @@ public abstract class WebProcessor extends BaseProcessor {
     private File workDir;
     /** class ID for preselected cursor focus */
     public static final String FOCUS_CLASS = "_focus";
+    /** set to FALSE to allow no-workspace mode */
+    protected boolean needsWorkspace;
 
     // COMMAND-LINE OPTIONS
 
@@ -65,7 +67,7 @@ public abstract class WebProcessor extends BaseProcessor {
     private PageWriter.Type outputType;
 
     /** seed data directory */
-    @Argument(index = 0, metaVar = "dataDir", usage = "SEED data directory")
+    @Argument(index = 0, metaVar = "dataDir", usage = "SEED data directory", required = true)
     private File coreDir;
 
     /** workspace name */
@@ -77,6 +79,7 @@ public abstract class WebProcessor extends BaseProcessor {
      */
     public final void setDefaults() {
         this.outputType = PageWriter.Type.SEEDTK;
+        this.needsWorkspace = true;
         setWebDefaults();
     }
 
@@ -92,14 +95,16 @@ public abstract class WebProcessor extends BaseProcessor {
      * @throws ParseFailureException
      */
     protected final boolean validateParms() throws IOException, ParseFailureException {
-        this.workSpaceDir = new File(this.coreDir, "Workspaces/" + this.workSpace);
-        if (! this.workSpaceDir.isDirectory())
-            throw new FileNotFoundException("Invalid or unauthorized workspace \"" + workSpace + "\" specified.");
-        // Insure we have a Temp directory.
-        this.workDir = new File(this.workSpaceDir, "Temp");
-        if (! this.workDir.isDirectory()) {
-            log.info("Creating temporary work directory {}.", this.workDir);
-            FileUtils.forceMkdir(this.workDir);
+        if (this.needsWorkspace) {
+            this.workSpaceDir = new File(this.coreDir, "Workspaces/" + this.workSpace);
+            if (! this.workSpaceDir.isDirectory())
+                throw new FileNotFoundException("Invalid or unauthorized workspace \"" + workSpace + "\" specified.");
+            // Insure we have a Temp directory.
+            this.workDir = new File(this.workSpaceDir, "Temp");
+            if (! this.workDir.isDirectory()) {
+                log.info("Creating temporary work directory {}.", this.workDir);
+                FileUtils.forceMkdir(this.workDir);
+            }
         }
         // Create the page writer.
         this.pageWriter = this.outputType.create();
@@ -205,10 +210,13 @@ public abstract class WebProcessor extends BaseProcessor {
      * @throws Exception
      */
     protected final void runCommand() throws Exception {
-        try (CookieFile cookies = new CookieFile(this.workSpaceDir, this.getCookieName())) {
-            this.saveForm(cookies);
-            this.runWebCommand(cookies);
-        }
+        if (this.needsWorkspace)
+            try (CookieFile cookies = new CookieFile(this.workSpaceDir, this.getCookieName())) {
+                this.saveForm(cookies);
+                this.runWebCommand(cookies);
+            }
+        else
+            this.runWebCommand(null);
     }
 
     /**

@@ -25,7 +25,7 @@ public class FreePageWriter extends PageWriter {
     /** output stream */
     private PrintWriter writer;
     /** style sheet link */
-    public static final EmptyTag SEEDTK_STYLES = link().withRel("stylesheet").withHref("https://bioseed.mcs.anl.gov/~parrello/SEEDtk/css/Basic.css");
+    public static final EmptyTag SEEDTK_STYLES = link().withRel("stylesheet").withHref("https://core.theseed.org/SEEDtk/css/Basic.css");
 
     /** Construct a page writer for the system output */
     public FreePageWriter() {
