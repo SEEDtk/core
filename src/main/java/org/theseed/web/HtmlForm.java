@@ -13,8 +13,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -229,6 +227,21 @@ public class HtmlForm {
     }
 
     /**
+     * Create a row with a dropdown box initialized from a map.  The key of the
+     * file contains the description to be displayed in the box, and the value is the value to
+     * return.  The first data record of the file contains the default value.
+     *
+     * @param name			parameter name
+     * @param description	parameter description
+     * @param mapFile		file containing the choices
+     * @param defKey		default choice
+     */
+    public void addMapRow(String name, String description, Map<String, String> map, String defKey) {
+        ContainerTag dropdown = this.buildBoxFromMap(name, map, defKey);
+        this.newRow(description, dropdown);
+    }
+
+    /**
      * @return a dropdown box built from a file.
      *
      * @param name		parameter name
@@ -236,24 +249,37 @@ public class HtmlForm {
      */
     private ContainerTag buildMapBox(String name, File mapFile) {
         // Read the map from the file.
-        List<Map.Entry<String, String>> mapList = new ArrayList<>();
-        try (TabbedLineReader mapStream = new TabbedLineReader(mapFile)) {
-            int descIdx = mapStream.findField("description");
-            int valIdx = mapStream.findField("value");
-            for (TabbedLineReader.Line line : mapStream)
-                mapList.add(new AbstractMap.SimpleEntry<String, String>(line.get(valIdx), line.get(descIdx)));
+        Map<String, String> map;
+        try {
+            map = TabbedLineReader.readMap(mapFile, "description", "value");
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
-        if (mapList.size() < 1)
+        if (map.size() < 1)
             throw new IllegalArgumentException("File " + mapFile + " has no data.");
+        // Compute the default control value.
+        String defKey = map.values().iterator().next();
+        ContainerTag retVal = buildBoxFromMap(name, map, defKey);
+        return retVal;
+    }
+
+    /**
+     * Build a dropdown box from a map.
+     *
+     * @param name		name of box
+     * @param map		map of choices to values
+     * @param defKey	default choice
+     *
+     * @return the dropdown box to display
+     */
+    private ContainerTag buildBoxFromMap(String name, Map<String, String> map, String defKey) {
         // Get the saved value of the control.
-        String initVal = this.savedForm.get(name, mapList.get(0).getKey());
+        String initVal = this.savedForm.get(name, defKey);
         // Create the select tag.
         ContainerTag retVal = select().withName(name);
-        for (Map.Entry<String, String> pair : mapList) {
-            String value = pair.getKey();
-            ContainerTag option = option(pair.getValue()).withValue(value);
+        for (Map.Entry<String, String> pair : map.entrySet()) {
+            String value = pair.getValue();
+            ContainerTag option = option(pair.getKey()).withValue(value);
             if (value.contentEquals(initVal))
                 option.attr("selected");
             retVal.with(option);
