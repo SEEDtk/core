@@ -521,12 +521,12 @@ public class HtmlForm {
     /**
      * Build a data list for a string set.
      *
-     * @param strings		a list of strings to put in the data list
+     * @param itemList		a list of strings to put in the data list
      * @param listName		the name to give to the list
      */
-    public void createDataList(List<String> strings, String listName) {
+    public void createDataList(Collection<String> itemList, String listName) {
         ContainerTag dataList = datalist().withId(listName);
-        for (String string : strings)
+        for (String string : itemList)
             dataList.with(option(string).withValue(string));
         this.form.with(dataList);
     }
