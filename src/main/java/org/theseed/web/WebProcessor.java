@@ -182,11 +182,23 @@ public abstract class WebProcessor extends BaseProcessor {
      * @param parms		additional parameters (key=value)
      */
     public ContainerTag commandLink(String text, String program, String command, String... parms) {
+        String url = commandUrl(program, command, parms);
+        return a(text).withHref(url);
+
+    }
+
+    /**
+     * @return a local URL for the specified command
+     *
+     * @param program	program to invoke
+     * @param command	command within the program
+     * @param parms		additional parameters (key=value)
+     */
+    public String commandUrl(String program, String command, String... parms) {
         String url = "/" + program + ".cgi/" + command + "?workspace=" + this.getWorkSpace();
         if (parms.length > 0)
             url += ";" + StringUtils.join(parms, ';');
-        return localLink(text, url);
-
+        return this.pageWriter.local_url(url);
     }
 
     /**
