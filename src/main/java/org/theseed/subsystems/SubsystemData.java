@@ -140,8 +140,17 @@ public class SubsystemData {
                 // Store the roles as an array.
                 retVal.columns = new ColumnData[cols.size()];
                 retVal.columns = cols.toArray(retVal.columns);
-                // Skip the notes section.
-                ssStream.skipSection(MARKER);
+                // Check the groups section for auxiliary roles.
+                for (String[] groupParts : ssStream.new Section(MARKER)) {
+                    if (groupParts.length > 1 && groupParts[0].contentEquals("AUX")) {
+                        // Here we have an auxiliary role specification.  Each is stored as a column index.
+                        for (int i = 1; i < groupParts.length; i++) {
+                            int idx = Integer.valueOf(groupParts[i]);
+                            if (idx <= retVal.columns.length)
+                                retVal.columns[idx-1].setAux(true);
+                        }
+                    }
+                }
                 // Now we loop through the rows.
                 for (String ssRow : ssStream) {
                     RowData row = RowData.load(coreDir, ssRow, cols.size());

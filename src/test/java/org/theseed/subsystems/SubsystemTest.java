@@ -234,6 +234,18 @@ public class SubsystemTest extends TestCase {
         assertThat(subsystem.getName(), equalTo("5-oxoprolinase"));
         assertThat(subsystem.getMissingGenomes(), contains("100226.1"));
         assertThat(subsystem.size(), equalTo(4));
+        ColumnData[] cols = subsystem.getColumns();
+        assertThat(cols[0].isAux(), isFalse());
+        assertThat(cols[1].isAux(), isFalse());
+        assertThat(cols[2].isAux(), isFalse());
+        assertThat(cols[3].isAux(), isFalse());
+        assertThat(cols[4].isAux(), isTrue());
+        assertThat(cols[5].isAux(), isTrue());
+        assertThat(cols[6].isAux(), isTrue());
+        assertThat(cols[7].isAux(), isTrue());
+        assertThat(cols[8].isAux(), isFalse());
+        assertThat(cols[9].isAux(), isTrue());
+        assertThat(cols[10].isAux(), isTrue());
         subsystem = SubsystemData.load(coreDir, "Phenylalanine_and_Tyrosine_synthesis");
         subsystem.validateRows();
         assertThat(MarkerFile.readInt(SubsystemData.errorCountFile(coreDir, subsystem.getId())), equalTo(0));

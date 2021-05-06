@@ -85,8 +85,6 @@ public class ColumnData {
             return true;
         }
 
-
-
     }
 
     // FIELDS
@@ -102,6 +100,8 @@ public class ColumnData {
     private int[] counts;
     /** hash of bad-role functions to feature sets */
     private Map<String, SortedSet<String>> badRoleFeatures;
+    /** TRUE if this is an auxiliary role */
+    private boolean aux;
 
     /**
      * Construct a new column descriptor.
@@ -115,6 +115,7 @@ public class ColumnData {
         this.abbr = abbr;
         this.function = roleText;
         this.roles = Feature.rolesOfFunction(roleText);
+        this.aux = false;
         // Clear the counter-related stuff.
         this.counts = new int[PegState.values().length];
         this.badRoleFeatures = new TreeMap<String, SortedSet<String>>();
@@ -132,6 +133,22 @@ public class ColumnData {
      */
     public String getFunction() {
         return this.function;
+    }
+
+    /**
+     * @return TRUE if this is an auxiliary role
+     */
+    public boolean isAux() {
+        return this.aux;
+    }
+
+    /**
+     * Specify whether or not this is an auxiliary role.
+     *
+     * @param aux 	TRUE if this is an auxiliary role, else FALSE
+     */
+    public void setAux(boolean aux) {
+        this.aux = aux;
     }
 
     /**
