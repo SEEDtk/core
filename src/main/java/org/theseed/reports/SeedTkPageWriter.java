@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 public class SeedTkPageWriter extends PageWriter {
 
     /** style sheet link */
-    public static final EmptyTag SEEDTK_STYLES = link().withRel("stylesheet").withHref("/SEEDtk/css/Basic.css");
+    private static final EmptyTag SEEDTK_STYLES = link().withRel("stylesheet").withHref("/SEEDtk/css/Basic.css");
     /** logo break */
     private static final DomContent BREAK = br().withClass("logo");
 
@@ -47,7 +47,7 @@ public class SeedTkPageWriter extends PageWriter {
      *
      * @param url	input URL
      */
-    public static String fixUrl(String url) {
+    private static String fixUrl(String url) {
         if (url.startsWith("/"))
             url = "/SEEDtk" + url;
         return url;
