@@ -25,7 +25,7 @@ public class FreePageWriter extends PageWriter {
     /** output stream */
     private PrintWriter writer;
     /** style sheet link */
-    public static final EmptyTag SEEDTK_STYLES = link().withRel("stylesheet").withHref("https://core.theseed.org/SEEDtk/css/Basic.css");
+    public static final EmptyTag SEEDTK_STYLES = link().withRel("stylesheet").withHref("https://rnaseq.theseed.org/css/Basic.css");
 
     /** Construct a page writer for the system output */
     public FreePageWriter() {
@@ -47,8 +47,8 @@ public class FreePageWriter extends PageWriter {
         ContainerTag body = body().attr("onload", "setup();")
                 .with(h1(heading)).with(content);
         ContainerTag page = html(head(title(title), SEEDTK_STYLES,
-                script().withSrc("/SEEDtk/css/utils.js"), script().withSrc("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"),
-                link().withRel("icon").withType("image/png").withHref("https://bioseed.mcs.anl.gov/~parrello/SEEDtk/favicon.ico")), body);
+                script().withSrc("https://rnaseq.theseed.org/css/utils.js"), script().withSrc("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"),
+                link().withRel("icon").withType("image/png").withHref("https://rnaseq.theseed.org/favicon.ico")), body);
         this.writer.println(page.render());
         this.writer.flush();
     }
