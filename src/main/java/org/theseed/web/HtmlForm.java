@@ -417,7 +417,7 @@ public class HtmlForm {
      */
     public void addSearchRow(String name, String description, String defaultValue, String listName) {
         EmptyTag retVal = input().withType("text").withName(name)
-                .withId(name).attr("list", listName).withClass("file");
+                .withId(name).attr("list", listName).withClass("file").withValue(defaultValue);
         newRow(description, retVal);
     }
 
