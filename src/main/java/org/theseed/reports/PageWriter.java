@@ -74,7 +74,7 @@ public abstract class PageWriter {
      * This enum indicates the types of output.
      */
     public static enum Type {
-        INTERNAL, SEEDTK, RNA, FREESTANDING;
+        INTERNAL, SEEDTK, RNA, FREESTANDING, IFRAME;
 
         public PageWriter create() {
             PageWriter retVal = null;
@@ -90,6 +90,9 @@ public abstract class PageWriter {
                 break;
             case FREESTANDING :
                 retVal = new FreePageWriter();
+                break;
+            case IFRAME :
+                retVal = new FramePageWriter();
                 break;
             }
             return retVal;
