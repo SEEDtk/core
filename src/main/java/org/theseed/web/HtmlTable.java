@@ -89,15 +89,25 @@ public class HtmlTable<K extends Key & Comparable<K>> {
 
     /**
      * @return the html for the entire table
+     *
+     * @param firstRow		index (0-based) of first row to display
+     * @param maxRows		maximum number of rows to display
      */
-    public ContainerTag output() {
+    public ContainerTag output(int firstRow, int maxRows) {
         ContainerTag retVal = table();
         // Create the headers.
         retVal.with(tr().with(Arrays.stream(this.columns).map(c -> c.applyStyles(th(c.getTitle())))));
         // Add the rows.
-        retVal.with(this.rows.stream().map(r -> r.output()));
+        retVal.with(this.rows.stream().skip(firstRow).limit(maxRows).map(r -> r.output()));
         // Return the table.
         return retVal;
+    }
+
+    /**
+     * @return the html for the entire table
+     */
+    public ContainerTag output() {
+        return this.output(0, Integer.MAX_VALUE);
     }
 
     /**
