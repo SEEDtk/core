@@ -153,6 +153,29 @@ public class ColSpec {
     }
 
     /**
+     * Numeric column with possibly-missing fractional numbers.
+     */
+    public static class MaybeFraction extends ColSpec {
+
+        public MaybeFraction(String title) {
+            super(text(title), "%8.4f", "num");
+        }
+
+        public MaybeFraction(DomContent title) {
+            super(title, "%8.4f", "num");
+        }
+
+        @Override
+        protected void store(CellContent cell, double num) {
+            if (Double.isNaN(num))
+                super.store(cell, "");
+            else
+                super.store(cell, num);
+        }
+
+    }
+
+    /**
      * Error count column.  Nonzero values are highlighted.
      */
     public static class ErrorCount extends Num {
@@ -251,7 +274,7 @@ public class ColSpec {
         }
 
     }
-    
+
     /**
      * @return the tooltip text
      */
