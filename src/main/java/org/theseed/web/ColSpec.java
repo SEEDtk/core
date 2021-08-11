@@ -61,7 +61,7 @@ public class ColSpec {
      * @param cell	target cell
      * @param num	integer to format
      */
-    protected void store(CellContent cell, int num) {
+    public void store(CellContent cell, int num) {
        this.store(cell, rawHtml(Integer.toString(num)));
     }
 
@@ -71,7 +71,7 @@ public class ColSpec {
      * @param cell	target cell
      * @param num	floating-point nubmer to format
      */
-    protected void store(CellContent cell, double num) {
+    public void store(CellContent cell, double num) {
         this.store(cell, text(String.format(this.format, num)));
     }
 
@@ -81,7 +81,7 @@ public class ColSpec {
      * @param cell	target cell
      * @param text	string to format
      */
-    protected void store(CellContent cell, String text) {
+    public void store(CellContent cell, String text) {
         this.store(cell, text(text));
     }
 
@@ -166,7 +166,7 @@ public class ColSpec {
         }
 
         @Override
-        protected void store(CellContent cell, double num) {
+        public void store(CellContent cell, double num) {
             if (Double.isNaN(num))
                 super.store(cell, "");
             else
@@ -189,7 +189,7 @@ public class ColSpec {
         }
 
         @Override
-        protected void store(CellContent cell, int num) {
+        public void store(CellContent cell, int num) {
             super.store(cell, num);
             cell.highlight(num > 0);
         }
@@ -209,7 +209,7 @@ public class ColSpec {
         }
 
         @Override
-        protected void store(CellContent cell, int num) {
+        public void store(CellContent cell, int num) {
             super.store(cell, num);
             cell.highlight(num == 0);
         }
