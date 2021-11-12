@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -343,13 +344,17 @@ public abstract class WebProcessor extends BaseProcessor {
      * @return a form designed for the command
      *
      * @throws IOException
+     * @throws SecurityException
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalArgumentException
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
     public HtmlForm buildForm(Class<? extends WebProcessor> processorType, String program, String command)
-            throws IOException, IllegalAccessException, InstantiationException {
+            throws IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         HtmlForm retVal = new HtmlForm(program, command, this.workSpace, this.workSpaceDir, this.pageWriter);
-        WebProcessor processor = processorType.newInstance();
+        WebProcessor processor = processorType.getDeclaredConstructor().newInstance();
         processor.setDefaults();
         Field[] fields = processorType.getDeclaredFields();
         // We will track bad annotations in here.
