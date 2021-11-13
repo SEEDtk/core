@@ -3,7 +3,7 @@
  */
 package org.theseed.genome.coupling;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import static org.theseed.test.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -22,8 +22,9 @@ import org.theseed.io.TabbedLineReader;
  * @author Bruce Parrello
  *
  */
-public class TestRoleCouplingMap extends TestCase {
+public class TestRoleCouplingMap  {
 
+    @Test
     public void testSerialization() throws IOException, ClassNotFoundException {
         File origFile = new File("data", "roles.coupling.tbl");
         RoleCouplingMap map1 = new RoleCouplingMap(origFile);

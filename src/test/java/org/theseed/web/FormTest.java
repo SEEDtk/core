@@ -3,7 +3,7 @@
  */
 package org.theseed.web;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -28,8 +28,9 @@ import org.theseed.sequence.blast.Source;
  * @author Bruce Parrello
  *
  */
-public class FormTest extends TestCase {
+public class FormTest {
 
+    @Test
     public void testHtmlForm() throws IOException {
         PageWriter writer = PageWriter.Type.SEEDTK.create();
         File wsDir = new File("data", "Workspace");

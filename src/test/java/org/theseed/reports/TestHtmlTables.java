@@ -1,6 +1,6 @@
 package org.theseed.reports;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -14,8 +14,9 @@ import org.theseed.web.Row;
 
 
 
-public class TestHtmlTables extends TestCase {
+public class TestHtmlTables {
 
+    @Test
     public void testSortedTables() {
         // This table is sorted by Salary, from high to low.
         HtmlTable<Key.RevFloat> table = new HtmlTable<Key.RevFloat>(new ColSpec.Normal("name"), new ColSpec.Num("Salary"), new ColSpec.ErrorCount("Violations"));
@@ -65,6 +66,7 @@ public class TestHtmlTables extends TestCase {
         assertThat(output, equalTo("<table><tr><th><span class=\"tt\">Subsystem<span class=\"btip\">subsystems are good</span></span></th><th class=\"num\">Good</th><th class=\"flag\">Expired</th></tr><tr><td>A new subsystem</td><td class=\"num\">1</td><td class=\"flag\">&nbsp;</td></tr><tr><td>An old subsystem</td><td class=\"num\">2</td><td class=\"flag\">Y</td></tr><tr><td>Arginine thingnitase</td><td class=\"num\">3</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Adenine synthase</td><td class=\"highlight num\">0</td><td class=\"flag\">Y</td></tr><tr><td>Alludium deForest</td><td class=\"num\">3</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Alludium deforest</td><td class=\"num\">2</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Frosty the snowman</td><td class=\"num\">1</td><td class=\"flag\">&nbsp;</td></tr><tr><td>Effluent ruthlessness</td><td class=\"highlight num\">0</td><td class=\"flag\">Y</td></tr></table>"));
     }
 
+    @Test
     public void testRevRatio() {
         Key.RevRatio key0_2 = new Key.RevRatio(0.0, 2.0); 	//  0.0*
         Key.RevRatio key1_2 = new Key.RevRatio(1.0, 2.0); 	//  0.5*

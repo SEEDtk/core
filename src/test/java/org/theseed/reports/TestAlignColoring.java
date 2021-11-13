@@ -3,7 +3,7 @@
  */
 package org.theseed.reports;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -19,8 +19,9 @@ import org.theseed.sequence.Sequence;
  * @author Bruce Parrello
  *
  */
-public class TestAlignColoring extends TestCase {
+public class TestAlignColoring {
 
+    @Test
     public void testColoring() throws IOException {
         File alignFile = new File("data", "alignCounts.fa");
         List<Sequence> alignment = FastaInputStream.readAll(alignFile);
@@ -37,6 +38,7 @@ public class TestAlignColoring extends TestCase {
         assertThat(allCheck, equalTo("<mark style=\"background-color: #80BAFF\">A</mark><mark style=\"background-color: #80FFBA\">C</mark><mark style=\"background-color: #FFBA80\">-</mark>GT"));
     }
 
+    @Test
     public void testAlignmentTable() throws IOException {
         File alignFile = new File("data", "alignCounts.fa");
         List<Sequence> alignment = FastaInputStream.readAll(alignFile);

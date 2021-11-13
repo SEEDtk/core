@@ -3,7 +3,7 @@
  */
 package org.theseed.subsystems;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.theseed.test.Matchers.*;
@@ -27,8 +27,9 @@ import org.theseed.io.MarkerFile;
  * @author Bruce Parrello
  *
  */
-public class SubsystemTest extends TestCase {
+public class SubsystemTest {
 
+    @Test
     public void testCell() {
         RowData row = new RowData("123.4", "fake genome", "likely");
         assertThat(row.getGenomeId(), equalTo("123.4"));
@@ -56,6 +57,7 @@ public class SubsystemTest extends TestCase {
         assertThat(row.getTypes(), containsInAnyOrder("rna", "peg"));
     }
 
+    @Test
     public void testRow() throws IOException {
         File coreDir = new File("data");
         RowData row = RowData.load(coreDir, "83333.1\t-1\t\t\t", 6);
@@ -104,6 +106,7 @@ public class SubsystemTest extends TestCase {
     /**
      * test column data
      */
+    @Test
     public void testColumns() {
         File coreDir = new File("data");
         ColumnData col0 = new ColumnData(0, "R1", "fake role / other role");
@@ -173,6 +176,7 @@ public class SubsystemTest extends TestCase {
         assertThat(badRoles.last().getFids(), contains("fig|83333.1.peg.102"));
     }
 
+    @Test
     public void testSubsystem() throws IOException {
         File coreDir = new File("data");
         SubsystemData subsystem = SubsystemData.load(coreDir, "Threonine_synthesis");

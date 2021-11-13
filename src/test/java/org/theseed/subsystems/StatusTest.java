@@ -3,7 +3,7 @@
  */
 package org.theseed.subsystems;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -18,11 +18,12 @@ import j2html.tags.ContainerTag;
  * @author Bruce Parrello
  *
  */
-public class StatusTest extends TestCase {
+public class StatusTest {
 
     /**
      * test the peg state
      */
+    @Test
     public void testPegState() {
         PegState s1 = PegState.BAD_ROLE;
         ContainerTag pegLink = s1.display("fig1");
@@ -54,6 +55,7 @@ public class StatusTest extends TestCase {
     }
 
 
+    @Test
     public void testFeatureStatus() {
         FeatureStatus stat = new FeatureStatus();
         assertThat(stat.getState(), equalTo(PegState.MISSING));

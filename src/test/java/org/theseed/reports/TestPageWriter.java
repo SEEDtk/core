@@ -3,7 +3,7 @@
  */
 package org.theseed.reports;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -21,8 +21,9 @@ import static j2html.TagCreator.*;
  * @author Bruce Parrello
  *
  */
-public class TestPageWriter extends TestCase {
+public class TestPageWriter {
 
+    @Test
     public void testConstructs() {
         PageWriter writer = PageWriter.Type.INTERNAL.create();
         assertThat(writer.highlightBlock(p("p1"), p("p2")).render(), equalTo("<div id=\"Pod\"><p>p1</p><p>p2</p></div>"));
@@ -34,6 +35,7 @@ public class TestPageWriter extends TestCase {
         assertThat(writer.subSection("name", "My Title", p("body text"), p("foot text")).render(), equalTo("<div><h2><a name=\"name\">My Title</a></h2><p>body text</p><p>foot text</p></div>"));
     }
 
+    @Test
     public void testLocalUrl() {
         PageWriter writer = PageWriter.Type.SEEDTK.create();
         String url1 = writer.local_url("command?workspace=test");

@@ -3,7 +3,7 @@
  */
 package org.theseed.web;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.theseed.test.Matchers.*;
@@ -19,8 +19,9 @@ import org.apache.commons.io.FileUtils;
  * @author Bruce Parrello
  *
  */
-public class CookieFileTest extends TestCase {
+public class CookieFileTest {
 
+    @Test
     public void testCookieFile() throws IOException {
         File wsDir = new File("data", "Workspace");
         // Make sure we delete the cookie file.

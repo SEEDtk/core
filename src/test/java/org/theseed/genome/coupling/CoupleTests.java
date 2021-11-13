@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.theseed.test.Matchers.*;
@@ -18,8 +18,9 @@ import static org.theseed.test.Matchers.*;
  * @author Bruce Parrello
  *
  */
-public class CoupleTests extends TestCase {
+public class CoupleTests {
 
+    @Test
     public void testFidPairs() {
         CouplingSet.FidPair test1 = new CouplingSet.FidPair("abc:def");
         CouplingSet.FidPair test1a = new CouplingSet.FidPair("abc:def");
@@ -32,6 +33,7 @@ public class CoupleTests extends TestCase {
         assertThat(test1.getFid(1), equalTo("def"));
     }
 
+    @Test
     public void testCouplingSet() throws IOException {
         CouplingSet couples = new CouplingSet(new File("data", "couples.tbl"), "PGF_00006351", "PGF_00884706");
         assertThat(couples.getFamily(0), equalTo("PGF_00006351"));

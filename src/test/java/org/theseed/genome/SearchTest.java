@@ -3,7 +3,7 @@
  */
 package org.theseed.genome;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -15,8 +15,9 @@ import java.util.Map;
  * @author Bruce Parrello
  *
  */
-public class SearchTest extends TestCase {
+public class SearchTest {
 
+    @Test
     public void testSearch() throws IOException {
         FeatureSearch searcher = new FeatureSearch(new File("data"));
         Map<String, String> found = searcher.findFeatures("\\bcysteine\\b");
