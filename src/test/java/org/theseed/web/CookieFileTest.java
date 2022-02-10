@@ -6,7 +6,6 @@ package org.theseed.web;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.theseed.test.Matchers.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,8 +37,8 @@ public class CookieFileTest {
             assertThat(iTest, equalTo(10));
             assertThat(dTest, closeTo(0.333333, 0.000001));
             assertThat(sTest, equalTo("string thing"));
-            assertThat(tTest, isTrue());
-            assertThat(fTest, isFalse());
+            assertThat(tTest, equalTo(true));
+            assertThat(fTest, equalTo(false));
             cookies.put("sTest", "thing string");
             cookies.put("iTest", 20);
             String[] keys = cookies.getKeys();
@@ -55,8 +54,8 @@ public class CookieFileTest {
             assertThat(iTest, equalTo(20));
             assertThat(dTest2, equalTo(dTest));
             assertThat(sTest, equalTo("thing string"));
-            assertThat(tTest, isTrue());
-            assertThat(fTest, isFalse());
+            assertThat(tTest, equalTo(true));
+            assertThat(fTest, equalTo(false));
             cookies.put("iTest", 99);
             assertThat(cookies.get("iTest", 10), equalTo(99));
             cookies.put("sTest", "Florida String");
@@ -64,19 +63,19 @@ public class CookieFileTest {
             cookies.put("dTest2", 12.6);
             assertThat(cookies.get("dTest2", 0.0), equalTo(12.6));
             cookies.put("tTest", false);
-            assertThat(cookies.get("tTest", true), isFalse());
-            assertThat(cookies.get("fTest", true), isFalse());
+            assertThat(cookies.get("tTest", true), equalTo(false));
+            assertThat(cookies.get("fTest", true), equalTo(false));
             assertThat(cookies.get("iTest", 10), equalTo(99));
             cookies.put("fTest", true);
-            assertThat(cookies.get("fTest", false), isTrue());
+            assertThat(cookies.get("fTest", false), equalTo(true));
         }
         // Final read-back.
         try (CookieFile cookies = new CookieFile(wsDir, "testCookies")) {
             assertThat(cookies.get("iTest", 10), equalTo(99));
             assertThat(cookies.get("sTest", ""), equalTo("Florida String"));
             assertThat(cookies.get("dTest2", 0.0), equalTo(12.6));
-            assertThat(cookies.get("tTest", true), isFalse());
-            assertThat(cookies.get("fTest", false), isTrue());
+            assertThat(cookies.get("tTest", true), equalTo(false));
+            assertThat(cookies.get("fTest", false), equalTo(true));
         }
     }
 }

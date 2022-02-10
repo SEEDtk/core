@@ -10,7 +10,6 @@ import java.util.Iterator;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.theseed.test.Matchers.*;
 
 /**
  * Test for coupling-related functions
@@ -42,24 +41,24 @@ public class CoupleTests {
         assertThat(couples.getFunction(1), equalTo("Efflux ABC transporter, ATP-binding protein"));
         assertThat(couples.size(), equalTo(5));
         Iterator<CouplingSet.FidPair> iter = couples.iterator();
-        assertThat(iter.hasNext(), isTrue());
+        assertThat(iter.hasNext(), equalTo(true));
         CouplingSet.FidPair curr = iter.next();
         assertThat(curr.getFid(0),equalTo("fig|100226.1.peg.1224")); assertThat(curr.getFid(1), equalTo("fig|100226.1.peg.1225"));
         assertThat(curr.getGenomeId(), equalTo("100226.1"));
-        assertThat(iter.hasNext(), isTrue());
+        assertThat(iter.hasNext(), equalTo(true));
         curr = iter.next();
         assertThat(curr.getFid(0),equalTo("fig|100226.1.peg.1686")); assertThat(curr.getFid(1), equalTo("fig|100226.1.peg.1687"));
-        assertThat(iter.hasNext(), isTrue());
+        assertThat(iter.hasNext(), equalTo(true));
         curr = iter.next();
         assertThat(curr.getFid(0),equalTo("fig|100226.1.peg.1895")); assertThat(curr.getFid(1), equalTo("fig|100226.1.peg.1896"));
-        assertThat(iter.hasNext(), isTrue());
+        assertThat(iter.hasNext(), equalTo(true));
         curr = iter.next();
         assertThat(curr.getFid(0),equalTo("fig|100226.1.peg.2856")); assertThat(curr.getFid(1), equalTo("fig|100226.1.peg.2857"));
-        assertThat(iter.hasNext(), isTrue());
+        assertThat(iter.hasNext(), equalTo(true));
         curr = iter.next();
         assertThat(curr.getFid(0),equalTo("fig|83333.1.peg.3183")); assertThat(curr.getFid(1), equalTo("fig|83333.1.peg.3184"));
         assertThat(curr.getGenomeId(), equalTo("83333.1"));
-        assertThat(iter.hasNext(), isFalse());
+        assertThat(iter.hasNext(), equalTo(false));
     }
 
 }

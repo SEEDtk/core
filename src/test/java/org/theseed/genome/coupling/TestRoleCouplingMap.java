@@ -4,7 +4,6 @@
 package org.theseed.genome.coupling;
 
 import org.junit.jupiter.api.Test;
-import static org.theseed.test.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -38,7 +37,7 @@ public class TestRoleCouplingMap  {
                 assertThat(role1, not(nullValue()));
                 assertThat(role2, not(nullValue()));
                 Set<Coupling> couplings = map1.getCouplings(role1);
-                assertThat(couplings.stream().anyMatch(x -> x.getTarget().contentEquals(role2)), isTrue());
+                assertThat(couplings.stream().anyMatch(x -> x.getTarget().contentEquals(role2)), equalTo(true));
                 fileSet.add(role1);
                 fileSet.add(role2);
             }
@@ -48,7 +47,7 @@ public class TestRoleCouplingMap  {
         assertThat(roleSet.size(), equalTo(fileSet.size()));
         // Verify that each role in the file is in the map list.
         for (String role : fileSet)
-            assertThat(role, roleSet.contains(role), isTrue());
+            assertThat(role, roleSet.contains(role), equalTo(true));
         // Spot check some sizes and strengths.
         SortedSet<Coupling> couplings = map1.getCouplings("DnaDireRnaPolySubu");
         Coupling couple = couplings.first();
@@ -77,10 +76,10 @@ public class TestRoleCouplingMap  {
         Set<String> loadSet = map2.getRoles();
         assertThat(loadSet.size(), equalTo(roleSet.size()));
         for (String role : loadSet) {
-            assertThat(role, roleSet.contains(role), isTrue());
+            assertThat(role, roleSet.contains(role), equalTo(true));
             SortedSet<Coupling> oldCouplings = map1.getCouplings(role);
             SortedSet<Coupling> newCouplings = map2.getCouplings(role);
-            assertThat(role, oldCouplings.equals(newCouplings), isTrue());
+            assertThat(role, oldCouplings.equals(newCouplings), equalTo(true));
         }
     }
 }
