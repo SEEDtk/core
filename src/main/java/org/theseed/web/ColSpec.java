@@ -7,6 +7,7 @@ import j2html.tags.ContainerTag;
 import j2html.tags.DomContent;
 import static j2html.TagCreator.*;
 
+
 import org.apache.commons.lang3.StringUtils;
 import org.theseed.reports.CoreHtmlUtilities;
 
@@ -18,7 +19,7 @@ import org.theseed.reports.CoreHtmlUtilities;
  * @author Bruce Parrello
  *
  */
-public class ColSpec {
+public abstract class ColSpec {
 
     // FIELDS
     /** column title */
@@ -38,7 +39,7 @@ public class ColSpec {
      * @param fp_format		special format for floating-point values
      * @param baseStyles	permanent styles for this column
      */
-    protected ColSpec(DomContent col_title, String fp_format, String... baseStyles) {
+   protected ColSpec(DomContent col_title, String fp_format, String... baseStyles) {
         this.title = col_title;
         this.format = fp_format;
         this.styles = baseStyles;
