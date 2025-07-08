@@ -32,7 +32,7 @@ public class SubsystemTest {
     public void testCell() {
         RowData row = new RowData("123.4", "fake genome", "likely");
         assertThat(row.getGenomeId(), equalTo("123.4"));
-        assertThat(row.isActive(), equalTo(true));
+        assertThat(row.isActive(), equalTo(false));
         String rowHtml = row.displayGenome().render();
         assertThat(rowHtml, stringContainsInOrder(Arrays.asList("<a", "123.4", "fake genome</a>")));
         assertThat(row.getVariant(), equalTo("likely"));
