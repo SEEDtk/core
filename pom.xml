@@ -68,24 +68,18 @@
     </dependency>
  </dependencies>
     <build>
-        <finalName>core</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>3.1.2</version>
                 <executions>
                     <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <copy todir="${env.SEED_JARS}">
-                                    <fileset dir="${project.build.directory}" includes="${project.build.finalName}.jar" />
-                                </copy>
-                            </target>
-                        </configuration>
+                    <id>install-during-package</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>install</goal>
+                    </goals>
                     </execution>
                 </executions>
             </plugin>
