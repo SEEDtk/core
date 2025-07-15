@@ -95,7 +95,7 @@ public abstract class WebProcessor extends BaseProcessor {
      * @throws IOException
      * @throws ParseFailureException
      */
-    protected final boolean validateParms() throws IOException, ParseFailureException {
+    protected final void validateParms() throws IOException, ParseFailureException {
         if (this.needsWorkspace) {
             this.workSpaceDir = new File(this.coreDir, "Workspaces/" + this.workSpace);
             if (! this.workSpaceDir.isDirectory())
@@ -110,7 +110,7 @@ public abstract class WebProcessor extends BaseProcessor {
         // Create the page writer.
         this.pageWriter = this.outputType.create();
         // Call the client.
-        return this.validateWebParms();
+        this.validateWebParms();
     }
 
     /**
@@ -120,7 +120,7 @@ public abstract class WebProcessor extends BaseProcessor {
      *
      * @throws ParseFailureException
      */
-    protected abstract boolean validateWebParms() throws IOException, ParseFailureException;
+    protected abstract void validateWebParms() throws IOException, ParseFailureException;
 
     /**
      * @return the cookie file name for this command
