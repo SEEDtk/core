@@ -41,7 +41,7 @@ public class SubsystemData {
 
     // FIELDS
     /** logging facility */
-    protected static Logger log = LoggerFactory.getLogger(SubsystemData.class);
+    private static final Logger log = LoggerFactory.getLogger(SubsystemData.class);
     /** list of columns */
     private ColumnData[] columns;
     /** loaded rows */

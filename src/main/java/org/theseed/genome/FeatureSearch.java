@@ -30,7 +30,7 @@ public class FeatureSearch {
 
     // FIELDS
     /** logging facility */
-    protected static Logger log = LoggerFactory.getLogger(FeatureSearch.class);
+    private static final Logger log = LoggerFactory.getLogger(FeatureSearch.class);
     /** organism directory object */
     private OrganismDirectories genomes;
     /** organism root directory */

@@ -27,7 +27,7 @@ public class ScatterGraph implements IGraph {
 
     // FIELDS
     /** logging facility */
-    protected static Logger log = LoggerFactory.getLogger(ScatterGraph.class);
+    private static final Logger log = LoggerFactory.getLogger(ScatterGraph.class);
     /** SVG tag */
     private ContainerTag container;
     /** coordinate width */

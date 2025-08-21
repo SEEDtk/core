@@ -49,7 +49,7 @@ public abstract class WebProcessor extends BaseProcessor {
 
     // FIELDS
     /** logging facility */
-    protected static Logger log = LoggerFactory.getLogger(WebProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(WebProcessor.class);
     /** page writer */
     private PageWriter pageWriter;
     /** workspace directory */
