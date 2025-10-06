@@ -3,8 +3,6 @@
  */
 package org.theseed.subsystems;
 
-import static j2html.TagCreator.a;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -28,6 +26,7 @@ import org.theseed.io.TabbedLineReader;
 import org.theseed.reports.LinkObject;
 import org.theseed.reports.PageWriter;
 
+import static j2html.TagCreator.a;
 import j2html.tags.ContainerTag;
 
 /**
@@ -45,15 +44,15 @@ public class SubsystemData {
     /** list of columns */
     private ColumnData[] columns;
     /** loaded rows */
-    private Map<String, RowData> rows;
+    private final Map<String, RowData> rows;
     /** name of this subsystem */
-    private String name;
+    private final String name;
     /** ID of this subsystem */
-    private String id;
+    private final String id;
     /** list of missing genomes */
-    private SortedSet<String> missingGenomes;
+    private final SortedSet<String> missingGenomes;
     /** coreSEED directory for this subsystem */
-    private File coreDir;
+    private final File coreDir;
     /** subsystem error count */
     private int errorCount;
     /** TRUE if the subsystem's error count is unknown */
@@ -64,7 +63,7 @@ public class SubsystemData {
      * of 1000 milliseconds) */
     private static final long STALE_TIME = 7 * 24 * 3600 * 1000;
     /** format for subsystem page URLs */
-    private static String HEALTH_LINK = "/subsystems.cgi/health?id=%s";
+    private static final String HEALTH_LINK = "/subsystems.cgi/health?id=%s";
 
 
     /**
@@ -77,8 +76,8 @@ public class SubsystemData {
         this.id = ssId;
         this.name = StringUtils.replaceChars(ssId, '_', ' ');
         this.coreDir = coreDir;
-        this.rows = new HashMap<String, RowData>();
-        this.missingGenomes = new TreeSet<String>();
+        this.rows = new HashMap<>();
+        this.missingGenomes = new TreeSet<>();
     }
 
     /**
@@ -134,7 +133,7 @@ public class SubsystemData {
                 log.info("Reading spreadsheet file for {} subsystem \"{}\".",
                         coreDir, retVal.name);
                 // Read the roles.
-                List<ColumnData> cols = new ArrayList<ColumnData>(50);
+                List<ColumnData> cols = new ArrayList<>(50);
                 for (String[] roleParts : ssStream.new Section(MARKER))
                     cols.add(new ColumnData(cols.size(), roleParts[0], roleParts[1]));
                 // Store the roles as an array.
@@ -145,7 +144,7 @@ public class SubsystemData {
                     if (groupParts.length > 1 && groupParts[0].contentEquals("AUX")) {
                         // Here we have an auxiliary role specification.  Each is stored as a column index.
                         for (int i = 1; i < groupParts.length; i++) {
-                            int idx = Integer.valueOf(groupParts[i]);
+                            int idx = Integer.parseInt(groupParts[i]);
                             if (idx <= retVal.columns.length)
                                 retVal.columns[idx-1].setAux(true);
                         }

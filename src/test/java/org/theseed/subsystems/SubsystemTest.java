@@ -3,10 +3,6 @@
  */
 package org.theseed.subsystems;
 
-import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +13,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.hamcrest.Matchers.stringContainsInOrder;
+import org.junit.jupiter.api.Test;
 import org.theseed.io.LineReader;
 import org.theseed.io.MarkerFile;
 
@@ -91,7 +99,7 @@ public class SubsystemTest {
         assertThat(funs.get("fig|83333.1.peg.4427"), equalTo("Purine nucleoside phosphoramidase HinT"));
         assertThat(funs.get("fig|83333.1.peg.4428"), equalTo("Transcriptional regulator YjdC, AcrR family"));
         // Verify no deleted features are in the function map.
-        Set<String> deleted = new HashSet<String>(1000);
+        Set<String> deleted = new HashSet<>(1000);
         try (LineReader delFile = new LineReader(new File("data/Organisms/83333.1/Features/peg", "deleted.features"))) {
             for (String fid : delFile)
                 deleted.add(fid);
@@ -187,7 +195,7 @@ public class SubsystemTest {
         assertThat(subsystem.getWidth(), equalTo(3));
         assertThat(subsystem.size(), equalTo(4));
         assertThat(subsystem.isSuspectErrorCount(), equalTo(true));
-        List<RowData> rows = new ArrayList<RowData>(subsystem.getRows());
+        List<RowData> rows = new ArrayList<>(subsystem.getRows());
         rows.sort(null);
         RowData row = rows.get(0);
         assertThat(row.isActive(), equalTo(false));
