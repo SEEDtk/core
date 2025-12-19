@@ -12,8 +12,9 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.theseed.reports.HtmlUtilities;
 
+import static j2html.TagCreator.br;
+import static j2html.TagCreator.rawHtml;
 import j2html.tags.DomContent;
-import static j2html.TagCreator.*;
 
 /**
  * This object represents a single subsystem cell.  The cell contains one or more features, all belonging
@@ -27,7 +28,7 @@ public class CellData {
 
     // FIELDS
     /** map of features in this cell */
-    private Map<String, FeatureStatus> features;
+    private final Map<String, FeatureStatus> features;
 
 
     /**
@@ -38,7 +39,7 @@ public class CellData {
      */
     public CellData(RowData rowData, String cellString) {
         // We use a tree map because the number of entries is generally one or two.
-        this.features = new TreeMap<String, FeatureStatus>();
+        this.features = new TreeMap<>();
         // Compute the feature prefix.
         String prefix = "fig|" + rowData.getGenomeId() + ".";
         // Split on commas.

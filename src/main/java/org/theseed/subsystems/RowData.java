@@ -17,8 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.theseed.io.LineReader;
 import org.theseed.io.MarkerFile;
 
+import static j2html.TagCreator.a;
 import j2html.tags.ContainerTag;
-import static j2html.TagCreator.*;
 
 /**
  * This object represents a single row in a subsystem.  It contains
@@ -32,19 +32,19 @@ public class RowData implements Comparable<RowData> {
 
     // FIELDS
     /** ID of this row's genome */
-    private String genomeId;
+    private final String genomeId;
     /** name of this row's genome */
-    private String name;
+    private final String name;
     /** variant code of this row */
-    private String variantCode;
+    private final String variantCode;
     /** feature types of interest */
-    private Set<String> types;
+    private final Set<String> types;
     /** array of cells */
     private CellData[] cells;
     /** data directory for this row's genome */
     private File orgDir;
     /** genome URL format */
-    private static String GENOME_URL = "https://core.theseed.org/FIG/seedviewer.cgi?page=Organism;organism=%s";
+    private final static String GENOME_URL = "https://core.theseed.org/FIG/seedviewer.cgi?page=Organism;organism=%s";
 
     /**
      * Construct a new row.
@@ -54,7 +54,7 @@ public class RowData implements Comparable<RowData> {
         this.name = name;
         this.variantCode = variantCode;
         // We use a tree set because we expect at most two types.
-        this.types = new TreeSet<String>();
+        this.types = new TreeSet<>();
     }
 
     /**
@@ -120,14 +120,14 @@ public class RowData implements Comparable<RowData> {
      * @throws IOException
      */
     public static Map<String, String> readFunctions(File genomeDir, String genomeId, Set<String> types) throws IOException {
-        Map<String, String> retVal = new HashMap<String, String>(3000);
+        Map<String, String> retVal = new HashMap<>(3000);
         File featureDir = new File(genomeDir, "Features");
         // Initialize the feature type set if we don't have one.
         if (types == null) {
             types = Files.walk(featureDir.toPath(), 1).map(p -> p.getFileName().toString()).collect(Collectors.toSet());
         }
         // Compute the deleted features.
-        Set<String> deleted = new HashSet<String>(100);
+        Set<String> deleted = new HashSet<>(100);
         for (String type : types) {
             File deleteFile = new File(featureDir, type + "/deleted.features");
             if (deleteFile.exists())
