@@ -5,11 +5,11 @@ package org.theseed.web;
 
 import java.util.Comparator;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.theseed.locations.Location;
 import org.theseed.reports.NaturalSort;
 
-import static j2html.TagCreator.*;
+import static j2html.TagCreator.rawHtml;
 
 /**
  * This file provides useful key types for sorting HtmlTables.
@@ -201,7 +201,7 @@ public abstract class Key {
 
         @Override
         public int compareTo(Text o) {
-            int retVal = StringUtils.compareIgnoreCase(this.value, o.value);
+            int retVal = Strings.CI.compare(this.value, o.value);
             if (retVal == 0) {
                 // Here the strings are the same, exempting case changes.  We compare
                 // them in reverse so that lower case sorts first.
@@ -248,8 +248,8 @@ public abstract class Key {
     public static class Feature extends Key implements Comparable<Key.Feature> {
 
         // FIELDS
-        private String fid;
-        private Location loc;
+        private final String fid;
+        private final Location loc;
 
         /**
          * Create a new feature key.

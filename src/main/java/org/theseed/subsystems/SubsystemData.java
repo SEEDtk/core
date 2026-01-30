@@ -18,6 +18,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theseed.io.LineReader;
@@ -289,7 +290,7 @@ public class SubsystemData {
     public static boolean isPrivate(File coreDir, String ssId) {
         File classFile = new File(coreDir, "Subsystems/" + ssId + "/CLASSIFICATION");
         String classification = MarkerFile.read(classFile);
-        boolean retVal = StringUtils.containsIgnoreCase(classification, "experimental");
+        boolean retVal = Strings.CI.contains(classification, "experimental");
         if (! retVal) {
             File exchangeFile = new File(coreDir, "Subsystems/" + ssId + "/EXCHANGABLE");
             retVal = (! exchangeFile.exists());
